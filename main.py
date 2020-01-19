@@ -3,7 +3,7 @@
 #File main.py
 #Desc Main entry point for the game
 
-from screen import screenManager, screen, testScreen
+from screen import screenManager, screen, testScreen, enumTestScreen
 
 screenManager = screenManager()
 
@@ -20,7 +20,8 @@ def main():
 
 #Method to initialize anything prior to starting the game loop
 def init():
-	screenManager.setScreen(testScreen())
+	#screenManager.setScreen(testScreen())
+	screenManager.setScreen(enumTestScreen())
 
 
 

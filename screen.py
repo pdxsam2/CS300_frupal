@@ -1,10 +1,12 @@
 #Name Timothy hall
 #Date 1/16/20
-#File state.py
+#File screen.py
 #Desc base class for menu/game screens
 
 from stack import stack
 
+# Research(Jesse): Do we just have to stack these things? Can we just import the whole file?
+from tile import tiles, tileAscii, isValidObstacle
 
 #Method to clear the screen for screenManager class
 def _clear():
@@ -73,6 +75,88 @@ class testScreen(screen):
 
 		for i in range(20):
 			s += "* "
+		print(s)
+		print(self.message + "\t[press q to quit]")
+
+	def update(self):
+		return
+
+	def handleInput(self, usrin):
+		if usrin == "w":
+			self.message = "walked north"
+		elif usrin == "s":
+			self.message = "walked south"
+		elif usrin == "a":
+			self.message = "walked east"
+		elif usrin == "d":
+			self.message = "walked west"
+		else:
+			self.message = "invalid input"
+
+	def onStop(self):
+		return
+
+
+#
+# Note(Jesse): This is just a test map before I get the actual test map
+#
+test_map_width = 18
+test_map = [
+	[[3, 5], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 6], [2, 0]],
+	[[3, 0], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 6], [2, 6], [2, 0], [2, 0], [2, 0]],
+	[[3, 0], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 6], [2, 6], [2, 0], [2, 0], [2, 0]],
+	[[3, 0], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0]],
+	[[3, 5], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 6], [2, 0], [2, 0], [2, 0]],
+	[[3, 5], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0]],
+	[[3, 0], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [1, 0], [1, 7]],
+	[[3, 0], [3, 7], [1, 0], [1, 0], [1, 6], [1, 6], [1, 6], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 7]],
+	[[3, 0], [3, 7], [1, 0], [1, 0], [1, 6], [1, 7], [1, 6], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 7]],
+	[[3, 0], [3, 7], [1, 0], [1, 0], [1, 6], [1, 6], [1, 6], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 7]],
+	[[3, 0], [3, 5], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 7]],
+	[[3, 0], [3, 5], [3, 0], [3, 5], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0]],
+	[[3, 0], [3, 5], [3, 0], [3, 0], [3, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0]],
+	[[3, 0], [3, 5], [3, 0], [3, 0], [3, 0], [3, 6], [1, 7], [1, 7], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0], [3, 0], [2, 0]],
+	[[3, 0], [1, 0], [1, 0], [1, 6], [3, 0], [3, 6], [3, 6], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0], [2, 0], [2, 0], [2, 0]],
+	[[3, 0], [1, 0], [1, 0], [1, 0], [3, 0], [3, 6], [3, 6], [3, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0], [2, 0], [2, 0], [2, 0]],
+	[[3, 0], [1, 0], [1, 0], [1, 0], [3, 0], [3, 6], [3, 6], [3, 7], [3, 0], [1, 0], [1, 0], [3, 0], [1, 0], [1, 0], [3, 0], [2, 0], [2, 0], [2, 0]],
+	[[3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [3, 6], [3, 6], [3, 6], [3, 6], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [2, 0], [2, 0], [2, 0]]
+]
+
+class enumTestScreen(screen):
+
+	def __init__(self):	
+		self.message = ""
+
+	def onStart(self):
+		print("Starting this thing up!")
+	
+	def draw(self):
+		#draw a map border
+		s = "┌"
+		for i in range(18):
+			s += "──"
+		s += "─┐\n"
+		for j in range(18):
+			s += "│ "
+			for k in range(18):
+				# s += "  "
+				# Note(Jesse): You can have test_map be the type id of the tile of the map, run it through a map (the key value pair structure) to get it's
+				#              printable ascii glyph. If you'd like to make the test_map an array of structures that contain an ascii character and a number id for
+				#              the tile type that may be preferable to you.
+				#              We planned on having a 3D array, with the 3rd dimension being 2 Z slices, the first slice is the terrain, and the second slice are obstacles
+				#              I suggest once the test map is in, we check to see if there are obstacles on this x, y coord, if so output it's ascii glyph, if not then 
+				#              print the terrain one... Or maybe make the differing terrain change the color of the printed ascii, while the obstacle provides the ascii glyph itself?
+				#              for now this is very much test code
+				if isValidObstacle(test_map[j][k][1]):
+					s += tileAscii[test_map[j][k][1]] + ' '
+				else:
+					s += tileAscii[test_map[j][k][0]] + ' '
+			s += "│\n"
+
+		s += '└'
+		for i in range(18):
+			s += "──"
+		s += '─┘'
 		print(s)
 		print(self.message + "\t[press q to quit]")
 
