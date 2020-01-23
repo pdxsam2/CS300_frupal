@@ -3,7 +3,8 @@
 #File main.py
 #Desc Main entry point for the game
 
-from screen import screenManager, screen, testScreen, enumTestScreen
+from screen import screenManager, screen, testScreen, tileTestScreen
+from tile import tiles
 
 screenManager = screenManager()
 
@@ -20,8 +21,20 @@ def main():
 
 #Method to initialize anything prior to starting the game loop
 def init():
-	#screenManager.setScreen(testScreen())
-	screenManager.setScreen(enumTestScreen())
+	# Todo(Jesse): Put these into the config when it's there
+	tiles.add_terrain("grass", '.', 1)  # id = 1
+	tiles.add_terrain("bog", '_', 2)    # id = 2
+	tiles.add_terrain("forest", 'f', 3) # id = 3
+	tiles.add_terrain("water", '~', 1)  # id = 4 ... We'll need to special case this on the character side
+
+	tiles.add_obstacle("bush", '#', 2)  # id = 1
+	tiles.add_obstacle("tree", '♣', 3)  # id = 2
+	tiles.add_obstacle("rock", '*', 2)  # id = 3
+	
+	# Todo(Jesse): Start reading the config here
+	
+	# screenManager.setScreen(testScreen())
+	screenManager.setScreen(tileTestScreen())
 
 
 
