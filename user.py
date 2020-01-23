@@ -3,10 +3,6 @@
 #File user.py
 #Desc This is the user that will be affected by the obstacles/terrain on the current tile
 
-from tile import tiles
-
-
-
 class user:
   #Status   Note(Sam): these numbers were arbitrarily chosen and should be adjusted relative to how the game feels to play
   energy= 20
@@ -15,10 +11,9 @@ class user:
   x = 0
   y = 0
 
-  #Inventory
-  ####this will end up being an array of inventory items which will adjust the "damage" accordingly
+  # Note(Jesse): An array of integers, the index is the index in the items array from items.py
   inv = []
-
+  
   # Note(Jesse): Woah! Setters! Probably just going to be using these in the movement code, 
   #              in which case we probably won't even use these
   def decrement_energy(self, val):
@@ -63,4 +58,4 @@ def main():
   print('Current energy: ', testee.energy, '\n')
 
 
-main()
+# main()

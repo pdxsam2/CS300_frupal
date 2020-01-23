@@ -4,38 +4,73 @@
 #Desc Main entry point for the game
 
 from screen import screenManager, screen, testScreen, tileTestScreen, shopScreen
-from tile import tiles
+from tile import Tiles
+from user import user
+from item import add_item
 
-screenManager = screenManager()
+class GameState:
+	screenManager = screenManager()
+	user = user()
+	tiles = Tiles()
+	items = []
 
 #Main program loop
 def main():
-	init()
+	state = init()
 	running = True
 
 	while(running):	#run until user quits all game screens
-		screenManager.update()
-		screenManager.draw()
-		screenManager.handleInput()
-		running = not screenManager.isEmpty()
+		state.screenManager.update(state)
+		state.screenManager.draw(state)
+		state.screenManager.handleInput(state)
+		running = not state.screenManager.isEmpty()
 
 #Method to initialize anything prior to starting the game loop
 def init():
-	# Todo(Jesse): Put these into the config when it's there
-	tiles.add_terrain("grass", '.', 1)  # id = 1
-	tiles.add_terrain("bog", '_', 2)    # id = 2
-	tiles.add_terrain("forest", 'f', 3) # id = 3
-	tiles.add_terrain("water", '~', 1)  # id = 4 ... We'll need to special case this on the character side
-
-	tiles.add_obstacle("bush", '#', 2)  # id = 1
-	tiles.add_obstacle("tree", '♣', 3)  # id = 2
-	tiles.add_obstacle("rock", '*', 2)  # id = 3
+	state = GameState()
 	
+	# Todo(Jesse): Put these into the config when it's there
+	state.tiles.add_terrain("grass", '.', 1)  # id = 1
+	state.tiles.add_terrain("bog", '_', 2)    # id = 2
+	state.tiles.add_terrain("forest", 'f', 3) # id = 3
+	state.tiles.add_terrain("water", '~', 1)  # id = 4 ... We'll need to special case this on the character side
+
+	state.tiles.add_obstacle("bush", '#', 2)  # id = 1
+	state.tiles.add_obstacle("tree", '♣', 3)  # id = 2
+	state.tiles.add_obstacle("rock", '*', 2)  # id = 3
+	
+	state.items.append(add_item("Energy Bar", 10))
+	state.items.append(add_item("Binoculars", 30))
+	state.items.append(add_item("Weed Whacker", 10)) # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
+	state.items.append(add_item("Jack Hammer", 20))
+	state.items.append(add_item("Chain Saw", 10))
+
 	# Todo(Jesse): Start reading the config here
 	
+	# Note(Jesse): Debug printing out... might be useful for the config readin
+	for index in range(0, len(state.tiles.terrain)):
+		terrain = state.tiles.terrain[index]
+		print("Terrain(", index, "):", terrain.name, "ascii:", terrain.ascii, "energy use:", terrain.energy)
+
+	print("")
+
+	for index in range(0, len(state.tiles.obstacles)):
+		obstacle = state.tiles.obstacles[index]
+		print("Obstacle(", index, "):", obstacle.name, "ascii:", obstacle.ascii, "energy use:", obstacle.energy)
+	
+	print("")
+	
+	for index in range(0, len(state.items)):
+		item = state.items[index]
+		print("Item(", index, "):", item.name, "costs:", item.cost, "[currency]")
+
+	print("///////// End Debug Print")
+	
 	# screenManager.setScreen(testScreen())
-	screenManager.setScreen(tileTestScreen())
+	state.screenManager.setScreen(state, tileTestScreen())
 	# screenManager.setScreen(shopScreen())
+	
+	return state
 
 
 
