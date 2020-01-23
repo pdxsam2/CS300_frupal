@@ -7,9 +7,11 @@ from stack import stack
 
 from tile import Tiles, tiles, Terrain, Obstacle
 
+from user import user
+
 #Method to clear the screen for screenManager class
 def _clear():
-	for i in range(100):
+	for i in range(40):
 		print("\n")
 
 #base class for all screens/menus
@@ -96,6 +98,51 @@ class testScreen(screen):
 		return
 
 
+class shopScreen(screen):
+
+	def __init__(self):	
+		self.message = ""
+
+	def onStart(self):
+		print("Welcome to the shop!")
+	
+	def draw(self):
+		# Todo(Jesse): Add enumerating the items list
+		s = "┌"
+		for i in range(18):
+			s += "──"
+		s += "─┐\n"
+		for j in range(18):
+			s += "│ "
+			for k in range(18):
+				s += '  '
+			s += "│\n"
+
+		s += '└'
+		for i in range(18):
+			s += "──"
+		s += '─┘'
+		print(s)
+		print(self.message + "\t[press q to exit shop]")
+
+	def update(self):
+		return
+
+	def handleInput(self, usrin):
+		if usrin == "1":
+			self.message = "bought "
+		elif usrin == "2":
+			self.message = "bought "
+		elif usrin == "3":
+			self.message = "bought "
+		elif usrin == "4":
+			self.message = "consumed energy bar"
+		else:
+			self.message = "invalid input"
+
+	def onStop(self):
+		return
+
 #
 # Note(Jesse): This is just a test map before I get the actual test map
 # width:  18
@@ -166,12 +213,16 @@ class tileTestScreen(screen):
 			self.message = "walked east"
 		elif usrin == "d":
 			self.message = "walked west"
+		elif usrin == 'p':
+			# Todo(Jesse): Oh boy, gotta get that screenManager
+			#              we need to start passing gamestate around
+			# screenManager.setScreen(shopScreen)
+			self.message = "there is a shop under construction here..."
 		else:
 			self.message = "invalid input"
 
 	def onStop(self):
 		return
-
 
 class screenManager:
 	

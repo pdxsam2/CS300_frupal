@@ -1,59 +1,66 @@
-#Name: Sam Parker
+#Name Sam Parker
 #Date 1/19/20
 #File user.py
 #Desc This is the user that will be affected by the obstacles/terrain on the current tile
 
+from tile import tiles
+
+
+
 class user:
-  #Terrain types
-
-
-  grass= 1
-  bog= 2
-  forest= 2
-  water= 2
-  #Obstacles
-  bush= 2
-  tree= 2
-  rock= 2
   #Status   Note(Sam): these numbers were arbitrarily chosen and should be adjusted relative to how the game feels to play
   energy= 20
   money= 100
 
+  x = 0
+  y = 0
+
   #Inventory
   ####this will end up being an array of inventory items which will adjust the "damage" accordingly
+  inv = []
 
-  def Affect(self,terrain, obstacle):
-    #these values should be compared with those from the tiles struct from tiles.py
-    if terrain == 1:
-      self.energy -= self.grass;
-    elif terrain == 2:
-      self.energy -= self.bog
-    elif terrain == 3:
-      self.energy -= self.forest
-    elif terrain == 4:
-      self.energy -= self.water
-    else:
-      self.energy -= 1
+  # Note(Jesse): Woah! Setters! Probably just going to be using these in the movement code, 
+  #              in which case we probably won't even use these
+  def decrement_energy(self, val):
+    self.energy -= val
 
-    if obstacle == 5:
-      self.energy -= self.bush
-    if obstacle == 6:
-      self.energy -= self.tree
-    if obstacle == 7:
-      self.energy -= self.rock
+  def increment_energy(self, val):
+    self.energy += val
+	
+  def set_position(self, x, y):
+    self.x = x
+    self.y = y
+
+  def move(self, dx, dy, delta_energy):
+    self.x += dx
+    self.y += dy
+    self.energy -= delta_energy # Note(Jesse): This is negative just because it's probably more convenient
+	
 
 ###testing###
 def main():
   testee= user()
+  
+  tiles.add_terrain("grass", '.', 1)  # id = 1
+  tiles.add_terrain("bog", '_', 2)    # id = 2
+  tiles.add_terrain("forest", 'f', 3) # id = 3
+  tiles.add_terrain("water", '~', 1)  # id = 4 ... We'll need to special case this on the character side
+  
+  tiles.add_obstacle("bush", '#', 2)  # id = 1
+  tiles.add_obstacle("tree", '♣', 3)  # id = 2
+  tiles.add_obstacle("rock", '*', 2)  # id = 3
+  
+  print('Current money: ', testee.money, '\n')
+  print('Current energy: ', testee.energy, '\n')
+
+  cool_map = [[1, 2], [1, 3]]
+  
+  testee.move(0, 1, tiles.terrain[cool_map[testee.x][testee.y]].energy)
+  testee.move(1, 0, tiles.terrain[cool_map[testee.x][testee.y]].energy)
+  testee.move(0, -1, tiles.terrain[cool_map[testee.x][testee.y]].energy)
 
   print('Current money: ', testee.money, '\n')
   print('Current energy: ', testee.energy, '\n')
 
-  testee.Affect(2,5)
-  testee.Affect(0,0)
-  testee.Affect(1,6)
-
-  print('Current money: ', testee.money, '\n')
-  print('Current energy: ', testee.energy, '\n')
 
 main()

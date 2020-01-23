@@ -3,7 +3,7 @@
 #File main.py
 #Desc Main entry point for the game
 
-from screen import screenManager, screen, testScreen, tileTestScreen
+from screen import screenManager, screen, testScreen, tileTestScreen, shopScreen
 from tile import tiles
 
 screenManager = screenManager()
@@ -35,6 +35,7 @@ def init():
 	
 	# screenManager.setScreen(testScreen())
 	screenManager.setScreen(tileTestScreen())
+	# screenManager.setScreen(shopScreen())
 
 
 
