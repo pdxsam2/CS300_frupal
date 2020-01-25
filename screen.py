@@ -132,7 +132,7 @@ class shopScreen(screen):
 		else:
 			s += '\n'
 			
-		s += "page: (" + str(self.page) + ')\n'
+		s += "[page: " + str(self.page) + ']\n'
 		
 		'''
 		# Research(Jesse): Do we want to keep the printing of information within the original map dimensions?
@@ -219,18 +219,29 @@ class tileTestScreen(screen):
 		print("Starting this thing up!")
 	
 	def draw(self, state):
-	
+		
+		s = ""
+		
+		s += "Player:\n"
+		s += "    Energy:   " + str(state.user.energy) + '\n'
+		s += "    Currency: " + str(state.user.money) + '\n'
+		s += " Pos:\n"
+		s += "   X: " + str(state.user.x) + '\n'
+		s += "   Y: " + str(state.user.y) + '\n'
+		
 		tiles = state.tiles
-	
+		
 		#draw a map border
-		s = "┌"
+		s += "┌"
 		for i in range(18):
 			s += "──"
 		s += "─┐\n"
 		for j in range(18):
 			s += "│ "
 			for k in range(18):
-				if test_map[j][k][1] > 0:
+				if j == state.user.y and k == state.user.x:
+					s += '@'
+				elif test_map[j][k][1] > 0:
 					# Note(Jesse): Obstacle is there
 					s += tiles.obstacles[test_map[j][k][1]].ascii
 				else:
@@ -249,14 +260,55 @@ class tileTestScreen(screen):
 		return
 
 	def handleInput(self, state, usrin):
+		# Todo(Jesse): Rewrite this once we get map implementation
 		if usrin == "w":
-			self.message = "walked north"
+			newX = state.user.x
+			newY = state.user.y - 1
+			tile_id = test_map[newY][newX][0]
+			tile = state.tiles.terrain[tile_id]
+			if state.user.energy >= tile.energy:
+				state.user.move(0, -1, tile.energy)
+				self.message = "walked north onto " + tile.name + str(tile_id)
+			else:
+				self.message = "You do not have enough energy to move north"
 		elif usrin == "s":
-			self.message = "walked south"
+			newX = state.user.x
+			newY = state.user.y + 1
+			tile_id = test_map[newY][newX][0]
+			tile = state.tiles.terrain[tile_id]
+			if state.user.energy >= tile.energy:
+				state.user.move(0, 1, tile.energy)
+				self.message = "walked south onto " + tile.name + str(tile_id)
+			else:
+				self.message = "You do not have enough energy to move south"
 		elif usrin == "a":
-			self.message = "walked east"
+			newX = state.user.x - 1
+			newY = state.user.y
+			tile_id = test_map[newY][newX][0]
+			tile = state.tiles.terrain[tile_id]
+			if state.user.energy >= tile.energy:
+				state.user.move(-1, 0, tile.energy)
+				self.message = "walked east onto " + tile.name + str(tile_id)
+			else:
+				self.message = "You do not have enough energy to move east"
 		elif usrin == "d":
-			self.message = "walked west"
+			newX = state.user.x + 1
+			newY = state.user.y
+			tile_id = test_map[newY][newX][0]
+			tile = state.tiles.terrain[tile_id]
+			if state.user.energy >= tile.energy:
+				state.user.move(1, 0, tile.energy)
+				self.message = "walked west onto " + tile.name + str(tile_id)
+			else:
+				self.message = "You do not have enough energy to move west"
+		elif usrin == "e":
+			# Note(Jesse): We're assuming 0 is the power bar here
+			if state.user.inv[0] > 0:
+				state.user.inv[0] -= 1
+				state.user.energy += 10
+				self.message = "Consumed Power Bar"
+			else:
+				self.message = "You do not have any Power Bars left"
 		elif usrin == "p":
 			state.screenManager.setScreen(state, shopScreen())
 		else:

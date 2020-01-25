@@ -39,22 +39,22 @@ def init():
 	state.tiles.add_obstacle("tree", '♣', 3)  # id = 2
 	state.tiles.add_obstacle("rock", '*', 2)  # id = 3
 	
-	add_item(state, "Energy Bar", 10)
+	add_item(state, "Power Bar", 10)
 	add_item(state, "Binoculars", 30)
 	add_item(state, "Weed Whacker", 10) # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
 	add_item(state, "Jack Hammer", 20)
 	add_item(state, "Chain Saw", 10)
 	
-	add_item(state, "1Chain Saw", 10)
-	add_item(state, "2Chain Saw", 10)
-	add_item(state, "3Chain Saw", 10)
-	add_item(state, "4Chain Saw", 10)
-	add_item(state, "5Chain Saw", 10)
-	add_item(state, "6Chain Saw", 10)
-	add_item(state, "7Chain Saw", 10)
-	add_item(state, "8Chain Saw", 10)
-	add_item(state, "9Chain Saw", 10)
-	add_item(state, "0Chain Saw", 10)
+	add_item(state, "1 Chain Saw", 10)
+	add_item(state, "2 Chain Saw", 10)
+	add_item(state, "3 Chain Saw", 10)
+	add_item(state, "4 Chain Saw", 10)
+	add_item(state, "5 Chain Saw", 10)
+	add_item(state, "6 Chain Saw", 10)
+	add_item(state, "7 Chain Saw", 10)
+	add_item(state, "8 Chain Saw", 10)
+	add_item(state, "9 Chain Saw", 10)
+	add_item(state, "10Chain Saw", 10)
 	add_item(state, "11Chain Saw", 10)
 	add_item(state, "12Chain Saw", 10)
 	add_item(state, "13Chain Saw", 10)
