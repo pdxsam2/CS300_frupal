@@ -24,6 +24,7 @@ class user:
     self.x = x
     self.y = y
 
+  # Note(Jesse): This is just a little test procedure, if you want to totally delete it, go ahead
   def move(self, dx, dy, delta_energy):
     self.x += dx
     self.y += dy
