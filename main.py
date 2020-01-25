@@ -39,14 +39,29 @@ def init():
 	state.tiles.add_obstacle("tree", '♣', 3)  # id = 2
 	state.tiles.add_obstacle("rock", '*', 2)  # id = 3
 	
-	state.items.append(add_item("Energy Bar", 10))
-	state.items.append(add_item("Binoculars", 30))
-	state.items.append(add_item("Weed Whacker", 10)) # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
-	state.items.append(add_item("Jack Hammer", 20))
-	state.items.append(add_item("Chain Saw", 10))
+	add_item(state, "Energy Bar", 10)
+	add_item(state, "Binoculars", 30)
+	add_item(state, "Weed Whacker", 10) # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
+	add_item(state, "Jack Hammer", 20)
+	add_item(state, "Chain Saw", 10)
+	
+	add_item(state, "1Chain Saw", 10)
+	add_item(state, "2Chain Saw", 10)
+	add_item(state, "3Chain Saw", 10)
+	add_item(state, "4Chain Saw", 10)
+	add_item(state, "5Chain Saw", 10)
+	add_item(state, "6Chain Saw", 10)
+	add_item(state, "7Chain Saw", 10)
+	add_item(state, "8Chain Saw", 10)
+	add_item(state, "9Chain Saw", 10)
+	add_item(state, "0Chain Saw", 10)
+	add_item(state, "11Chain Saw", 10)
+	add_item(state, "12Chain Saw", 10)
+	add_item(state, "13Chain Saw", 10)
 
 	# Todo(Jesse): Start reading the config here
 	
+	'''
 	# Note(Jesse): Debug printing out... might be useful for the config readin
 	for index in range(0, len(state.tiles.terrain)):
 		terrain = state.tiles.terrain[index]
@@ -65,6 +80,7 @@ def init():
 		print("Item(", index, "):", item.name, "costs:", item.cost, "[currency]")
 
 	print("///////// End Debug Print")
+	'''
 	
 	# screenManager.setScreen(testScreen())
 	state.screenManager.setScreen(state, tileTestScreen())

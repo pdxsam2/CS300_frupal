@@ -13,9 +13,7 @@ class user:
 
   # Note(Jesse): An array of integers, the index is the index in the items array from items.py
   inv = []
-  
-  # Note(Jesse): Woah! Setters! Probably just going to be using these in the movement code, 
-  #              in which case we probably won't even use these
+
   def decrement_energy(self, val):
     self.energy -= val
 
@@ -30,7 +28,6 @@ class user:
     self.x += dx
     self.y += dy
     self.energy -= delta_energy # Note(Jesse): This is negative just because it's probably more convenient
-	
 
 ###testing###
 def main():

@@ -99,16 +99,42 @@ class testScreen(screen):
 
 
 class shopScreen(screen):
-
+	
+	page = 0
+	
 	def __init__(self):	
-		self.message = "You see a shop under construction here..."
+		self.message = "Welcome to the shop!"
 
 	def onStart(self, state):
 		# Todo(Jesse): We'll do some testing of buying stuff here as debug code
 		print("")
 	
 	def draw(self, state):
-		# Todo(Jesse): Add enumerating the items list
+		s = ""
+		
+		s += "Currency: " + str(state.user.money) + "\n\n"
+		
+		for index in range(0, 8):
+			arr_index = index + self.page*8
+			if len(state.items) <= arr_index:
+				s += '\n'
+			else:
+				item = state.items[arr_index]
+				s += '[' + str(index + 1) + "] " + item.name + '(' + str(state.user.inv[arr_index]) + "):\t\t" + str(item.cost) + '\n'
+		
+		if self.page > 0:
+			s += "[9] Prev Page\n"
+		else:
+			s += "\n"
+		
+		if len(state.items) - self.page*8 > 8:
+			s += "[0] Next Page\n"
+		else:
+			s += '\n'
+			
+		s += "page: (" + str(self.page) + ')\n'
+		
+		'''
 		# Research(Jesse): Do we want to keep the printing of information within the original map dimensions?
 		s = "┌"
 		for i in range(18):
@@ -124,6 +150,7 @@ class shopScreen(screen):
 		for i in range(18):
 			s += "──"
 		s += '─┘'
+		'''
 		print(s)
 		print(self.message + "\t[press q to exit shop]")
 
@@ -131,14 +158,25 @@ class shopScreen(screen):
 		return
 
 	def handleInput(self, state, usrin):
-		if usrin == "1":
-			self.message = "bought "
-		elif usrin == "2":
-			self.message = "bought "
-		elif usrin == "3":
-			self.message = "bought "
-		elif usrin == "4":
-			self.message = "consumed energy bar"
+		if int(usrin) >= 0 and int(usrin) <= 9:
+			val = int(usrin)
+			if val == 0:
+				if len(state.items) - self.page*8 > 8:
+					self.page += 1
+			elif val == 9:
+				# Note(Jesse): If we and self.page > 0 with above it'll make it so you can buy the first item on the next page
+				if self.page > 0:
+					self.page -= 1
+			else:
+				# Note(Jesse): -1 to val because arrays are indexed from 0 and our first option is 1...
+				val -= 1
+				item = state.items[val + self.page*8]
+				if state.user.money < item.cost:
+					self.message = "insufficient coin for " + item.name
+				else:
+					state.user.inv[val + self.page*8] += 1
+					state.user.money -= item.cost
+				
 		else:
 			self.message = "invalid input"
 
