@@ -9,10 +9,11 @@ from user import user
 from item import add_item
 
 class GameState:
-	screenManager = screenManager()
 	user = user()
 	tiles = Tiles()
 	items = []
+
+screenManager = screenManager()
 
 #Main program loop
 def main():
@@ -20,10 +21,10 @@ def main():
 	running = True
 
 	while(running):	#run until user quits all game screens
-		state.screenManager.update(state)
-		state.screenManager.draw(state)
-		state.screenManager.handleInput(state)
-		running = not state.screenManager.isEmpty()
+		screenManager.update(state)
+		screenManager.draw(state)
+		screenManager.handleInput(state)
+		running = not screenManager.isEmpty()
 
 #Method to initialize anything prior to starting the game loop
 def init():
@@ -83,7 +84,7 @@ def init():
 	'''
 	
 	# screenManager.setScreen(testScreen())
-	state.screenManager.setScreen(state, tileTestScreen())
+	screenManager.setScreen(state, tileTestScreen())
 	# screenManager.setScreen(shopScreen())
 	
 	return state

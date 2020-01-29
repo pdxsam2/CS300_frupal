@@ -53,8 +53,8 @@ class screen:
 		print("Stoping")
 
 	#allows screen to add a screen to the stack above it
-	def pushScreen(self, screen):
-		self.screenman.setScreen(screen)
+	def pushScreen(self, state, screen):
+		self.screenman.setScreen(state, screen)
 
 	#called in screenman when added to the stack. Do Not implement in subclasses
 	def setScreenManager(self, screenman):
@@ -322,7 +322,7 @@ class tileTestScreen(screen):
 			else:
 				self.message = "You do not have any Power Bars left"
 		elif usrin == "p":
-			state.screenManager.setScreen(state, shopScreen())
+			self.pushScreen(state, shopScreen())
 		else:
 			self.message = "invalid input"
 
