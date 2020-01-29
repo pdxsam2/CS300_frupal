@@ -17,7 +17,10 @@ def _clear():
 #base class for all screens/menus
 class screen:
 
-	#called when the screen is launched. Anything being loaded 
+	def __init__(self):
+		self.screenman = None
+
+	#called when the screen is launched. Anything being loaded
 	#or initalized should happen here. 
 	def onStart(self):
 		print("Starting")
@@ -48,6 +51,15 @@ class screen:
 	#here.
 	def onStop(self):
 		print("Stoping")
+
+	#allows screen to add a screen to the stack above it
+	def pushScreen(self, screen):
+		self.screenman.setScreen(screen)
+
+	#called in screenman when added to the stack. Do Not implement in subclasses
+	def setScreenManager(self, screenman):
+		self.screenman = screenman
+
 
 #################################################################
 #                IMPLEMENT NEW SCREENS HERE                     #
@@ -331,6 +343,7 @@ class screenManager:
 	#added to the stack.
 	def setScreen(self, state, screen):
 		self.stack.push(screen)
+		self._top().setScreenManager(self)
 		self._top().onStart(state)
 	
 	#Wrapper function for stack.pop(). Calls onStop() on screen prior to 
