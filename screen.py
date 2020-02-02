@@ -21,24 +21,24 @@ class screen:
 		self.screenman = None
 
 	#called when the screen is launched. Anything being loaded
-	#or initalized should happen here. 
+	#or initalized should happen here.
 	def onStart(self):
 		print("Starting")
 
-	#Method to draw screen to console. This is called every 
-	#iterarion of the game loop, so the screen should only 
-	#be written once per call. Clearing the previous frame 
-	#happens after handleInput() is called, so it is not 
+	#Method to draw screen to console. This is called every
+	#iterarion of the game loop, so the screen should only
+	#be written once per call. Clearing the previous frame
+	#happens after handleInput() is called, so it is not
 	#necessary to do it here.
 	def draw(self):
 		print("Drawing")
-	
+
 	#Updates game logic. Called every iteration of game loop.
 	#Place to update any background logic not relavent to user
 	#input. May not need this but its here if it is needed.
 	def update(self):
 		print("Updating")
-	
+
 	#Handles user input. Input is  prompted for in screenManager
 	#so it is not  necessary to do it here. This method indirectly
 	#controls the while loop
@@ -46,7 +46,7 @@ class screen:
 	def handleInput(self, usrin):
 		print("Handling input")
 
-	#Called when the screen is closed. Loose ends that need to be 
+	#Called when the screen is closed. Loose ends that need to be
 	#tied up or anything that happens when leaving the screen is handled
 	#here.
 	def onStop(self):
@@ -68,12 +68,12 @@ class screen:
 #A very basic demo class
 class testScreen(screen):
 
-	def __init__(self):	
+	def __init__(self):
 		self.message = ""
 
 	def onStart(self, state):
 		print("Starting this thing up!")
-	
+
 	def draw(self, state):
 		#draw a map border
 		s = ""
@@ -111,21 +111,21 @@ class testScreen(screen):
 
 
 class shopScreen(screen):
-	
+
 	page = 0
-	
-	def __init__(self):	
+
+	def __init__(self):
 		self.message = "Welcome to the shop!"
 
 	def onStart(self, state):
 		# Todo(Jesse): We'll do some testing of buying stuff here as debug code
 		print("")
-	
+
 	def draw(self, state):
 		s = ""
-		
+
 		s += "Currency: " + str(state.user.money) + "\n\n"
-		
+
 		for index in range(0, 8):
 			arr_index = index + self.page*8
 			if len(state.items) <= arr_index:
@@ -133,19 +133,19 @@ class shopScreen(screen):
 			else:
 				item = state.items[arr_index]
 				s += '[' + str(index + 1) + "] " + item.name + '(' + str(state.user.inv[arr_index]) + "):\t\t" + str(item.cost) + '\n'
-		
+
 		if self.page > 0:
 			s += "[9] Prev Page\n"
 		else:
 			s += "\n"
-		
+
 		if len(state.items) - self.page*8 > 8:
 			s += "[0] Next Page\n"
 		else:
 			s += '\n'
-			
+
 		s += "[page: " + str(self.page) + ']\n'
-		
+
 		'''
 		# Research(Jesse): Do we want to keep the printing of information within the original map dimensions?
 		s = "┌"
@@ -188,13 +188,77 @@ class shopScreen(screen):
 				else:
 					state.user.inv[val + self.page*8] += 1
 					state.user.money -= item.cost
-				
+
 		else:
 			self.message = "invalid input"
 
 	def onStop(self, state):
 		_clear()
 		return
+
+#
+#
+#todo(Sam): This is the implementation for the menu and config screens
+class menu(screen):
+	def __init__(self):
+		return
+	def onStart(self, state):
+		for i in range(100):
+				print("\n")
+		return
+
+	def draw(self, state):
+		print("\n\nfrupal\n\t")
+		print("a team B creation\n\n")
+		print("PLAY - p\n")
+		print("COFIGURE - c\n")
+		print("QUIT - q\n")
+		return
+
+	def update(self, state):
+		return
+
+	def handleInput(self,state, usrin):
+		if(usrin == 'p'):
+			self.pushScreen(state, tileTestScreen())
+		elif(usrin == 'c'):
+			self.pushScreen(state, config())
+		else:
+			print("Invalid input!\n")
+		return
+
+	def onStop(self, state):
+		return
+
+class config(screen):
+	def __init__(self):
+		return
+
+	def onStart(self, state):
+		print("Current items and costs:\n")
+		item_len= len(state.items)
+
+		for i in range(item_len):
+				print("Name: " + state.items[i].name)
+				print("Cost: ", state.items[i].cost)
+		print("Would you like to add or edit items?")
+		return
+
+	def draw(self, state):
+		return
+
+	def update(self, state):
+		return
+
+	def handleInput(self,state, usrin):
+		return
+
+	def onStop(self, state):
+		return
+
+
+
+
 
 #
 # Note(Jesse): This is just a test map before I get the actual test map
@@ -224,25 +288,25 @@ test_map = [
 
 class tileTestScreen(screen):
 
-	def __init__(self):	
+	def __init__(self):
 		self.message = ""
 
 	def onStart(self, state):
 		print("Starting this thing up!")
-	
+
 	def draw(self, state):
-		
+
 		s = ""
-		
+
 		s += "Player:\n"
 		s += "    Energy:   " + str(state.user.energy) + '\n'
 		s += "    Currency: " + str(state.user.money) + '\n'
 		s += " Pos:\n"
 		s += "   X: " + str(state.user.x) + '\n'
 		s += "   Y: " + str(state.user.y) + '\n'
-		
+
 		tiles = state.tiles
-		
+
 		#draw a map border
 		s += "┌"
 		for i in range(18):
@@ -330,38 +394,38 @@ class tileTestScreen(screen):
 		return
 
 class screenManager:
-	
+
 	#constructor
 	def __init__(self):
 		self.stack = stack()
-	
+
 	#internal method to stack.peek() at stack. Do not use outside of class.
 	def _top(self):
 		return self.stack.peek()
-	
+
 	#Wrapper function for stack.push(). calls onStart() for the screen being
 	#added to the stack.
 	def setScreen(self, state, screen):
 		self.stack.push(screen)
 		self._top().setScreenManager(self)
 		self._top().onStart(state)
-	
-	#Wrapper function for stack.pop(). Calls onStop() on screen prior to 
+
+	#Wrapper function for stack.pop(). Calls onStop() on screen prior to
 	#removing it from the stack.
 	def closeScreen(self, state):
 		self._top().onStop(state)
 		self.stack.pop()
-	
+
 	#draws the screen for the screen at the top of the stack.
 	def draw(self, state):
 		self._top().draw(state)
-	
+
 	#updates top screen in the stack
 	def update(self, state):
 		self._top().update(state)
-	
-	#Default prompt for input. passes user input to the screen 
-	#at the top of the stack. if user enters 'q' to quit the screen, it 
+
+	#Default prompt for input. passes user input to the screen
+	#at the top of the stack. if user enters 'q' to quit the screen, it
 	#is handled here.
 	def handleInput(self, state):
 		usrin = input()
@@ -369,8 +433,8 @@ class screenManager:
 			self.closeScreen(state)
 			return
 		self._top().handleInput(state, usrin)
-		_clear()
-	
+		#_clear()
+
 	#Returns true if stack is empty
 	def isEmpty(self):
 		return self.stack.isEmpty()
