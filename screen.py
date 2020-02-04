@@ -316,7 +316,7 @@ class tileTestScreen(screen):
 			s += "│ "
 			for k in range(18):
 				if j == state.user.y and k == state.user.x:
-					s += '@'
+					s += '■'
 				elif test_map[j][k][1] > 0:
 					# Note(Jesse): Obstacle is there
 					s += tiles.obstacles[test_map[j][k][1]].ascii
@@ -337,46 +337,44 @@ class tileTestScreen(screen):
 
 	def handleInput(self, state, usrin):
 		# Todo(Jesse): Rewrite this once we get map implementation
+		# Rewrites(Austin)
 		if usrin == "w":
 			newX = state.user.x
 			newY = state.user.y - 1
-			tile_id = test_map[newY][newX][0]
-			tile = state.tiles.terrain[tile_id]
-			if state.user.energy >= tile.energy:
-				state.user.move(0, -1, tile.energy)
-				self.message = "walked north onto " + tile.name + str(tile_id)
+			terrain_id = test_map[newY][newX][0]
+			obstacle_id = test_map[newY][newX][1]
+			# movement is now boolean
+			if state.user.move_north(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
+				self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
 				self.message = "You do not have enough energy to move north"
 		elif usrin == "s":
 			newX = state.user.x
 			newY = state.user.y + 1
-			tile_id = test_map[newY][newX][0]
-			tile = state.tiles.terrain[tile_id]
-			if state.user.energy >= tile.energy:
-				state.user.move(0, 1, tile.energy)
-				self.message = "walked south onto " + tile.name + str(tile_id)
+			terrain_id = test_map[newY][newX][0]
+			obstacle_id = test_map[newY][newX][1]
+			if state.user.move_south(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
+				self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
 				self.message = "You do not have enough energy to move south"
 		elif usrin == "a":
 			newX = state.user.x - 1
 			newY = state.user.y
-			tile_id = test_map[newY][newX][0]
-			tile = state.tiles.terrain[tile_id]
-			if state.user.energy >= tile.energy:
-				state.user.move(-1, 0, tile.energy)
-				self.message = "walked east onto " + tile.name + str(tile_id)
+			terrain_id = test_map[newY][newX][0]
+			obstacle_id = test_map[newY][newX][1]
+			if state.user.move_west(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
+				self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
-				self.message = "You do not have enough energy to move east"
+				self.message = "You do not have enough energy to move west"
 		elif usrin == "d":
 			newX = state.user.x + 1
 			newY = state.user.y
-			tile_id = test_map[newY][newX][0]
-			tile = state.tiles.terrain[tile_id]
-			if state.user.energy >= tile.energy:
-				state.user.move(1, 0, tile.energy)
-				self.message = "walked west onto " + tile.name + str(tile_id)
+			terrain_id = test_map[newY][newX][0]
+			obstacle_id = test_map[newY][newX][1]
+			if state.user.move_east(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
+				self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
-				self.message = "You do not have enough energy to move west"
+				self.message = "You do not have enough energy to move east"
 		elif usrin == "e":
 			# Note(Jesse): We're assuming 0 is the power bar here
 			if state.user.inv[0] > 0:
