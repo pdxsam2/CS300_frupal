@@ -11,6 +11,46 @@ from user import user
 
 from map import Map
 
+# Note(Jesse): These three classes are used to get raw input from the terminal/commandprompt
+class Get_Char:
+    def __init__(self):
+        try:
+            self.cb = Get_Char_Windows()
+        except ImportError:
+            self.cb = Get_Char_Nix()
+
+    def __call__(self): return self.cb()
+
+class Get_Char_Nix:
+    def __init__(self):
+        import tty, sys
+
+    def __call__(self):
+        import sys, tty, termios
+        stdinfile = sys.stdin.fileno()
+        prev_settings = termios.tcgetattr(stdinfile)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            char = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(stdinfile, termios.TCSADRAIN, prev_settings)
+        return char
+
+class Get_Char_Windows:
+    def __init__(self):
+        import msvcrt
+
+    def __call__(self):
+        import msvcrt
+        byte = msvcrt.getch()
+        if byte == b'\xe0':
+            byte = getch()
+            return byte.decode("utf-8")
+        else:
+            return byte.decode("utf-8")
+
+get_char = Get_Char()
+
 #Method to clear the screen for screenManager class
 def _clear():
 	for i in range(40):
@@ -60,7 +100,7 @@ class screen:
 
 	#called in screenman when added to the stack. Do Not implement in subclasses
 	def setScreenManager(self, screenman):
-		self.screenman = screenman
+		self.screenman = screenman #Mr. Screenman, bring me a screen.
 
 
 #################################################################
@@ -257,38 +297,6 @@ class config(screen):
 	def onStop(self, state):
 		return
 
-
-
-
-
-#
-# Note(Jesse): This is just a test map before I get the actual test map
-# width:  18
-# height: 18
-#
-'''
-test_map = [
-	[[3, 1], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [4, 0], [2, 2], [4, 0]],
-	[[3, 0], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 2], [2, 2], [4, 0], [4, 0], [4, 0]],
-	[[3, 0], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 2], [2, 2], [4, 0], [4, 0], [4, 0]],
-	[[3, 0], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 0], [4, 0], [4, 0], [4, 0]],
-	[[3, 1], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 2], [2, 0], [2, 0], [2, 0]],
-	[[3, 1], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0]],
-	[[3, 0], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [1, 0], [1, 3]],
-	[[3, 0], [3, 3], [1, 0], [1, 0], [1, 2], [1, 2], [1, 2], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 3]],
-	[[3, 0], [3, 3], [1, 0], [1, 0], [1, 2], [1, 3], [1, 2], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 3]],
-	[[3, 0], [3, 3], [1, 0], [1, 0], [1, 2], [1, 2], [1, 2], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 3]],
-	[[3, 0], [3, 1], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 3]],
-	[[3, 0], [3, 1], [3, 0], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0]],
-	[[3, 0], [3, 1], [3, 0], [3, 0], [3, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0]],
-	[[3, 0], [3, 1], [3, 0], [3, 0], [3, 0], [3, 2], [1, 3], [1, 3], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0], [3, 0], [2, 0]],
-	[[3, 0], [1, 0], [1, 0], [1, 2], [3, 0], [3, 2], [3, 2], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0], [2, 0], [2, 0], [2, 0]],
-	[[3, 0], [1, 0], [1, 0], [1, 0], [3, 0], [3, 2], [3, 2], [3, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [3, 0], [2, 0], [2, 0], [2, 0]],
-	[[3, 0], [1, 0], [1, 0], [1, 0], [3, 0], [3, 2], [3, 2], [3, 3], [3, 0], [1, 0], [1, 0], [3, 0], [1, 0], [1, 0], [3, 0], [2, 0], [2, 0], [2, 0]],
-	[[3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [3, 2], [3, 2], [3, 2], [3, 2], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [2, 0], [2, 0], [2, 0]]
-]
-'''
-
 class playScreen(screen):
 
 	def __init__(self):
@@ -437,7 +445,7 @@ class screenManager:
 	#at the top of the stack. if user enters 'q' to quit the screen, it
 	#is handled here.
 	def handleInput(self, state):
-		usrin = input()
+		usrin = get_char()
 		if usrin == "q":
 			_clear()
 			self.closeScreen(state)
