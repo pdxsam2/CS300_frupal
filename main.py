@@ -3,7 +3,7 @@
 #File main.py
 #Desc Main entry point for the game
 
-from screen import screenManager, screen, testScreen, tileTestScreen, shopScreen, menu
+from screen import screenManager, screen, testScreen, playScreen, shopScreen, menu
 from tile import Tiles
 from user import user
 from item import add_item
@@ -46,20 +46,7 @@ def init():
 	add_item(state, "Weed Whacker", 10) # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
 	add_item(state, "Jack Hammer", 20)
 	add_item(state, "Chain Saw", 10)
-
-	add_item(state, "1 Chain Saw", 10)
-	add_item(state, "2 Chain Saw", 10)
-	add_item(state, "3 Chain Saw", 10)
-	add_item(state, "4 Chain Saw", 10)
-	add_item(state, "5 Chain Saw", 10)
-	add_item(state, "6 Chain Saw", 10)
-	add_item(state, "7 Chain Saw", 10)
-	add_item(state, "8 Chain Saw", 10)
-	add_item(state, "9 Chain Saw", 10)
-	add_item(state, "10Chain Saw", 10)
-	add_item(state, "11Chain Saw", 10)
-	add_item(state, "12Chain Saw", 10)
-	add_item(state, "13Chain Saw", 10)
+	add_item(state, "Boat", 50)
 
 	# Todo(Jesse): Start reading the config here
 

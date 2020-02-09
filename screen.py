@@ -9,6 +9,8 @@ from tile import Tiles, Terrain, Obstacle
 
 from user import user
 
+from map import Map
+
 #Method to clear the screen for screenManager class
 def _clear():
 	for i in range(40):
@@ -111,7 +113,6 @@ class testScreen(screen):
 
 
 class shopScreen(screen):
-
 	page = 0
 
 	def __init__(self):
@@ -208,10 +209,10 @@ class menu(screen):
 		return
 
 	def draw(self, state):
-		print("\n\nfrupal\n\t")
-		print("a team B creation\n\n")
+		print("\n\nFrupal\n\t")
+		print("a Team B creation\n\n")
 		print("PLAY - p\n")
-		print("COFIGURE - c\n")
+		print("CONFIGURE - c\n")
 		print("QUIT - q\n")
 		return
 
@@ -220,7 +221,7 @@ class menu(screen):
 
 	def handleInput(self,state, usrin):
 		if(usrin == 'p'):
-			self.pushScreen(state, tileTestScreen())
+			self.pushScreen(state, playScreen())
 		elif(usrin == 'c'):
 			self.pushScreen(state, config())
 		else:
@@ -235,6 +236,9 @@ class config(screen):
 		return
 
 	def onStart(self, state):
+		return
+
+	def draw(self, state):
 		print("Current items and costs:\n")
 		item_len= len(state.items)
 
@@ -242,9 +246,6 @@ class config(screen):
 				print("Name: " + state.items[i].name)
 				print("Cost: ", state.items[i].cost)
 		print("Would you like to add or edit items?")
-		return
-
-	def draw(self, state):
 		return
 
 	def update(self, state):
@@ -265,6 +266,7 @@ class config(screen):
 # width:  18
 # height: 18
 #
+'''
 test_map = [
 	[[3, 1], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [2, 0], [4, 0], [2, 2], [4, 0]],
 	[[3, 0], [3, 1], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [1, 0], [2, 0], [2, 0], [2, 0], [2, 2], [2, 2], [4, 0], [4, 0], [4, 0]],
@@ -285,13 +287,16 @@ test_map = [
 	[[3, 0], [1, 0], [1, 0], [1, 0], [3, 0], [3, 2], [3, 2], [3, 3], [3, 0], [1, 0], [1, 0], [3, 0], [1, 0], [1, 0], [3, 0], [2, 0], [2, 0], [2, 0]],
 	[[3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [3, 2], [3, 2], [3, 2], [3, 2], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [3, 0], [2, 0], [2, 0], [2, 0]]
 ]
+'''
 
-class tileTestScreen(screen):
+class playScreen(screen):
 
 	def __init__(self):
 		self.message = ""
 
 	def onStart(self, state):
+		# Todo(Jesse): Change the width and height to whatever the config says
+		state.map = Map(state.tiles, 18, 18)
 		print("Starting this thing up!")
 
 	def draw(self, state):
@@ -306,27 +311,28 @@ class tileTestScreen(screen):
 		s += "   Y: " + str(state.user.y) + '\n'
 
 		tiles = state.tiles
+		map = state.map
 
 		#draw a map border
 		s += "┌"
-		for i in range(18):
+		for i in range(map.width):
 			s += "──"
 		s += "─┐\n"
-		for j in range(18):
+		for j in range(map.height):
 			s += "│ "
-			for k in range(18):
+			for k in range(map.width):
 				if j == state.user.y and k == state.user.x:
 					s += '■'
-				elif test_map[j][k][1] > 0:
+				elif map.has_obstacle(k, j) > 0:
 					# Note(Jesse): Obstacle is there
-					s += tiles.obstacles[test_map[j][k][1]].ascii
+					s += tiles.obstacles[map.get_obstacle(k, j)].ascii
 				else:
-					s += tiles.terrain[test_map[j][k][0]].ascii
+					s += tiles.terrain[map.get_terrain(k, j)].ascii
 				s += ' '
 			s += "│\n"
 
 		s += '└'
-		for i in range(18):
+		for i in range(map.width):
 			s += "──"
 		s += '─┘'
 		print(s)
@@ -336,13 +342,15 @@ class tileTestScreen(screen):
 		return
 
 	def handleInput(self, state, usrin):
-		# Todo(Jesse): Rewrite this once we get map implementation
+		
+		map = state.map
+		
 		# Rewrites(Austin)
 		if usrin == "w":
 			newX = state.user.x
 			newY = state.user.y - 1
-			terrain_id = test_map[newY][newX][0]
-			obstacle_id = test_map[newY][newX][1]
+			terrain_id = map.get_terrain(newX, newY)
+			obstacle_id = map.get_obstacle(newX, newY)
 			# movement is now boolean
 			if state.user.move_north(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
 				self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
@@ -351,8 +359,8 @@ class tileTestScreen(screen):
 		elif usrin == "s":
 			newX = state.user.x
 			newY = state.user.y + 1
-			terrain_id = test_map[newY][newX][0]
-			obstacle_id = test_map[newY][newX][1]
+			terrain_id = map.get_terrain(newX, newY)
+			obstacle_id = map.get_obstacle(newX, newY)
 			if state.user.move_south(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
 				self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
@@ -360,8 +368,8 @@ class tileTestScreen(screen):
 		elif usrin == "a":
 			newX = state.user.x - 1
 			newY = state.user.y
-			terrain_id = test_map[newY][newX][0]
-			obstacle_id = test_map[newY][newX][1]
+			terrain_id = map.get_terrain(newX, newY)
+			obstacle_id = map.get_obstacle(newX, newY)
 			if state.user.move_west(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
 				self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
@@ -369,8 +377,8 @@ class tileTestScreen(screen):
 		elif usrin == "d":
 			newX = state.user.x + 1
 			newY = state.user.y
-			terrain_id = test_map[newY][newX][0]
-			obstacle_id = test_map[newY][newX][1]
+			terrain_id = map.get_terrain(newX, newY)
+			obstacle_id = map.get_obstacle(newX, newY)
 			if state.user.move_east(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
 				self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
@@ -428,10 +436,11 @@ class screenManager:
 	def handleInput(self, state):
 		usrin = input()
 		if usrin == "q":
+			_clear()
 			self.closeScreen(state)
 			return
 		self._top().handleInput(state, usrin)
-		#_clear()
+		_clear()
 
 	#Returns true if stack is empty
 	def isEmpty(self):

@@ -17,17 +17,10 @@ class user:
   # Note(Jesse): An array of integers, the index is the index in the items array from item.py
   inv = []
 
-  def decrement_energy(self, val):
-    self.energy -= val
-
-  def increment_energy(self, val):
-    self.energy += val
-	
   def set_position(self, x, y):
     self.x = x
     self.y = y
 
-  # Note(Jesse): This is just a little test procedure, if you want to totally delete it, go ahead
   # Note(Austin): This now returns if the user is able to move
   def move(self, dx, dy, delta_energy):
     if delta_energy > self.energy:
@@ -53,6 +46,7 @@ class user:
     '''
     return False
 
+  # Todo(Jesse): Edge of map detection
   def move_north(self, terrain, obstacle):
     if user.dealWith(self, obstacle):
       cost = terrain.energy
