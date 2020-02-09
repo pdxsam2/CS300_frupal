@@ -39,12 +39,22 @@ class user:
     '''
     if obstacle.name == "bush" and self.inv[2] > 0: # Note(Austin): Player inventory index is based on the order that items were added in main,
       obstacle.reset()                              # so if the order is changed, this breaks
-    if obstacle.name == "tree" and self.inv[4] > 0:
-      obstacle.reset()
+    if obstacle.name == "tree" and self.inv[4] > 0: # Note(Jesse): What we will probably do and might be easiest is each obstacle will have an item ID
+      obstacle.reset()                              # such that if the player has an amount of that item ID, it will be easier to deal with.
     if obstacle.name == "rock" and self.inv[3] > 0:
       obstacle.reset()
     '''
     return False
+
+  def reveal_surroundings(self, map):
+    radius = 1
+    if self.inv[1] > 0: # Note(Jesse): If has Binoculars
+      radius = 2
+
+    for row in range(self.y - radius, self.y + radius + 1):
+      for col in range(self.x - radius, self.x + radius + 1): # Note(Jesse): Iterating through a radius appron around the player
+        if row >= 0 and row < map.height and col >= 0 and col < map.width:
+          map.set_visible(col, row) # Note(Jesse): Yes, we are setting the tile visible whether it's visible or not, redundantly
 
   # Todo(Jesse): Edge of map detection
   def move_north(self, terrain, obstacle):

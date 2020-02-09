@@ -32,32 +32,30 @@ class Map:
 				self.arr.append(tile)
 	
 	
-	# Note(Jesse): Gets the terrain ID from the 
+	# Note(Jesse): Gets the terrain ID from the given Coords
 	def get_terrain(self, x, y):
 		assert(y < self.height and x < self.width and x >= 0 and y >= 0)
 		return self.arr[y*self.width + x][0]
 	
-	# Note(Jesse):
-	#
-	#
-	#
+	# Note(Jesse): Gets the obstacle ID from the given Coords
 	def get_obstacle(self, x, y):
 		assert(y < self.height and x < self.width and x >= 0 and y >= 0)
 		return self.arr[y*self.width + x][1]
 	
-	# Note(Jesse):
-	#
-	#
-	#
+	# Note(Jesse): Boolean if there's an obstacle from the given Coords
 	def has_obstacle(self, x, y):
 		assert(y < self.height and x < self.width and x >= 0 and y >= 0)
 		return self.arr[y*self.width + x][1] > 0
+
+	def remove_obstacle(self, x, y):
+		assert(y < self.height and x < self.width and x >= 0 and y >= 0)
+		self.arr[y*self.width + x][1] = 0
 	
-	# Note(Jesse):
-	#
-	#
-	#
+	# Note(Jesse): If tile is visible
 	def is_visible(self, x, y):
 		assert(y < self.height and x < self.width and x >= 0 and y >= 0)
 		return self.arr[y*self.width + x][2] == 1
 		
+	def set_visible(self, x, y):
+		assert(y < self.height and x < self.width and x >= 0 and y >= 0)
+		self.arr[y*self.width + x][2] = 1

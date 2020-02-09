@@ -323,6 +323,8 @@ class playScreen(screen):
 			for k in range(map.width):
 				if j == state.user.y and k == state.user.x:
 					s += '■'
+				elif not map.is_visible(k, j):
+					s += ' '
 				elif map.has_obstacle(k, j) > 0:
 					# Note(Jesse): Obstacle is there
 					s += tiles.obstacles[map.get_obstacle(k, j)].ascii
@@ -339,6 +341,7 @@ class playScreen(screen):
 		print(self.message + "\t[press q to quit]")
 
 	def update(self, state):
+		state.user.reveal_surroundings(state.map)
 		return
 
 	def handleInput(self, state, usrin):
