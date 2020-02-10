@@ -44,7 +44,7 @@ class Get_Char_Windows:
         import msvcrt
         byte = msvcrt.getch()
         if byte == b'\xe0':
-            byte = getch()
+            byte = msvcrt.getch()
             return byte.decode("utf-8")
         else:
             return byte.decode("utf-8")
