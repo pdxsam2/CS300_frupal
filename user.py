@@ -62,14 +62,14 @@ class user:
       cost = terrain.energy
     else:
       cost = obstacle.energy
-    return self.move(0, -1, cost)
+    return self.move(0, 1, cost)
     
   def move_south(self, terrain, obstacle):
     if user.dealWith(self, obstacle):
       cost = terrain.energy
     else:
       cost = obstacle.energy
-    return self.move(0, 1, cost)
+    return self.move(0, -1, cost)
 
   def move_east(self, terrain, obstacle):
     if user.dealWith(self, obstacle):

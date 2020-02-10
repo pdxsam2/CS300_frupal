@@ -315,8 +315,8 @@ class playScreen(screen):
 		s += "    Energy:   " + str(state.user.energy) + '\n'
 		s += "    Currency: " + str(state.user.money) + '\n'
 		s += " Pos:\n"
-		s += "   X: " + str(state.user.x) + '\n'
-		s += "   Y: " + str(state.user.y) + '\n'
+		s += "   X: " + str(state.user.x + 1) + '\n'
+		s += "   Y: " + str(state.user.y + 1) + '\n'
 
 		tiles = state.tiles
 		map = state.map
@@ -326,7 +326,9 @@ class playScreen(screen):
 		for i in range(map.width):
 			s += "──"
 		s += "─┐\n"
-		for j in range(map.height):
+		# Note(Jesse): To make bottom left 1,1 and top right to be x, x I'm just drawing the map inverted, and just displaying to the user that
+		# their coords are just +1 of what they actually are.
+		for j in range(map.height - 1, -1, -1):
 			s += "│ "
 			for k in range(map.width):
 				if j == state.user.y and k == state.user.x:
@@ -359,7 +361,7 @@ class playScreen(screen):
 		# Rewrites(Austin)
 		if usrin == "w":
 			newX = state.user.x
-			newY = state.user.y - 1
+			newY = state.user.y + 1
 			terrain_id = map.get_terrain(newX, newY)
 			obstacle_id = map.get_obstacle(newX, newY)
 			# movement is now boolean
@@ -369,7 +371,7 @@ class playScreen(screen):
 				self.message = "You do not have enough energy to move north"
 		elif usrin == "s":
 			newX = state.user.x
-			newY = state.user.y + 1
+			newY = state.user.y - 1
 			terrain_id = map.get_terrain(newX, newY)
 			obstacle_id = map.get_obstacle(newX, newY)
 			if state.user.move_south(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
