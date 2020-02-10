@@ -211,7 +211,7 @@ class shopScreen(screen):
 		return
 
 	def handleInput(self, state, usrin):
-		if int(usrin) >= 0 and int(usrin) <= 9:
+		if usrin >= '0' and usrin <= '9':
 			val = int(usrin)
 			if val == 0:
 				if len(state.items) - self.page*8 > 8:
