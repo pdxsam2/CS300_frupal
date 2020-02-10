@@ -34,7 +34,7 @@ def init():
 	# Todo(Jesse): Put these into the config when it's there
 	state.tiles.add_terrain("grass", '.', 1)  # id = 1
 	state.tiles.add_terrain("bog", '_', 2)    # id = 2
-	state.tiles.add_terrain("forest", 'f', 3) # id = 3
+	state.tiles.add_terrain("forest", 'f', 2) # id = 3
 	state.tiles.add_terrain("water", '~', 1)  # id = 4 ... We'll need to special case this on the character side
 
 	state.tiles.add_obstacle("bush", '#', 2)  # id = 1
