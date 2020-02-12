@@ -362,8 +362,22 @@ class playScreen(screen):
 		if usrin == "w":
 			newX = state.user.x
 			newY = state.user.y + 1
+			if newY > map.height - 1:
+				self.message = "You cannot leave the island"
+				return
 			terrain_id = map.get_terrain(newX, newY)
 			obstacle_id = map.get_obstacle(newX, newY)
+			# water
+			if terrain_id == 4 and state.user.inv[5] < 1:
+				self.message = "You cannot cross water without a boat"
+				return
+			# there's an obstacle
+			if map.has_obstacle(newX, newY):
+				obstacle_name = state.tiles.obstacles[obstacle_id].name
+				# deal with the obstacle
+				if state.user.dealWith(map, newX, newY):
+					self.message = "You removed the " + obstacle_name
+					return
 			# movement is now boolean
 			if state.user.move_north(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
 				self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
@@ -372,8 +386,22 @@ class playScreen(screen):
 		elif usrin == "s":
 			newX = state.user.x
 			newY = state.user.y - 1
+			if newY < 0:
+				self.message = "You cannot leave the island"
+				return
 			terrain_id = map.get_terrain(newX, newY)
 			obstacle_id = map.get_obstacle(newX, newY)
+			# water
+			if terrain_id == 4 and state.user.inv[5] < 1:
+				self.message = "You cannot cross water without a boat"
+				return
+			# there's an obstacle
+			if map.has_obstacle(newX, newY):
+				obstacle_name = state.tiles.obstacles[obstacle_id].name
+				# deal with the obstacle
+				if state.user.dealWith(map, newX, newY):
+					self.message = "You removed the " + obstacle_name
+					return
 			if state.user.move_south(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
 				self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
@@ -381,8 +409,22 @@ class playScreen(screen):
 		elif usrin == "a":
 			newX = state.user.x - 1
 			newY = state.user.y
+			if newX < 0:
+				self.message = "You cannot leave the island"
+				return
 			terrain_id = map.get_terrain(newX, newY)
 			obstacle_id = map.get_obstacle(newX, newY)
+			# water
+			if terrain_id == 4 and state.user.inv[5] < 1:
+				self.message = "You cannot cross water without a boat"
+				return
+			# there's an obstacle
+			if map.has_obstacle(newX, newY):
+				obstacle_name = state.tiles.obstacles[obstacle_id].name
+				# deal with the obstacle
+				if state.user.dealWith(map, newX, newY):
+					self.message = "You removed the " + obstacle_name
+					return
 			if state.user.move_west(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
 				self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
@@ -390,8 +432,22 @@ class playScreen(screen):
 		elif usrin == "d":
 			newX = state.user.x + 1
 			newY = state.user.y
+			if newX > map.width - 1:
+				self.message = "You cannot leave the island"
+				return
 			terrain_id = map.get_terrain(newX, newY)
 			obstacle_id = map.get_obstacle(newX, newY)
+			# water
+			if terrain_id == 4 and state.user.inv[5] < 1:
+				self.message = "You cannot cross water without a boat"
+				return
+			# there's an obstacle
+			if map.has_obstacle(newX, newY):
+				obstacle_name = state.tiles.obstacles[obstacle_id].name
+				# deal with the obstacle
+				if state.user.dealWith(map, newX, newY):
+					self.message = "You removed the " + obstacle_name
+					return
 			if state.user.move_east(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
 				self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:

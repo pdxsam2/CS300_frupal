@@ -31,19 +31,20 @@ class user:
     return True
 
   # Note(Austin): This is just simple selection structure. We could maybe store what satisfies what in either the item class or the obstacle class?
-  def dealWith(self, obstacle):
+  def dealWith(self, map, x, y):
     # there is no obstacle
-    if obstacle.name == "null":
+    obstacle = map.get_obstacle(x, y)
+    if not map.has_obstacle(x, y):
       return True
-
-    '''
-    if obstacle.name == "bush" and self.inv[2] > 0: # Note(Austin): Player inventory index is based on the order that items were added in main,
-      obstacle.reset()                              # so if the order is changed, this breaks
-    if obstacle.name == "tree" and self.inv[4] > 0: # Note(Jesse): What we will probably do and might be easiest is each obstacle will have an item ID
-      obstacle.reset()                              # such that if the player has an amount of that item ID, it will be easier to deal with.
-    if obstacle.name == "rock" and self.inv[3] > 0:
-      obstacle.reset()
-    '''
+    if obstacle == 1 and self.inv[2] > 0: # Note(Austin): Player inventory index is based on the order that items were added in main,
+      map.remove_obstacle(x, y)                              # so if the order is changed, this breaks
+      return True
+    if obstacle == 2 and self.inv[4] > 0: # Note(Jesse): What we will probably do and might be easiest is each obstacle will have an item ID
+      map.remove_obstacle(x, y)                              # so if the order is changed, this breaks
+      return True
+    if obstacle == 3 and self.inv[3] > 0:
+      map.remove_obstacle(x, y)                              # so if the order is changed, this breaks
+      return True
     return False
 
   def reveal_surroundings(self, map):
@@ -56,33 +57,33 @@ class user:
         if row >= 0 and row < map.height and col >= 0 and col < map.width:
           map.set_visible(col, row) # Note(Jesse): Yes, we are setting the tile visible whether it's visible or not, redundantly
 
-  # Todo(Jesse): Edge of map detection
+  # Rework: Austin
   def move_north(self, terrain, obstacle):
-    if user.dealWith(self, obstacle):
-      cost = terrain.energy
-    else:
+    if obstacle.energy > 0:
       cost = obstacle.energy
+    else:
+      cost = terrain.energy
     return self.move(0, 1, cost)
-    
+
   def move_south(self, terrain, obstacle):
-    if user.dealWith(self, obstacle):
-      cost = terrain.energy
-    else:
+    if obstacle.energy > 0:
       cost = obstacle.energy
+    else:
+      cost = terrain.energy
     return self.move(0, -1, cost)
 
   def move_east(self, terrain, obstacle):
-    if user.dealWith(self, obstacle):
-      cost = terrain.energy
-    else:
+    if obstacle.energy > 0:
       cost = obstacle.energy
+    else:
+      cost = terrain.energy
     return self.move(1, 0, cost)
 
   def move_west(self, terrain, obstacle):
-    if user.dealWith(self, obstacle):
-      cost = terrain.energy
-    else:
+    if obstacle.energy > 0:
       cost = obstacle.energy
+    else:
+      cost = terrain.energy
     return self.move(-1, 0, cost)
 
 
