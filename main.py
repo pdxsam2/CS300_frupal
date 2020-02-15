@@ -8,10 +8,16 @@ from tile import Tiles
 from user import user
 from item import add_item
 
+class Camera:
+	x = 0
+	y = 0
+	viewport = 0
+
 class GameState:
 	user = user()
 	tiles = Tiles()
 	items = []
+	camera = Camera()
 
 screenManager = screenManager()
 

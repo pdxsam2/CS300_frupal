@@ -304,11 +304,16 @@ class playScreen(screen):
 
 	def onStart(self, state):
 		# Todo(Jesse): Change the width and height to whatever the config says
-		state.map = Map(state.tiles, 18, 18)
+		dim = 25
+		state.map = Map(state.tiles, dim, dim)
+
+		state.camera.x = state.camera.y = 0
+		state.camera.viewport = min(dim, 17)
+
+		state.user = user()
 		print("Starting this thing up!")
 
 	def draw(self, state):
-
 		s = ""
 
 		s += "Player:\n"
@@ -320,39 +325,53 @@ class playScreen(screen):
 
 		tiles = state.tiles
 		map = state.map
-
+		camera = state.camera
+		
 		#draw a map border
 		s += "┌"
-		for i in range(map.width):
+		for i in range(camera.viewport):
 			s += "──"
 		s += "─┐\n"
-		# Note(Jesse): To make bottom left 1,1 and top right to be x, x I'm just drawing the map inverted, and just displaying to the user that
-		# their coords are just +1 of what they actually are.
-		for j in range(map.height - 1, -1, -1):
+		# Note(Jesse): To make bottom left 1,1 and top right to be x, x... I'm just drawing the map inverted, and just displaying to the user that
+		#              their coords are just +1 of what they actually are (see above where we print player information)
+		for j in range(camera.viewport - 1, -1, -1):
 			s += "│ "
-			for k in range(map.width):
-				if j == state.user.y and k == state.user.x:
+			for k in range(camera.viewport):
+				x = k + camera.x
+				y = j + camera.y
+				if y == state.user.y and x == state.user.x:
 					s += '■'
-				elif not map.is_visible(k, j):
+				elif not map.is_visible(x, y):
 					s += ' '
-				elif map.has_obstacle(k, j) > 0:
+				elif map.has_obstacle(x, y) > 0:
 					# Note(Jesse): Obstacle is there
-					s += tiles.obstacles[map.get_obstacle(k, j)].ascii
+					s += tiles.obstacles[map.get_obstacle(x, y)].ascii
 				else:
-					s += tiles.terrain[map.get_terrain(k, j)].ascii
+					s += tiles.terrain[map.get_terrain(x, y)].ascii
 				s += ' '
 			s += "│\n"
-
+		
 		s += '└'
-		for i in range(map.width):
+		for i in range(camera.viewport):
 			s += "──"
 		s += '─┘'
 		print(s)
 		print(self.message + "\t[press q to quit]")
 
 	def update(self, state):
-		state.user.reveal_surroundings(state.map)
-		return
+		user = state.user
+		camera = state.camera
+		map = state.map
+		
+		user.reveal_surroundings(state.map)
+		if user.x > camera.x + camera.viewport - 4 and camera.x + camera.viewport < map.width:
+			state.camera.x += 1
+		elif user.x < camera.x + 4 and camera.x > 0:
+			state.camera.x -= 1
+		elif user.y > camera.y + camera.viewport - 4 and camera.y + camera.viewport < map.height:
+			state.camera.y += 1
+		elif user.y < camera.y + 4 and camera.y > 0:
+			state.camera.y -= 1
 
 	def handleInput(self, state, usrin):
 		

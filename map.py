@@ -6,7 +6,6 @@
 import random
 
 class Map:
-
 	# Note(Jesse):
 	# The generated map is completely random given if the terrain generated is water, no obstacle will be placed
 	# The map is generated into a 3D array, a 2D array of 3 layers
@@ -14,13 +13,17 @@ class Map:
 	#	layer 2, index 1: Obstacles as an ID
 	#	layer 3, index 2: Tile is visible as a boolean
 	# The IDs from the terrain and obstacles and randomly grabbed from the terrain and obstacle arrays respectivly
+	#
+	# tiles is the class from tile.py, it's located in GameState
+	# width and height are the desired width and height of the map and what will be generated
+	# viewport is the dimension of the viewport (for now a square viewport, so we only need one side's length and use it for both)
 	def __init__(self, tiles, width, height):
 		self.arr = []
 		self.width = width
 		self.height = height
 		
-		for row in range(0, height):
-			for col in range(0, width):
+		for row in range(height):
+			for col in range(width):
 				tile = []
 				terrain = random.randint(1, len(tiles.terrain) - 1)
 				tile.append(terrain) # Note(Jesse): terrain
@@ -30,7 +33,6 @@ class Map:
 					tile.append(random.randint(0, len(tiles.obstacles) - 1)) # Note(Jesse): obstacle
 				tile.append(False) # Note(Jesse): visible
 				self.arr.append(tile)
-	
 	
 	# Note(Jesse): Gets the terrain ID from the given Coords
 	def get_terrain(self, x, y):
