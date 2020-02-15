@@ -61,3 +61,8 @@ class Map:
 	def set_visible(self, x, y):
 		assert(y < self.height and x < self.width and x >= 0 and y >= 0)
 		self.arr[y*self.width + x][2] = 1
+
+	def reveal_map(self):
+		for y in range(self.height):
+			for x in range(self.width):
+				self.arr[y*self.width + x][2] = True

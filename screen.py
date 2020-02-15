@@ -481,6 +481,12 @@ class playScreen(screen):
 				self.message = "You do not have any Power Bars left"
 		elif usrin == "p":
 			self.pushScreen(state, shopScreen())
+		elif usrin == "v":
+			# Note(Jesse): Victory button
+			state.map.reveal_map()
+			# Note(Jesse): Today I learn that python can hold practically any integer number, that's neat
+			state.user.energy = 4294967295
+			state.user.money =  4294967295
 		else:
 			self.message = "invalid input"
 
