@@ -7,6 +7,7 @@ from screen import screenManager, screen, testScreen, playScreen, shopScreen, me
 from tile import Tiles
 from user import user
 from item import add_item
+from entity import add_entity
 
 class Camera:
 	x = 0
@@ -16,8 +17,9 @@ class Camera:
 class GameState:
 	user = user()
 	tiles = Tiles()
-	items = []
 	camera = Camera()
+	items = []
+	entities = []
 
 screenManager = screenManager()
 
@@ -37,7 +39,7 @@ def main():
 def init():
 	state = GameState()
 
-	# Todo(Jesse): Put these into the config when it's there
+	# Note(Jesse): I don't think these should be moved into the config, we should think on this one perhaps
 	state.tiles.add_terrain("grass", '.', 1)  # id = 1
 	state.tiles.add_terrain("bog", '_', 2)    # id = 2
 	state.tiles.add_terrain("forest", 'f', 2) # id = 3
@@ -53,7 +55,10 @@ def init():
 	add_item(state, "Jack Hammer", 20)
 	add_item(state, "Chain Saw", 10)
 	add_item(state, "Boat", 50)
-
+	
+	add_entity(state, "Magic Jewel")
+	add_entity(state, "Hungry Tile")
+	
 	# Todo(Jesse): Start reading the config here
 
 	'''
@@ -76,7 +81,7 @@ def init():
 
 	print("///////// End Debug Print")
 	'''
-
+	
 	# screenManager.setScreen(state, tileTestScreen())
 	# screenManager.setScreen(shopScreen())
 	screenManager.setScreen(state, menu())

@@ -305,11 +305,11 @@ class playScreen(screen):
 	def onStart(self, state):
 		# Todo(Jesse): Change the width and height to whatever the config says
 		dim = 25
-		state.map = Map(state.tiles, dim, dim)
-
+		state.map = Map(state.tiles, dim + 10, dim)
+		
 		state.camera.x = state.camera.y = 0
 		state.camera.viewport = min(dim, 17)
-
+		
 		state.user = user()
 		print("Starting this thing up!")
 
