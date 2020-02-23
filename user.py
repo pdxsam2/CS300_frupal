@@ -10,6 +10,7 @@ class user:
   #Status   Note(Sam): these numbers were arbitrarily chosen and should be adjusted relative to how the game feels to play
   energy= 20
   money= 100
+  magic_jewels = 0
 
   x = 0
   y = 0
