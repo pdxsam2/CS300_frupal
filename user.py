@@ -35,7 +35,7 @@ class user:
     # there is no obstacle
     obstacle = map.get_obstacle(x, y)
     if not map.has_obstacle(x, y):
-      return True
+        return True
     if obstacle == 1 and self.inv[2] > 0: # Note(Austin): Player inventory index is based on the order that items were added in main,
       map.remove_obstacle(x, y)                              # so if the order is changed, this breaks
       return True
@@ -46,6 +46,14 @@ class user:
       map.remove_obstacle(x, y)                              # so if the order is changed, this breaks
       return True
     return False
+    """
+    length= len(self.inv)
+    for i in range(length):
+        if(self.inv[i].obst == obstacle):
+            map.remove_obstacle(x,y)
+            return True
+    return False
+    """
 
   def reveal_surroundings(self, map):
     radius = 1
@@ -90,21 +98,21 @@ class user:
 ###testing###
 def main():
   testee= user()
-  
+
   tiles.add_terrain("grass", '.', 1)  # id = 1
   tiles.add_terrain("bog", '_', 2)    # id = 2
   tiles.add_terrain("forest", 'f', 3) # id = 3
   tiles.add_terrain("water", '~', 1)  # id = 4 ... We'll need to special case this on the character side
-  
+
   tiles.add_obstacle("bush", '#', 2)  # id = 1
   tiles.add_obstacle("tree", '♣', 3)  # id = 2
   tiles.add_obstacle("rock", '*', 2)  # id = 3
-  
+
   print('Current money: ', testee.money, '\n')
   print('Current energy: ', testee.energy, '\n')
 
   cool_map = [[1, 2], [1, 3]]
-  
+
   testee.move(0, 1, tiles.terrain[cool_map[testee.x][testee.y]].energy)
   testee.move(1, 0, tiles.terrain[cool_map[testee.x][testee.y]].energy)
   testee.move(0, -1, tiles.terrain[cool_map[testee.x][testee.y]].energy)

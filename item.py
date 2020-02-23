@@ -6,6 +6,8 @@
 class Item:
 	name = ""
 	cost = 0
+	obst = 0		##Note(Sam): this is the index of the obstacle for which this item will be attached to (if it is a tool). See "dealWith" in user.py to see how it is used
+	#stat = 0		#this will be the difference between the reduced cost that the tool can do
 
 def make_item(name, cost):
 	item = Item()
@@ -18,3 +20,9 @@ def add_item(state, name, cost):
 	item = make_item(name, cost)
 	state.items.append(item)
 	state.user.inv.append(0)
+
+# Note(Sam): preliminary attempt to figure out how to connect obstacles and objects
+def connect_item(state, item, obstacle):
+	state.items[item].obst= obstacle
+
+

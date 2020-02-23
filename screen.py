@@ -283,12 +283,24 @@ class config(screen):
 	def draw(self, state):
 		print("Current items and costs:\n")
 		item_len= len(state.items)
+		obst_len= len(state.tiles.obstacles)
+		max_len= max(item_len,obst_len)
 
-		for i in range(item_len):
-				print("Item " + str(i))
-				print("\tName: " + state.items[i].name)
-				print("\tCost: ", state.items[i].cost)
-		print("Options: ")
+		for i in range(max_len):
+				if(i < obst_len and i < item_len):
+						print("      Item " + str(i) + "\t\tObstacle " + str(i))
+						print("Name: " + state.items[i].name + "\t" + state.tiles.obstacles[i].name)
+						print("Cost: " + str(state.items[i].cost) + "\t\t" + str(state.tiles.obstacles[i].energy))
+				elif(i < obst_len):
+						print("\t\t\t\tObstacle " + str(i))
+						print("Name: \t\t" + state.tiles.obstacles[i].name)
+						print("Cost: \t\t\t" + str(state.tiles.obstacles[i].energy))
+				else:
+						print("Item " + str(i))
+						print("Name: " + state.items[i].name)
+						print("Cost: " + str(state.items[i].cost))
+				print("\n")
+		print("\n\nOptions: ")
 		print("Add - a")
 		print("Connect- c (can be used to make a tool usable on an obstacle!)")
 		print("Quit - q")
@@ -298,63 +310,68 @@ class config(screen):
 		return
 
 	def handleInput(self,state, usrin):
-		#self.pushScreen(state,editConfig())
 		_clear()
 		if (usrin == 'a'):
-				print("What is the name of your new item?")
-				c= str(input())
-				print("What is the cost of your item?")
-				d= str(input())
-				add_item(state, c, d)
-		elif (usrin == 'e'):
+				print("Would you like to add an obstacle or an item?")
+				print("Item - i")
+				print("Obstacle - o")
+				selection= str(input())[0]
+
+				if(selection == 'i'):
+						print("Enter a name for your new item")
+						c= str(input())
+						print("Enter a cost for your new item")
+						d= str(input())
+						add_item(state, c, d)
+				elif(selection == 'o'):
+						print("Enter a name for your object")
+						c= str(input())
+						print("Enter a symbol for your object")
+						s= str(input())[0]
+						print("Enter an energy cost for stepping on this object")
+						i= int(input())
+						state.tiles.add_obstacle(c,s,i)
+		elif (usrin == 'c'):
 				item_len= len(state.items)
+				obst_len= len(state.tiles.obstacles)
+				max_len= max(item_len,obst_len)
+
+				for i in range(max_len):
+						if(i < obst_len and i < item_len):
+								print("      Item " + str(i) + "\t\tObstacle " + str(i))
+								print("Name: " + state.items[i].name + "\t" + state.tiles.obstacles[i].name)
+								print("Cost: " + str(state.items[i].cost) + "\t\t" + str(state.tiles.obstacles[i].energy))
+								###print("Object connection: "
+						elif(i < obst_len):
+								print("\t\t\t\tObstacle " + str(i))
+								print("Name: \t\t" + state.tiles.obstacles[i].name)
+								print("Cost: \t\t\t" + str(state.tiles.obstacles[i].energy))
+						else:
+								print("Item " + str(i))
+								print("Name: " + state.items[i].name)
+								print("Cost: " + str(state.items[i].cost))
+						print("\n")
+
 				print("Enter the number for which item you would like to connect")
-				c= int(input())
-				if(c < 0 || c > item_len):
+				item= int(input())
+				if(item < 0 or item > item_len):
+						##user isn't going to see this bc it'll be before the clear!
 						print("Invalid input!")
-				else:
-
-
+						return
+				print("Which obstacle will it be connected to?")
+				connectee= int(input())
+				if(connectee < 0 or connectee > obst_len):
+						print("Invalid input!")
+						return
+				state.items[item].obst= connectee
 		else:
 				print("Invalid input")
+
 		return
 
 
 	def onStop(self, state):
 		return
-"""
-class editConfig(screen):
-	def __init(self):
-		return
-
-	def onStart(self, state):
-		return
-	def draw(self, state):
-		return
-
-	def handleInput(self, state, usrin):
-		if usrin == 'a':
-				#_clear()
-				print("What is the name of your new object?")
-				c= str(input())
-				print("What is the cost of your item?")
-				d= str(input())
-				add_item(state, c, d)
-		elif usrin == 'e':
-				print("Which item would you like to edit?")
-		else:
-				print("Invalid input")
-		state.screenManager.closeScreen(state)
-		return
-
-	def update(self, state):
-		return
-
-	def onStop(self, state):
-		return
-"""
-
-
 
 class playScreen(screen):
 
