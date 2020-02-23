@@ -326,7 +326,7 @@ class config(screen):
 						print("Enter a name for your new item")
 						c= str(input())
 						print("Enter a cost for your new item")
-						d= str(input())
+						d= int(input())
 						add_item(state, c, d)
 				elif(selection == 'o'):
 						print("Enter a name for your object")
