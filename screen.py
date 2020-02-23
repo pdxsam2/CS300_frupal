@@ -11,6 +11,8 @@ from user import user
 
 from map import Map
 
+from item import add_item
+
 # Note(Jesse): These three classes are used to get raw input from the terminal/commandprompt
 class Get_Char:
     def __init__(self):
@@ -283,19 +285,76 @@ class config(screen):
 		item_len= len(state.items)
 
 		for i in range(item_len):
-				print("Name: " + state.items[i].name)
-				print("Cost: ", state.items[i].cost)
-		print("Would you like to add or edit items?")
+				print("Item " + str(i))
+				print("\tName: " + state.items[i].name)
+				print("\tCost: ", state.items[i].cost)
+		print("Options: ")
+		print("Add - a")
+		print("Connect- c (can be used to make a tool usable on an obstacle!)")
+		print("Quit - q")
 		return
 
 	def update(self, state):
 		return
 
 	def handleInput(self,state, usrin):
+		#self.pushScreen(state,editConfig())
+		_clear()
+		if (usrin == 'a'):
+				print("What is the name of your new item?")
+				c= str(input())
+				print("What is the cost of your item?")
+				d= str(input())
+				add_item(state, c, d)
+		elif (usrin == 'e'):
+				item_len= len(state.items)
+				print("Enter the number for which item you would like to connect")
+				c= int(input())
+				if(c < 0 || c > item_len):
+						print("Invalid input!")
+				else:
+
+
+		else:
+				print("Invalid input")
+		return
+
+
+	def onStop(self, state):
+		return
+"""
+class editConfig(screen):
+	def __init(self):
+		return
+
+	def onStart(self, state):
+		return
+	def draw(self, state):
+		return
+
+	def handleInput(self, state, usrin):
+		if usrin == 'a':
+				#_clear()
+				print("What is the name of your new object?")
+				c= str(input())
+				print("What is the cost of your item?")
+				d= str(input())
+				add_item(state, c, d)
+		elif usrin == 'e':
+				print("Which item would you like to edit?")
+		else:
+				print("Invalid input")
+		state.screenManager.closeScreen(state)
+		return
+
+	def update(self, state):
 		return
 
 	def onStop(self, state):
 		return
+"""
+
+
 
 class playScreen(screen):
 
@@ -326,7 +385,7 @@ class playScreen(screen):
 		tiles = state.tiles
 		map = state.map
 		camera = state.camera
-		
+
 		#draw a map border
 		s += "┌"
 		for i in range(camera.viewport):
@@ -350,7 +409,7 @@ class playScreen(screen):
 					s += tiles.terrain[map.get_terrain(x, y)].ascii
 				s += ' '
 			s += "│\n"
-		
+
 		s += '└'
 		for i in range(camera.viewport):
 			s += "──"
@@ -362,7 +421,7 @@ class playScreen(screen):
 		user = state.user
 		camera = state.camera
 		map = state.map
-		
+
 		user.reveal_surroundings(state.map)
 		if user.x > camera.x + camera.viewport - 4 and camera.x + camera.viewport < map.width:
 			state.camera.x += 1
@@ -374,9 +433,9 @@ class playScreen(screen):
 			state.camera.y -= 1
 
 	def handleInput(self, state, usrin):
-		
+
 		map = state.map
-		
+
 		# Rewrites(Austin)
 		if usrin == "w":
 			newX = state.user.x
