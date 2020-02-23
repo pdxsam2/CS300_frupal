@@ -12,6 +12,11 @@ from user import user
 from map import Map
 
 from item import add_item
+from entity import Entity, has_entity_at, get_entity_at, remove_entity_at
+
+import random
+import copy
+import math
 
 # Note(Jesse): These three classes are used to get raw input from the terminal/commandprompt
 class Get_Char:
@@ -364,12 +369,44 @@ class playScreen(screen):
 	def onStart(self, state):
 		# Todo(Jesse): Change the width and height to whatever the config says
 		dim = 25
-		state.map = Map(state.tiles, dim, dim)
-
+		state.map = Map(state.tiles, dim + 10, dim)
+		
+		# Note(Jesse): Adding entities to the world...
+		#              greedy tiles
+		for y in range(state.map.height):
+			for x in range(state.map.width):
+				entropy = random.random()
+				# print("entropy is:" + str(entropy) + "at: " + str(x) + "," + str(y))
+				if entropy == 0.0:
+					continue
+				entity_id = 0
+				for entity in state.entity_manifest:
+					if entropy <= entity.chance:
+						entity_id = entity.id
+						break
+					else:
+						entropy -= entity.chance
+				if entity_id > 0:
+					print("[DEBUG]: creating greedy tile entity at:" + str(x) + "," + str(y))
+					entity = copy.deepcopy(state.entity_manifest[entity_id - 1])
+					entity.x = x
+					entity.y = y
+					state.entities.append(entity)
+		
+		# Todo/Research(Jesse): Do we want to throw out multiple?
+		entity = copy.deepcopy(state.entity_manifest[0]) # Note(Jesse): Magic Jewel
+		entity.x = random.randint(0, state.map.width - 1);
+		entity.y = random.randint(0, state.map.height - 1);
+		remove_entity_at(state.entities, entity.x, entity.y)
+		print("[DEBUG]: spawning magic jewels at " + str(entity.x) + " " + str(entity.y))
+		state.entities.append(entity)
+		
+		# Note(Jesse): Camera init
 		state.camera.x = state.camera.y = 0
 		state.camera.viewport = min(dim, 17)
-
+		
 		state.user = user()
+		
 		print("Starting this thing up!")
 
 	def draw(self, state):
@@ -437,6 +474,7 @@ class playScreen(screen):
 		map = state.map
 
 		# Rewrites(Austin)
+		# Todo(Jesse): This could all probably be condensed inside of a function in user
 		if usrin == "w":
 			newX = state.user.x
 			newY = state.user.y + 1
@@ -458,7 +496,17 @@ class playScreen(screen):
 					return
 			# movement is now boolean
 			if state.user.move_north(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
-				self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
+				if has_entity_at(state.entities, state.user.x, state.user.y):
+					entity = get_entity_at(state.entities, newX, newY)
+					if entity.id == 2: # Note(Jesse): Greedy Tile
+						state.user.money = math.floor(state.user.money*0.5)
+						self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + str(terrain_id) + ", a greedy tile... you lost half your money"
+					elif entity.id == 1: # Note(Jesse): Magic Jewel
+						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
+						self.message = "walked north onto The Magic Jewels!"
+						state.user.magic_jewels += 1
+				else:
+					self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
 				self.message = "You do not have enough energy to move north"
 		elif usrin == "s":
@@ -481,7 +529,17 @@ class playScreen(screen):
 					self.message = "You removed the " + obstacle_name
 					return
 			if state.user.move_south(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
-				self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
+				if has_entity_at(state.entities, state.user.x, state.user.y):
+					entity = get_entity_at(state.entities, newX, newY)
+					if entity.id == 2: # Note(Jesse): Greedy Tile
+						state.user.money = math.floor(state.user.money*0.5)
+						self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + str(terrain_id) + ", a greedy tile... you lost half your money"
+					elif entity.id == 1: # Note(Jesse): Magic Jewel
+						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
+						self.message = "walked south onto The Magic Jewels!"
+						state.user.magic_jewels += 1
+				else:
+					self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
 				self.message = "You do not have enough energy to move south"
 		elif usrin == "a":
@@ -504,7 +562,17 @@ class playScreen(screen):
 					self.message = "You removed the " + obstacle_name
 					return
 			if state.user.move_west(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
-				self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
+				if has_entity_at(state.entities, state.user.x, state.user.y):
+					entity = get_entity_at(state.entities, newX, newY)
+					if entity.id == 2: # Note(Jesse): Greedy Tile
+						state.user.money = math.floor(state.user.money*0.5)
+						self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + str(terrain_id) + ", a greedy tile... you lost half your money"
+					elif entity.id == 1: # Note(Jesse): Magic Jewel
+						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
+						self.message = "walked west onto The Magic Jewels!"
+						state.user.magic_jewels += 1
+				else:
+					self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
 				self.message = "You do not have enough energy to move west"
 		elif usrin == "d":
@@ -527,7 +595,17 @@ class playScreen(screen):
 					self.message = "You removed the " + obstacle_name
 					return
 			if state.user.move_east(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
-				self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
+				if has_entity_at(state.entities, state.user.x, state.user.y):
+					entity = get_entity_at(state.entities, newX, newY)
+					if entity.id == 2: # Note(Jesse): Greedy Tile
+						state.user.money = math.floor(state.user.money*0.5)
+						self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + str(terrain_id) + ", a greedy tile... you lost half your money"
+					elif entity.id == 1: # Note(Jesse): Magic Jewel
+						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
+						self.message = "walked east onto The Magic Jewels!"
+						state.user.magic_jewels += 1
+				else:
+					self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
 			else:
 				self.message = "You do not have enough energy to move east"
 		elif usrin == "e":
