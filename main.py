@@ -19,7 +19,9 @@ class GameState:
 	tiles = Tiles()
 	camera = Camera()
 	items = []
+	entity_manifest = []
 	entities = []
+	total_entity_chance = 0
 
 screenManager = screenManager()
 
@@ -56,8 +58,9 @@ def init():
 	add_item(state, "Chain Saw", 10)
 	add_item(state, "Boat", 50)
 	
-	add_entity(state, "Magic Jewel")
-	add_entity(state, "Hungry Tile")
+	state.total_entity_chance = 0
+	add_entity(state, "Magic Jewel", 0.0)
+	add_entity(state, "Greedy Tile", 0.0075)
 	
 	# Todo(Jesse): Start reading the config here
 
