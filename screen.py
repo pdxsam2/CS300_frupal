@@ -497,7 +497,6 @@ class playScreen(screen):
 			state.camera.y -= 1
 
 	def handleInput(self, state, usrin):
-
 		map = state.map
 
 		# Rewrites(Austin)
@@ -506,23 +505,26 @@ class playScreen(screen):
 			newX = state.user.x
 			newY = state.user.y + 1
 			if newY > map.height - 1:
-				self.message = "You cannot leave the island"
+				self.message = "You cannot leave the island."
 				return
 			terrain_id = map.get_terrain(newX, newY)
 			obstacle_id = map.get_obstacle(newX, newY)
 			# water
 			if terrain_id == 4 and state.user.inv[5] < 1:
-				self.message = "You cannot cross water without a boat"
+				self.message = "You cannot cross water without a boat." + state.user.exert(1)
 				return
 			# there's an obstacle
 			if map.has_obstacle(newX, newY):
-				obstacle_name = state.tiles.obstacles[obstacle_id].name
 				# deal with the obstacle
-				if state.user.dealWith(map, newX, newY):
-					self.message = "You removed the " + obstacle_name
-					return
+				if state.user.hadTool(map, newX, newY):
+					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with a tool." + state.user.exert(1)
+				else:
+					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
+				# remove the obstacle
+				map.remove_obstacle(newX, newY)
+				return 
 			# movement is now boolean
-			if state.user.move_north(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
+			if state.user.move_north(state.tiles.terrain[terrain_id]):
 				if has_entity_at(state.entities, state.user.x, state.user.y):
 					entity = get_entity_at(state.entities, newX, newY)
 					if entity.id == 2: # Note(Jesse): Greedy Tile
@@ -546,16 +548,19 @@ class playScreen(screen):
 			obstacle_id = map.get_obstacle(newX, newY)
 			# water
 			if terrain_id == 4 and state.user.inv[5] < 1:
-				self.message = "You cannot cross water without a boat"
+				self.message = "You cannot cross water without a boat." + state.user.exert(1)
 				return
 			# there's an obstacle
 			if map.has_obstacle(newX, newY):
-				obstacle_name = state.tiles.obstacles[obstacle_id].name
 				# deal with the obstacle
-				if state.user.dealWith(map, newX, newY):
-					self.message = "You removed the " + obstacle_name
-					return
-			if state.user.move_south(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
+				if state.user.hadTool(map, newX, newY):
+					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with a tool." + state.user.exert(1)
+				else:
+					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
+				# remove the obstacle
+				map.remove_obstacle(newX, newY)
+				return 
+			if state.user.move_south(state.tiles.terrain[terrain_id]):
 				if has_entity_at(state.entities, state.user.x, state.user.y):
 					entity = get_entity_at(state.entities, newX, newY)
 					if entity.id == 2: # Note(Jesse): Greedy Tile
@@ -579,16 +584,19 @@ class playScreen(screen):
 			obstacle_id = map.get_obstacle(newX, newY)
 			# water
 			if terrain_id == 4 and state.user.inv[5] < 1:
-				self.message = "You cannot cross water without a boat"
+				self.message = "You cannot cross water without a boat." + state.user.exert(1)
 				return
 			# there's an obstacle
 			if map.has_obstacle(newX, newY):
-				obstacle_name = state.tiles.obstacles[obstacle_id].name
 				# deal with the obstacle
-				if state.user.dealWith(map, newX, newY):
-					self.message = "You removed the " + obstacle_name
-					return
-			if state.user.move_west(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
+				if state.user.hadTool(map, newX, newY):
+					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with a tool." + state.user.exert(1)
+				else:
+					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
+				# remove the obstacle
+				map.remove_obstacle(newX, newY)
+				return 
+			if state.user.move_west(state.tiles.terrain[terrain_id]):
 				if has_entity_at(state.entities, state.user.x, state.user.y):
 					entity = get_entity_at(state.entities, newX, newY)
 					if entity.id == 2: # Note(Jesse): Greedy Tile
@@ -612,16 +620,19 @@ class playScreen(screen):
 			obstacle_id = map.get_obstacle(newX, newY)
 			# water
 			if terrain_id == 4 and state.user.inv[5] < 1:
-				self.message = "You cannot cross water without a boat"
+				self.message = "You cannot cross water without a boat" + state.user.exert(1)
 				return
 			# there's an obstacle
 			if map.has_obstacle(newX, newY):
-				obstacle_name = state.tiles.obstacles[obstacle_id].name
 				# deal with the obstacle
-				if state.user.dealWith(map, newX, newY):
-					self.message = "You removed the " + obstacle_name
-					return
-			if state.user.move_east(state.tiles.terrain[terrain_id], state.tiles.obstacles[obstacle_id]):
+				if state.user.hadTool(map, newX, newY):
+					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with a tool." + state.user.exert(1)
+				else:
+					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
+				# remove the obstacle
+				map.remove_obstacle(newX, newY)
+				return 
+			if state.user.move_east(state.tiles.terrain[terrain_id]):
 				if has_entity_at(state.entities, state.user.x, state.user.y):
 					entity = get_entity_at(state.entities, newX, newY)
 					if entity.id == 2: # Note(Jesse): Greedy Tile
