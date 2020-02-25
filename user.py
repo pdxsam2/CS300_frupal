@@ -21,6 +21,10 @@ class user:
   def set_position(self, x, y):
     self.x = x
     self.y = y
+  
+  def exert(self, cost):
+    self.energy -= cost
+    return "\nYou have lost " + str(cost) + " energy."
 
   # Note(Austin): This now returns if the user is able to move
   def move(self, dx, dy, delta_energy):
@@ -28,7 +32,7 @@ class user:
       return False
     self.x += dx
     self.y += dy
-    self.energy -= delta_energy # Note(Jesse): This is negative just because it's probably more convenient
+    self.exert(delta_energy)
     return True
 
   # Note(Austin): This is just simple selection structure. We could maybe store what satisfies what in either the item class or the obstacle class?
@@ -37,10 +41,10 @@ class user:
     obstacle = map.get_obstacle(x, y)
     if not map.has_obstacle(x, y):
         return True
-    if obstacle == 1 and self.inv[2] > 0: # Note(Austin): Player inventory index is based on the order that items were added in main,
+    if obstacle == 1 and self.inv[1] > 0: # Note(Austin): Player inventory index is based on the order that items were added in main,
       map.remove_obstacle(x, y)                              # so if the order is changed, this breaks
       return True
-    if obstacle == 2 and self.inv[4] > 0: # Note(Jesse): What we will probably do and might be easiest is each obstacle will have an item ID
+    if obstacle == 2 and self.inv[2] > 0: # Note(Jesse): What we will probably do and might be easiest is each obstacle will have an item ID
       map.remove_obstacle(x, y)                              # so if the order is changed, this breaks
       return True
     if obstacle == 3 and self.inv[3] > 0:
@@ -56,6 +60,14 @@ class user:
     return False
     """
 
+  # Note(Austin): This checks if the user has the correct item for the given obstacle
+  def hadTool(self, map, x, y):
+    obstacle = map.get_obstacle(x, y)
+    if self.inv[obstacle] > 0:
+      return True
+    else:
+      return False
+
   def reveal_surroundings(self, map):
     radius = 1
     if self.inv[1] > 0: # Note(Jesse): If has Binoculars
@@ -67,33 +79,17 @@ class user:
           map.set_visible(col, row) # Note(Jesse): Yes, we are setting the tile visible whether it's visible or not, redundantly
 
   # Rework: Austin
-  def move_north(self, terrain, obstacle):
-    if obstacle.energy > 0:
-      cost = obstacle.energy
-    else:
-      cost = terrain.energy
-    return self.move(0, 1, cost)
+  def move_north(self, terrain):
+    return self.move(0, 1, terrain.energy)
 
-  def move_south(self, terrain, obstacle):
-    if obstacle.energy > 0:
-      cost = obstacle.energy
-    else:
-      cost = terrain.energy
-    return self.move(0, -1, cost)
+  def move_south(self, terrain):
+    return self.move(0, -1, terrain.energy)
 
-  def move_east(self, terrain, obstacle):
-    if obstacle.energy > 0:
-      cost = obstacle.energy
-    else:
-      cost = terrain.energy
-    return self.move(1, 0, cost)
+  def move_east(self, terrain):
+    return self.move(1, 0, terrain.energy)
 
-  def move_west(self, terrain, obstacle):
-    if obstacle.energy > 0:
-      cost = obstacle.energy
-    else:
-      cost = terrain.energy
-    return self.move(-1, 0, cost)
+  def move_west(self, terrain):
+    return self.move(-1, 0, terrain.energy)
 
 
 ###testing###

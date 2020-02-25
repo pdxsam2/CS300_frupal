@@ -48,14 +48,15 @@ def init():
 	state.tiles.add_terrain("water", '~', 1)  # id = 4 ... We'll need to special case this on the character side
 
 	state.tiles.add_obstacle("bush", '#', 2)  # id = 1
-	state.tiles.add_obstacle("tree", '♣', 3)  # id = 2
-	state.tiles.add_obstacle("rock", '*', 2)  # id = 3
+	state.tiles.add_obstacle("rock", '*', 2)  # id = 2
+	state.tiles.add_obstacle("tree", '♣', 3)  # id = 3
 
-	add_item(state, "Power Bar", 10)
+	#Note(Austin): I changed the order of when the items are created to be convenient for object handling
+	add_item(state, "Power Bar", 10)     #user.inv[0]
+	add_item(state, "Weed Whacker", 10)  #user.inv[1] # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
+	add_item(state, "Jack Hammer", 20)   #user.inv[2]
+	add_item(state, "Chain Saw", 10)     #user.inv[3]
 	add_item(state, "Binoculars", 30)
-	add_item(state, "Weed Whacker", 10) # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
-	add_item(state, "Jack Hammer", 20)
-	add_item(state, "Chain Saw", 10)
 	add_item(state, "Boat", 50)
 	
 	state.total_entity_chance = 0
