@@ -51,42 +51,17 @@ def init():
 	state.tiles.add_obstacle("tree", '♣', 3)  # id = 2
 	state.tiles.add_obstacle("rock", '*', 2)  # id = 3
 
-	add_item(state, "Power Bar", 10)
-	add_item(state, "Binoculars", 30)
-	add_item(state, "Weed Whacker", 10) # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
-	add_item(state, "Jack Hammer", 20)
-	add_item(state, "Chain Saw", 10)
-	add_item(state, "Boat", 50)
-	
+	add_item(state, "Power Bar", 10, 0)
+	add_item(state, "Binoculars", 30, 0)
+	add_item(state, "Weed Whacker", 10,1) # Note(Jesse): What if the store just sold gasoline and you can use it for any of these? Galaxy Brain
+	add_item(state, "Jack Hammer", 20, 2)
+	add_item(state, "Chain Saw", 10, 3)
+	add_item(state, "Boat", 50, 0)
+
 	state.total_entity_chance = 0
 	add_entity(state, "Magic Jewel", 0.0)
 	add_entity(state, "Greedy Tile", 0.0075)
-	
-	# Todo(Jesse): Start reading the config here
 
-	'''
-	# Note(Jesse): Debug printing out... might be useful for the config readin
-	for index in range(0, len(state.tiles.terrain)):
-		terrain = state.tiles.terrain[index]
-		print("Terrain(", index, "):", terrain.name, "ascii:", terrain.ascii, "energy use:", terrain.energy)
-
-	print("")
-
-	for index in range(0, len(state.tiles.obstacles)):
-		obstacle = state.tiles.obstacles[index]
-		print("Obstacle(", index, "):", obstacle.name, "ascii:", obstacle.ascii, "energy use:", obstacle.energy)
-
-	print("")
-
-	for index in range(0, len(state.items)):
-		item = state.items[index]
-		print("Item(", index, "):", item.name, "costs:", item.cost, "[currency]")
-
-	print("///////// End Debug Print")
-	'''
-	
-	# screenManager.setScreen(state, tileTestScreen())
-	# screenManager.setScreen(shopScreen())
 	screenManager.setScreen(state, menu())
 
 	return state

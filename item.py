@@ -9,15 +9,16 @@ class Item:
 	obst = 0		##Note(Sam): this is the index of the obstacle for which this item will be attached to (if it is a tool). See "dealWith" in user.py to see how it is used
 	#stat = 0		#this will be the difference between the reduced cost that the tool can do
 
-def make_item(name, cost):
+def make_item(name, cost, connection):
 	item = Item()
 	item.name = name
 	item.cost = cost
+	item.obst= connection
 	return item
 
 # Note(Jesse): Just a helper function to add the item items array and add an integer to the user's inventory array
-def add_item(state, name, cost):
-	item = make_item(name, cost)
+def add_item(state, name, cost, connection):
+	item = make_item(name, cost, connection)
 	state.items.append(item)
 	state.user.inv.append(0)
 

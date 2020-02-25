@@ -247,6 +247,8 @@ class shopScreen(screen):
 #
 #
 #todo(Sam): This is the implementation for the menu and config screens
+
+#MENU
 class menu(screen):
 	def __init__(self):
 		return
@@ -278,6 +280,7 @@ class menu(screen):
 	def onStop(self, state):
 		return
 
+#CONFIG
 class config(screen):
 	def __init__(self):
 		return
@@ -286,16 +289,19 @@ class config(screen):
 		return
 
 	def draw(self, state):
+		#display all available items and obstacles
 		print("Current items and costs:\n")
 		item_len= len(state.items)
 		obst_len= len(state.tiles.obstacles)
 		max_len= max(item_len,obst_len)
 
 		for i in range(max_len):
+				#These 3 cases handle if there are not the same amount of items and obstacles
 				if(i < obst_len and i < item_len):
 						print("      Item " + str(i) + "\t\tObstacle " + str(i))
 						print("Name: " + state.items[i].name + "\t" + state.tiles.obstacles[i].name)
 						print("Cost: " + str(state.items[i].cost) + "\t\t" + str(state.tiles.obstacles[i].energy))
+						print("Connection: Obstacle " + str(state.items[i].obst))
 				elif(i < obst_len):
 						print("\t\t\t\tObstacle " + str(i))
 						print("Name: \t\t" + state.tiles.obstacles[i].name)
@@ -304,7 +310,9 @@ class config(screen):
 						print("Item " + str(i))
 						print("Name: " + state.items[i].name)
 						print("Cost: " + str(state.items[i].cost))
+						print("Connection: Obstacle " + str(state.items[i].obst))
 				print("\n")
+		#available options for the user
 		print("\n\nOptions: ")
 		print("Add - a")
 		print("Connect- c (can be used to make a tool usable on an obstacle!)")
@@ -316,6 +324,7 @@ class config(screen):
 
 	def handleInput(self,state, usrin):
 		_clear()
+		#userhas decided to add a new item or obstacle
 		if (usrin == 'a'):
 				print("Would you like to add an obstacle or an item?")
 				print("Item - i")
@@ -327,7 +336,7 @@ class config(screen):
 						c= str(input())
 						print("Enter a cost for your new item")
 						d= str(input())
-						add_item(state, c, d)
+						add_item(state, c, d, 0)
 				elif(selection == 'o'):
 						print("Enter a name for your object")
 						c= str(input())
@@ -336,7 +345,9 @@ class config(screen):
 						print("Enter an energy cost for stepping on this object")
 						i= int(input())
 						state.tiles.add_obstacle(c,s,i)
+		#user has decided to connect an item and an obstacle
 		elif (usrin == 'c'):
+				#display all items and obstacles
 				item_len= len(state.items)
 				obst_len= len(state.tiles.obstacles)
 				max_len= max(item_len,obst_len)
@@ -346,7 +357,7 @@ class config(screen):
 								print("      Item " + str(i) + "\t\tObstacle " + str(i))
 								print("Name: " + state.items[i].name + "\t" + state.tiles.obstacles[i].name)
 								print("Cost: " + str(state.items[i].cost) + "\t\t" + str(state.tiles.obstacles[i].energy))
-								###print("Object connection: "
+								print("Connection: Obstacle " + str(state.items[i].obst))
 						elif(i < obst_len):
 								print("\t\t\t\tObstacle " + str(i))
 								print("Name: \t\t" + state.tiles.obstacles[i].name)
@@ -355,13 +366,12 @@ class config(screen):
 								print("Item " + str(i))
 								print("Name: " + state.items[i].name)
 								print("Cost: " + str(state.items[i].cost))
+								print("Connection: Obstacle " + str(state.items[i].obst))
 						print("\n")
-
+				#poll for which objects and items you would like to connect
 				print("Enter the number for which item you would like to connect")
 				item= int(input())
 				if(item < 0 or item > item_len):
-						##user isn't going to see this bc it'll be before the clear!
-						print("Invalid input!")
 						return
 				print("Which obstacle will it be connected to?")
 				connectee= int(input())
@@ -387,7 +397,7 @@ class playScreen(screen):
 		# Todo(Jesse): Change the width and height to whatever the config says
 		dim = 25
 		state.map = Map(state.tiles, dim + 10, dim)
-		
+
 		# Note(Jesse): Adding entities to the world...
 		#              greedy tiles
 		for y in range(state.map.height):
@@ -409,7 +419,7 @@ class playScreen(screen):
 					entity.x = x
 					entity.y = y
 					state.entities.append(entity)
-		
+
 		# Todo/Research(Jesse): Do we want to throw out multiple?
 		entity = copy.deepcopy(state.entity_manifest[0]) # Note(Jesse): Magic Jewel
 		entity.x = random.randint(0, state.map.width - 1);
@@ -417,13 +427,13 @@ class playScreen(screen):
 		remove_entity_at(state.entities, entity.x, entity.y)
 		print("[DEBUG]: spawning magic jewels at " + str(entity.x) + " " + str(entity.y))
 		state.entities.append(entity)
-		
+
 		# Note(Jesse): Camera init
 		state.camera.x = state.camera.y = 0
 		state.camera.viewport = min(dim, 17)
-		
+
 		state.user = user()
-		
+
 		print("Starting this thing up!")
 
 	def draw(self, state):
