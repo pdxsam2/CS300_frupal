@@ -414,7 +414,7 @@ class playScreen(screen):
 					else:
 						entropy -= entity.chance
 				if entity_id > 0:
-					print("[DEBUG]: creating greedy tile entity at:" + str(x) + "," + str(y))
+					print("[DEBUG]: creating greedy tile entity at:" + str(x + 1) + "," + str(y + 1))
 					entity = copy.deepcopy(state.entity_manifest[entity_id - 1])
 					entity.x = x
 					entity.y = y
@@ -425,7 +425,7 @@ class playScreen(screen):
 		entity.x = random.randint(0, state.map.width - 1);
 		entity.y = random.randint(0, state.map.height - 1);
 		remove_entity_at(state.entities, entity.x, entity.y)
-		print("[DEBUG]: spawning magic jewels at " + str(entity.x) + " " + str(entity.y))
+		print("[DEBUG]: spawning magic jewels at " + str(entity.x + 1) + " " + str(entity.y + 1))
 		state.entities.append(entity)
 
 		# Note(Jesse): Camera init
