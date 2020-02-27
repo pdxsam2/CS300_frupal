@@ -273,6 +273,10 @@ class menu(screen):
 			self.pushScreen(state, playScreen())
 		elif(usrin == 'c'):
 			self.pushScreen(state, config())
+		elif(usrin == 'P'):
+			self.pushScreen(state, playScreen())
+		elif(usrin == 'C'):
+			self.pushScreen(state, config())
 		else:
 			print("Invalid input!\n")
 		return
@@ -752,6 +756,10 @@ class screenManager:
 	def handleInput(self, state):
 		usrin = get_char()
 		if usrin == "q":
+			_clear()
+			self.closeScreen(state)
+			return
+		elif usrin == "Q":
 			_clear()
 			self.closeScreen(state)
 			return
