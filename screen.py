@@ -478,7 +478,25 @@ class playScreen(screen):
 		for i in range(camera.viewport):
 			s += "──"
 		s += '─┘'
-		print(s)
+		# Note(Yichao): Colorful print, only available on linux, to reset: remove next 18 lines instead of a line: print(s)
+		for i in s:
+			if i == '.':
+				print("\033[0;37;42m. \033[0m", end='')
+			elif i == '_':
+				print("\033[0;37;43m. \033[0m", end='')
+			elif i == 'f':
+				print("\033[0;37;46m. \033[0m", end='')
+			elif i == '~':
+				print("\033[0;37;44m. \033[0m", end='')
+			elif i == '#':
+				print("\033[0;37;45m. \033[0m", end='')
+			elif i == '♣':
+				print("\033[0;37;41m. \033[0m", end='')
+			elif i == '*':
+				print("\033[0;37;47m. \033[0m", end='')
+			else:
+				print(i, end=' ')
+		print() #End(Yichao) here for colorful
 		print(self.message + "\t[press q to quit]")
 
 	def update(self, state):
