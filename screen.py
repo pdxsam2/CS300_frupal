@@ -437,14 +437,24 @@ class playScreen(screen):
 		print("Starting this thing up!")
 
 	def draw(self, state):
+		# Note Yichao: seperate into two group to print, useful for print color
 		s = ""
-
-		s += "Player:\n"
-		s += "    Energy:   " + str(state.user.energy) + '\n'
-		s += "    Currency: " + str(state.user.money) + '\n'
-		s += " Pos:\n"
-		s += "   X: " + str(state.user.x + 1) + '\n'
-		s += "   Y: " + str(state.user.y + 1) + '\n'
+		t = ""
+		t += "Player:\n"
+		t += "    Energy:   " + str(state.user.energy) + '\n'
+		t += "    Currency: " + str(state.user.money) + '\n'
+		t += " Pos:\n"
+		t += "   X: " + str(state.user.x + 1) + '\n'
+		t += "   Y: " + str(state.user.y + 1) + '\n'
+		# Note Yichao(End)
+		# Reset:
+		# s = ""
+		# s += "Player:\n"
+		# s += "    Energy:   " + str(state.user.energy) + '\n'
+		# s += "    Currency: " + str(state.user.money) + '\n'
+		# s += " Pos:\n"
+		# s += "   X: " + str(state.user.x + 1) + '\n'
+		# s += "   Y: " + str(state.user.y + 1) + '\n'
 
 		tiles = state.tiles
 		map = state.map
@@ -478,7 +488,13 @@ class playScreen(screen):
 		for i in range(camera.viewport):
 			s += "──"
 		s += '─┘'
+		# Note(Yichao): print information
+		print(t)
+		# Note(Yichao)(End)
+		# Reset: remove all above
+
 		# Note(Yichao): Colorful print
+		print(end=' ')
 		for i in s:
 			if i == '.':
 				print("\033[0;37;42m. \033[0m", end='')
@@ -508,7 +524,7 @@ class playScreen(screen):
 			  "■ " + " hero ")
 		print()
 		# Note(Yichao): Colorful print(End)
-		# Reset: remove above and add following
+		# Reset:
 		# print(s)
 		print(self.message + "\t[press q to quit]")
 
