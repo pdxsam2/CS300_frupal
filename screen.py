@@ -262,6 +262,7 @@ class menu(screen):
 		print("a Team B creation\n\n")
 		print("PLAY - p\n")
 		print("CONFIGURE - c\n")
+		print("Operational guidelines - o\n")
 		print("QUIT - q\n")
 		return
 
