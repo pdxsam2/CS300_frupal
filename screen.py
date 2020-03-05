@@ -437,6 +437,101 @@ class playScreen(screen):
 		state.camera.viewport = min(dim, 17)
 
 		state.user = user()
+		
+		# Note(Yichao): Allow user to change initial money and energy
+		diyEnergy = 20
+		diyMoney = 100
+
+		for i in range(30):
+			print()
+		print("Do you want to modify the initial energy (press Y/y or N/n)?")
+		choice = input()
+		while choice != 'Y' and choice != 'y' and choice != 'N' and choice != 'n':
+			for i in range(30):
+				print()
+			print("Invalid input, please re-enter")
+			choice = input()
+
+		if choice == 'Y' or choice == 'y':
+			for i in range(30):
+				print()
+			print("Enter a number for initial energy, enter an integer")
+			diyEnergy = input()
+			try:
+				diyEnergy = int(diyEnergy)
+			except ValueError:
+				for i in range(30):
+					print()
+				print("Input was not a integer")
+				print("I don't think you can play the game because you can make such a stupid mistake")
+				print("The game is over!")
+				exit()
+
+		while diyEnergy <= 0:
+			for i in range(30):
+				print()
+			print("Show me the meaning of negative energy?")
+			print("Enter a number for initial energy, enter an integer")
+			diyEnergy = input()
+			try:
+				diyEnergy = int(diyEnergy)
+			except ValueError:
+				for i in range(30):
+					print()
+				print("Input was not a integer")
+				print("I don't think you can play the game because you can make such a stupid mistake")
+				print("The game is over!")
+				exit()
+
+		for i in range(30):
+			print()
+
+		print("Do you want to modify the initial money (press Y/y or N/n)?")
+		choice = input()
+		while choice != 'Y' and choice != 'y' and choice != 'N' and choice != 'n':
+			for i in range(30):
+				print()
+			print("Invalid input, please re-enter")
+			choice = input()
+
+		if choice == 'Y' or choice == 'y':
+			for i in range(30):
+				print()
+			print("Enter a number for initial money, enter an integer")
+			diyMoney= input()
+			try:
+				diyMoney = int(diyMoney)
+			except ValueError:
+				for i in range(30):
+					print()
+				print("Input was not a integer")
+				print("I don't think you can play the game because you can make such a stupid mistake")
+				print("The game is over!")
+				exit()
+
+		while diyMoney<= 0:
+			for i in range(30):
+				print()
+			print("Are you in debt? We don't accept people in debt in this game")
+			print("Enter a number for initial money, enter an integer")
+			diyMoney = input()
+			try:
+				diyMoney = int(diyMoney)
+			except ValueError:
+				for i in range(30):
+					print()
+				print("Input was not a integer")
+				print("I don't think you can play the game because you can make such a stupid mistake")
+				print("The game is over!")
+				exit()
+
+		state.user.energy = diyEnergy
+		state.user.money = diyMoney
+		
+		for i in range(30):
+			print()
+		# Note Yichao(End)
+		# Reset: remove all 
 
 		print("Starting this thing up!")
 
