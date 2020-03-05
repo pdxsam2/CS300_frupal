@@ -616,7 +616,9 @@ class playScreen(screen):
 		# Note(Yichao)(End)
 		# Reset: remove all above
 
-		# Note(Yichao): Colorful print
+		# Note(Yichao): Colorful print 
+		# IMPORTANT: only availbale for command line
+		# To invoke this, change the line: usrin = get_char() to usrin = input() in handleInput(self, state): in screen.py
 		print(end=' ')
 		for i in s:
 			if i == '.':
