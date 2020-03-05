@@ -236,27 +236,27 @@ class shopScreen(screen):
 					for i in range(30):
 						print("")
 					print("You alraady have a binoculars, do you have four eyes?")
-					time.sleep(5)
+				
 				elif val == 3 and shopScreen.item[val - 2] == 1:
 					for i in range(30):
 						print("")
 					print("You alraady have a weed whacker, why so many whacker? Are you going to play Rock paper scissors?")
-					time.sleep(5)
+				
 				elif val == 4 and shopScreen.item[val - 2] == 1:
 					for i in range(30):
 						print("")
 					print("You alraady have a Jack Hammer, i wonder how can you use 2 hammers at the same time")
-					time.sleep(5)
+		
 				elif val == 5 and shopScreen.item[val - 2] == 1:
 					for i in range(30):
 						print("")
 					print("You alraady have a Chain Saw, what do you expect?")
-					time.sleep(5)
+			
 				elif val == 6 and shopScreen.item[val - 2] == 1:
 					for i in range(30):
 						print("")
 					print("You alraady have a Boat, you bought so many boats here doesn't mean you're a rich man")
-					time.sleep(5)
+
 				else:
 					shopScreen.item[val-2] = 1
 					val -= 1
