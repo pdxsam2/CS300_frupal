@@ -277,6 +277,29 @@ class menu(screen):
 			self.pushScreen(state, playScreen())
 		elif(usrin == 'C'):
 			self.pushScreen(state, config())
+		# Note(Yichao): Operational guidelines
+		elif (usrin == 'o'):
+			for i in range(30):
+				print(" ")
+			print("wsad: move")
+			print("e: energy bar")
+			print("p: shopping")
+			print("v: victory bottom")
+			print(" ")
+			print("Press any key to quit...")
+			quit = input()
+		# Note Yichao(end)
+		# Reset: remove all
+		elif (usrin == 'O'):
+			for i in range(30):
+				print(" ")
+			print("wsad: move")
+			print("e: energy bar")
+			print("p: shopping")
+			print("v: victory bottom")
+			print(" ")
+			print("Press any key to quit...")
+			quit = input()
 		else:
 			print("Invalid input!\n")
 		return
