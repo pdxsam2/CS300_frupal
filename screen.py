@@ -17,6 +17,7 @@ from entity import Entity, has_entity_at, get_entity_at, remove_entity_at
 import random
 import copy
 import math
+import time
 
 # Note(Jesse): These three classes are used to get raw input from the terminal/commandprompt
 class Get_Char:
@@ -160,6 +161,7 @@ class testScreen(screen):
 
 
 class shopScreen(screen):
+	item = [0, 0, 0, 0, 0]
 	page = 0
 
 	def __init__(self):
@@ -218,6 +220,7 @@ class shopScreen(screen):
 		return
 
 	def handleInput(self, state, usrin):
+
 		if usrin >= '0' and usrin <= '9':
 			val = int(usrin)
 			if val == 0:
@@ -229,13 +232,40 @@ class shopScreen(screen):
 					self.page -= 1
 			else:
 				# Note(Jesse): -1 to val because arrays are indexed from 0 and our first option is 1...
-				val -= 1
-				item = state.items[val + self.page*8]
-				if state.user.money < item.cost:
-					self.message = "insufficient coin for " + item.name
+				if val == 2 and shopScreen.item[val - 2] == 1:
+					for i in range(30):
+						print("")
+					print("You alraady have a binoculars, do you have four eyes?")
+					time.sleep(5)
+				elif val == 3 and shopScreen.item[val - 2] == 1:
+					for i in range(30):
+						print("")
+					print("You alraady have a weed whacker, why so many whacker? Are you going to play Rock paper scissors?")
+					time.sleep(5)
+				elif val == 4 and shopScreen.item[val - 2] == 1:
+					for i in range(30):
+						print("")
+					print("You alraady have a Jack Hammer, i wonder how can you use 2 hammers at the same time")
+					time.sleep(5)
+				elif val == 5 and shopScreen.item[val - 2] == 1:
+					for i in range(30):
+						print("")
+					print("You alraady have a Chain Saw, what do you expect?")
+					time.sleep(5)
+				elif val == 6 and shopScreen.item[val - 2] == 1:
+					for i in range(30):
+						print("")
+					print("You alraady have a Boat, you bought so many boats here doesn't mean you're a rich man")
+					time.sleep(5)
 				else:
-					state.user.inv[val + self.page*8] += 1
-					state.user.money -= item.cost
+					shopScreen.item[val-2] = 1
+					val -= 1
+					item = state.items[val + self.page * 8]
+					if state.user.money < item.cost:
+						self.message = "insufficient coin for " + item.name
+					else:
+						state.user.inv[val + self.page * 8] += 1
+						state.user.money -= item.cost
 
 		else:
 			self.message = "invalid input"
