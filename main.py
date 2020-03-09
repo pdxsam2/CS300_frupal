@@ -9,6 +9,12 @@ from user import user
 from item import add_item
 from entity import add_entity
 
+from platform import system
+if "win" in system().lower(): #works for Win7, 8, 10 ...
+    from ctypes import windll
+    kernel=windll.kernel32
+    kernel.SetConsoleMode(kernel.GetStdHandle(-11),7)
+
 class Camera:
 	x = 0
 	y = 0
