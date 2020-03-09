@@ -411,7 +411,7 @@ class config(screen):
 						d= int(input())
 						print("Is this item stackable? [y/n]")
 						e= str(input())
-						if e is 'y' or e is 'Y':
+						if e == 'y' or e == 'Y':
 							e= True
 						else:
 							e= False
@@ -919,7 +919,7 @@ class screenManager:
 	#Wrapper function for stack.pop(). Calls onStop() on screen prior to
 	#removing it from the stack.
 	def closeScreen(self, state, index=-1):
-		if index is -1:
+		if index == -1:
 			self._top().onStop(state)
 			self.stack.pop()
 		else:
