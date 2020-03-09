@@ -21,6 +21,10 @@ class stack:
 	def pop(self):
 		return self.items.pop()
 
+	#removes item in the stack at the given index
+	def remove(self, index):
+		del self.items[index]
+
 	#returns size of stack
 	def size(self):
 		return len(self.items)

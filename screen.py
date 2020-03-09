@@ -64,6 +64,9 @@ def _clear():
 	for i in range(40):
 		print("\n")
 
+##########################################################################
+#                               Screen
+##########################################################################
 #base class for all screens/menus
 class screen:
 
@@ -111,9 +114,9 @@ class screen:
 		self.screenman = screenman #Mr. Screenman, bring me a screen.
 
 
-#################################################################
-#                IMPLEMENT NEW SCREENS HERE                     #
-#################################################################
+#############################################################################
+#                IMPLEMENT NEW SCREENS HERE                     
+#############################################################################
 
 #A very basic demo class
 class testScreen(screen):
@@ -160,21 +163,65 @@ class testScreen(screen):
 		return
 
 
+###########################################################################
+#														 Splash Screen
+###########################################################################
+#Auth Timothy Hall
+#Date 6 March 2020
+class splashScreen(screen):
+	def onStart(self, state):
+		return None
+
+	def draw(self, state):
+		print("\n\t\t\t\tTeam B Presents:\n\n")
+		print("    	 ,gggggggggggggg                                                  ")
+		print("    dP\"\"\"\"\"\"88\"\"\"\"\"\"                                            ,dPYb,")
+		print("    Yb,_    88                                                  IP'`Yb")
+		print("    `\"\"     88                                                  I8  8I")
+		print("         ggg88gggg                                              I8  8\'")
+		print("            88   8,gggggg,  gg      gg  gg,gggg,      ,gggg,gg  I8 dP ")
+		print("            88    dP\"\"\"\"8I  I8      8I  I8P\"  \"Yb    dP\"  \"Y8I  I8dP  ")
+		print("      gg,   88   ,8'    8I  I8,    ,8I  I8'    ,8i  i8'    ,8I  I8P   ")
+		print("       \"Yb,,8P  ,dP     Y8,,d8b,  ,d8b,,I8 _  ,d8' ,d8,   ,d8b,,d8b,_ ")
+		print("         \"Y8P\'  8P      `Y88P\'\"Y88P\"`Y8PI8 YY88888PP\"Y8888P\"`Y88P\'\"Y88")
+		print("                                        I8                            ")
+		print("                                        I8                            ")
+		print("                                        I8                            ")
+		print("                                        I8                            ")
+		print("                                        I8                            ")
+		print("                                        I8                            ")
+
+		print("\n\n\t\tA Game of Adventure, Boats and Weed qWackers.")
+		print("Press any key to continue...")
+
+
+	def handleInput(self, state, usrin):
+		self.pushScreen(state, menu())
+		self.screenman.closeScreen(state, 0)	#note(Tim): This screen needs to be removed from the
+																					#Stack otherwise user will return to it when quiting
+																					#the game
+
+	def update(self, state):
+		return
+
+#**************************************************************************
+#																	Shop Screen
+#**************************************************************************
+#Updated by Timothy Hall 3/8/20
 class shopScreen(screen):
-	item = [0, 0, 0, 0, 0]
 	page = 0
 
 	def __init__(self):
 		self.message = "Welcome to the shop!"
 
 	def onStart(self, state):
-		# Todo(Jesse): We'll do some testing of buying stuff here as debug code
-		print("")
+		return
 
 	def draw(self, state):
-		s = ""
-
-		s += "Currency: " + str(state.user.money) + "\n\n"
+		s = "****************************************\n"
+		s +="               Inventory                \n"
+		s +="****************************************\n\n"
+		s += "Coins: " + str(state.user.money) + "\n\n"
 
 		for index in range(0, 8):
 			arr_index = index + self.page*8
@@ -182,7 +229,12 @@ class shopScreen(screen):
 				s += '\n'
 			else:
 				item = state.items[arr_index]
-				s += '[' + str(index + 1) + "] " + item.name + '(' + str(state.user.inv[arr_index]) + "):\t\t" + str(item.cost) + '\n'
+				temp = "[" + str(index + 1) + "] " + item.name + '(' + str(state.user.inv[arr_index]) + "):"
+				whitespace = 38 - len(str(temp))
+				for i in range(whitespace):
+					temp += ' '
+				s += temp + str(item.cost) + '\n'
+				#s += '[' + str(index + 1) + "] " + item.name + '(' + str(state.user.inv[arr_index]) + "):\t\t" + str(item.cost) + '\n'
 
 		if self.page > 0:
 			s += "[9] Prev Page\n"
@@ -196,25 +248,9 @@ class shopScreen(screen):
 
 		s += "[page: " + str(self.page) + ']\n'
 
-		'''
-		# Research(Jesse): Do we want to keep the printing of information within the original map dimensions?
-		s = "┌"
-		for i in range(18):
-			s += "──"
-		s += "─┐\n"
-		for j in range(18):
-			s += "│ "
-			for k in range(18):
-				s += '  '
-			s += "│\n"
-
-		s += '└'
-		for i in range(18):
-			s += "──"
-		s += '─┘'
-		'''
 		print(s)
-		print(self.message + "\t[press q to exit shop]")
+	
+		print(self.message + "\n[press q to exit shop]")
 
 	def update(self, state):
 		return
@@ -230,55 +266,33 @@ class shopScreen(screen):
 				# Note(Jesse): If we and self.page > 0 with above it'll make it so you can buy the first item on the next page
 				if self.page > 0:
 					self.page -= 1
-			else:
-				# Note(Jesse): -1 to val because arrays are indexed from 0 and our first option is 1...
-				if val == 2 and shopScreen.item[val - 2] == 1:
-					for i in range(30):
-						print("")
-					print("You alraady have a binoculars, do you have four eyes?")
-				
-				elif val == 3 and shopScreen.item[val - 2] == 1:
-					for i in range(30):
-						print("")
-					print("You alraady have a weed whacker, why so many whacker? Are you going to play Rock paper scissors?")
-				
-				elif val == 4 and shopScreen.item[val - 2] == 1:
-					for i in range(30):
-						print("")
-					print("You alraady have a Jack Hammer, i wonder how can you use 2 hammers at the same time")
-		
-				elif val == 5 and shopScreen.item[val - 2] == 1:
-					for i in range(30):
-						print("")
-					print("You alraady have a Chain Saw, what do you expect?")
-			
-				elif val == 6 and shopScreen.item[val - 2] == 1:
-					for i in range(30):
-						print("")
-					print("You alraady have a Boat, you bought so many boats here doesn't mean you're a rich man")
-
+			elif (val - 1) < len(state.items):
+				if state.user.inv[val-1] == 1 and not state.items[val-1].stackable:
+					self.message = ("You may only have one " + str(state.items[val-1].name))
 				else:
-					shopScreen.item[val-2] = 1
 					val -= 1
+					if val >= len(state.user.inv):
+						self.message = "Invalid input"
+						return
 					item = state.items[val + self.page * 8]
 					if state.user.money < item.cost:
-						self.message = "insufficient coin for " + item.name
+						self.message = "insufficient Money for " + item.name
 					else:
 						state.user.inv[val + self.page * 8] += 1
 						state.user.money -= item.cost
 
 		else:
-			self.message = "invalid input"
+			self.message = "Invalid input"
 
 	def onStop(self, state):
 		_clear()
 		return
 
-#
-#
+#**************************************************************************
+#																Menu Screen
+#**************************************************************************
+#Updated by Timothy Hall 3/8/20
 #todo(Sam): This is the implementation for the menu and config screens
-
-#MENU
 class menu(screen):
 	def __init__(self):
 		return
@@ -292,7 +306,7 @@ class menu(screen):
 		print("a Team B creation\n\n")
 		print("PLAY - p\n")
 		print("CONFIGURE - c\n")
-		print("Operational guidelines - o\n")
+		print("HELP - o\n")
 		print("QUIT - q\n")
 		return
 
@@ -338,7 +352,10 @@ class menu(screen):
 	def onStop(self, state):
 		return
 
-#CONFIG
+#**************************************************************************
+#															Config Screen
+#**************************************************************************
+#Updated by Timothy Hall 3/8/20
 class config(screen):
 	def __init__(self):
 		return
@@ -394,7 +411,13 @@ class config(screen):
 						c= str(input())
 						print("Enter a cost for your new item")
 						d= int(input())
-						add_item(state, c, d, 0)
+						print("Is this item stackable? [y/n]")
+						e= str(input())
+						if e is 'y' or e is 'Y':
+							e= True
+						else:
+							e= False
+						add_item(state, c, d, 0, e)
 				elif(selection == 'o'):
 						print("Enter a name for your object")
 						c= str(input())
@@ -446,6 +469,10 @@ class config(screen):
 	def onStop(self, state):
 		return
 
+#**************************************************************************
+#																	Play Screen
+#**************************************************************************
+#Updated by Timothy Hall 3/8/20
 class playScreen(screen):
 
 	def __init__(self):
@@ -731,13 +758,13 @@ class playScreen(screen):
 					entity = get_entity_at(state.entities, newX, newY)
 					if entity.id == 2: # Note(Jesse): Greedy Tile
 						state.user.money = math.floor(state.user.money*0.5)
-						self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + str(terrain_id) + ", a greedy tile... you lost half your money"
+						self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
 					elif entity.id == 1: # Note(Jesse): Magic Jewel
 						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
 						self.message = "walked north onto The Magic Jewels!"
 						state.user.magic_jewels += 1
 				else:
-					self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
+					self.message = "walked north onto " + state.tiles.terrain[terrain_id].name
 			else:
 				self.message = "You do not have enough energy to move north"
 		elif usrin == "s":
@@ -767,13 +794,13 @@ class playScreen(screen):
 					entity = get_entity_at(state.entities, newX, newY)
 					if entity.id == 2: # Note(Jesse): Greedy Tile
 						state.user.money = math.floor(state.user.money*0.5)
-						self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + str(terrain_id) + ", a greedy tile... you lost half your money"
+						self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
 					elif entity.id == 1: # Note(Jesse): Magic Jewel
 						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
 						self.message = "walked south onto The Magic Jewels!"
 						state.user.magic_jewels += 1
 				else:
-					self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
+					self.message = "walked south onto " + state.tiles.terrain[terrain_id].name
 			else:
 				self.message = "You do not have enough energy to move south"
 		elif usrin == "a":
@@ -803,13 +830,13 @@ class playScreen(screen):
 					entity = get_entity_at(state.entities, newX, newY)
 					if entity.id == 2: # Note(Jesse): Greedy Tile
 						state.user.money = math.floor(state.user.money*0.5)
-						self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + str(terrain_id) + ", a greedy tile... you lost half your money"
+						self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
 					elif entity.id == 1: # Note(Jesse): Magic Jewel
 						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
 						self.message = "walked west onto The Magic Jewels!"
 						state.user.magic_jewels += 1
 				else:
-					self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
+					self.message = "walked west onto " + state.tiles.terrain[terrain_id].name
 			else:
 				self.message = "You do not have enough energy to move west"
 		elif usrin == "d":
@@ -839,13 +866,13 @@ class playScreen(screen):
 					entity = get_entity_at(state.entities, newX, newY)
 					if entity.id == 2: # Note(Jesse): Greedy Tile
 						state.user.money = math.floor(state.user.money*0.5)
-						self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + str(terrain_id) + ", a greedy tile... you lost half your money"
+						self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
 					elif entity.id == 1: # Note(Jesse): Magic Jewel
 						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
 						self.message = "walked east onto The Magic Jewels!"
 						state.user.magic_jewels += 1
 				else:
-					self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + str(terrain_id)
+					self.message = "walked east onto " + state.tiles.terrain[terrain_id].name
 			else:
 				self.message = "You do not have enough energy to move east"
 		elif usrin == "e":
@@ -870,6 +897,10 @@ class playScreen(screen):
 	def onStop(self, state):
 		return
 
+
+#**************************************************************************
+#														Screen Manager
+#**************************************************************************
 class screenManager:
 
 	#constructor
@@ -889,9 +920,12 @@ class screenManager:
 
 	#Wrapper function for stack.pop(). Calls onStop() on screen prior to
 	#removing it from the stack.
-	def closeScreen(self, state):
-		self._top().onStop(state)
-		self.stack.pop()
+	def closeScreen(self, state, index=-1):
+		if index is -1:
+			self._top().onStop(state)
+			self.stack.pop()
+		else:
+			self.stack.remove(index)
 
 	#draws the screen for the screen at the top of the stack.
 	def draw(self, state):
