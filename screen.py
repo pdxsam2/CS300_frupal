@@ -339,7 +339,7 @@ class menu(screen):
 			print("wsad: move")
 			print("e: energy bar")
 			print("p: shopping")
-			print("v: victory bottom")
+			print("v: victory button")
 			print(" ")
 			print("Press any key to quit...")
 			quit = input()
@@ -757,10 +757,12 @@ class playScreen(screen):
 					if entity.id == 2: # Note(Jesse): Greedy Tile
 						state.user.money = math.floor(state.user.money*0.5)
 						self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
+						remove_entity_at(state.entities, newX, newY)
 					elif entity.id == 1: # Note(Jesse): Magic Jewel
 						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
 						self.message = "walked north onto The Magic Jewels!"
 						state.user.magic_jewels += 1
+						remove_entity_at(state.entities, newX, newY)
 				else:
 					self.message = "walked north onto " + state.tiles.terrain[terrain_id].name
 			else:
@@ -793,10 +795,12 @@ class playScreen(screen):
 					if entity.id == 2: # Note(Jesse): Greedy Tile
 						state.user.money = math.floor(state.user.money*0.5)
 						self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
+						remove_entity_at(state.entities, newX, newY)
 					elif entity.id == 1: # Note(Jesse): Magic Jewel
 						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
 						self.message = "walked south onto The Magic Jewels!"
 						state.user.magic_jewels += 1
+						remove_entity_at(state.entities, newX, newY)
 				else:
 					self.message = "walked south onto " + state.tiles.terrain[terrain_id].name
 			else:
@@ -829,10 +833,12 @@ class playScreen(screen):
 					if entity.id == 2: # Note(Jesse): Greedy Tile
 						state.user.money = math.floor(state.user.money*0.5)
 						self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
+						remove_entity_at(state.entities, newX, newY)
 					elif entity.id == 1: # Note(Jesse): Magic Jewel
 						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
 						self.message = "walked west onto The Magic Jewels!"
 						state.user.magic_jewels += 1
+						remove_entity_at(state.entities, newX, newY)
 				else:
 					self.message = "walked west onto " + state.tiles.terrain[terrain_id].name
 			else:
@@ -865,10 +871,12 @@ class playScreen(screen):
 					if entity.id == 2: # Note(Jesse): Greedy Tile
 						state.user.money = math.floor(state.user.money*0.5)
 						self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
+						remove_entity_at(state.entities, newX, newY)
 					elif entity.id == 1: # Note(Jesse): Magic Jewel
 						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
 						self.message = "walked east onto The Magic Jewels!"
 						state.user.magic_jewels += 1
+						remove_entity_at(state.entities, newX, newY)
 				else:
 					self.message = "walked east onto " + state.tiles.terrain[terrain_id].name
 			else:
