@@ -115,7 +115,7 @@ class screen:
 
 
 #############################################################################
-#                IMPLEMENT NEW SCREENS HERE                     
+#                IMPLEMENT NEW SCREENS HERE
 #############################################################################
 
 #A very basic demo class
@@ -249,7 +249,7 @@ class shopScreen(screen):
 		s += "[page: " + str(self.page) + ']\n'
 
 		print(s)
-	
+
 		print(self.message + "\n[press q to exit shop]")
 
 	def update(self, state):
@@ -406,9 +406,17 @@ class config(screen):
 
 				if(selection == 'i'):
 						print("Enter a name for your new item")
-						c= str(input())
+						name= input()
+						while(name.isdigit()):
+							print("Invalid input. Please enter a string for your name.")
+							name= input()
+
 						print("Enter a cost for your new item")
-						d= int(input())
+						cost= input()
+						while(name.isdigit() is False):
+							print("Invalid input. Please enter an integer for your cost.")
+							cost= input()
+
 						print("Is this item stackable? [y/n]")
 						e= str(input())
 						if e == 'y' or e == 'Y':
@@ -418,12 +426,21 @@ class config(screen):
 						add_item(state, c, d, 0, e)
 				elif(selection == 'o'):
 						print("Enter a name for your object")
-						c= str(input())
+						name= input()
+						while(name.isdigit()):
+							print("Invalid input. Please enter a string for your name.")
+							name= input()
+
 						print("Enter a symbol for your object")
-						s= str(input())[0]
+						symbol= input()[0]
+						#s= str(input())[0]
+
 						print("Enter an energy cost for stepping on this object")
-						i= int(input())
-						state.tiles.add_obstacle(c,s,i)
+						cost= input()
+						while(cost.isdigit() == False):
+							print("Invalid Input. Enter an integer for your cost.")
+							cost= input()
+						state.tiles.add_obstacle(name,symbol,cost)
 		#user has decided to connect an item and an obstacle
 		elif (usrin == 'c'):
 				#display all items and obstacles
@@ -447,17 +464,35 @@ class config(screen):
 								print("Cost: " + str(state.items[i].cost))
 								print("Connection: Obstacle " + str(state.items[i].obst))
 						print("\n")
+
 				#poll for which objects and items you would like to connect
 				print("Enter the number for which item you would like to connect")
-				item= int(input())
-				if(item < 0 or item > item_len):
-						return
+				item= input()
+				while(item.isdigit() == False):
+					print("Invalid Input. Please enter an integer for your item.")
+					item= input()
+
+				while(item < 0 or item > item_len):
+					print("Input out of bounds. Please enter a valid item number")
+					item= input()
+					while(item.isdigit() == False):
+						print("Invalid Input. Please enter an integer for your item.")
+						item= input()
+
+
 				print("Which obstacle will it be connected to?")
-				connectee= int(input())
-				if(connectee < 0 or connectee > obst_len):
-						print("Invalid input!")
-						return
-				state.items[item].obst= connectee
+				obst= input()
+				while(obst.isdigit() == False):
+					print("Invalid Input. Please enter an integer for your obst.")
+					obst= input()
+
+				while(obst < 0 or obst > item_len):
+					print("Input out of bounds. Please enter a valid obst number")
+					obst= input()
+					while(obst.isdigit() == False):
+						print("Invalid Input. Please enter an integer for your obst.")
+						obst= input()
+				state.items[item].obst= obst
 		else:
 				print("Invalid input")
 
@@ -516,7 +551,7 @@ class playScreen(screen):
 		state.camera.viewport = min(dim, 17)
 
 		state.user = user()
-		
+
 		# Note(Yichao): Allow user to change initial money and energy
 		diyEnergy = 20
 		diyMoney = 100
@@ -606,11 +641,11 @@ class playScreen(screen):
 
 		state.user.energy = diyEnergy
 		state.user.money = diyMoney
-		
+
 		for i in range(30):
 			print()
 		# Note Yichao(End)
-		# Reset: remove all 
+		# Reset: remove all
 
 		print("Starting this thing up!")
 
@@ -671,7 +706,7 @@ class playScreen(screen):
 		# Note(Yichao)(End)
 		# Reset: remove all above
 
-		# Note(Yichao): Colorful print 
+		# Note(Yichao): Colorful print
 		# IMPORTANT: only availbale for command line
 		# To invoke this, change the line: usrin = get_char() to usrin = input() in handleInput(self, state): in screen.py
 		print(end=' ')
@@ -749,7 +784,7 @@ class playScreen(screen):
 					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
 				# remove the obstacle
 				map.remove_obstacle(newX, newY)
-				return 
+				return
 			# movement is now boolean
 			if state.user.move_north(state.tiles.terrain[terrain_id]):
 				if has_entity_at(state.entities, state.user.x, state.user.y):
@@ -788,7 +823,7 @@ class playScreen(screen):
 					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
 				# remove the obstacle
 				map.remove_obstacle(newX, newY)
-				return 
+				return
 			if state.user.move_south(state.tiles.terrain[terrain_id]):
 				if has_entity_at(state.entities, state.user.x, state.user.y):
 					entity = get_entity_at(state.entities, newX, newY)
@@ -826,7 +861,7 @@ class playScreen(screen):
 					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
 				# remove the obstacle
 				map.remove_obstacle(newX, newY)
-				return 
+				return
 			if state.user.move_west(state.tiles.terrain[terrain_id]):
 				if has_entity_at(state.entities, state.user.x, state.user.y):
 					entity = get_entity_at(state.entities, newX, newY)
@@ -864,7 +899,7 @@ class playScreen(screen):
 					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
 				# remove the obstacle
 				map.remove_obstacle(newX, newY)
-				return 
+				return
 			if state.user.move_east(state.tiles.terrain[terrain_id]):
 				if has_entity_at(state.entities, state.user.x, state.user.y):
 					entity = get_entity_at(state.entities, newX, newY)
