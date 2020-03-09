@@ -191,7 +191,7 @@ class splashScreen(screen):
 		print("                                        I8                            ")
 		print("                                        I8                            ")
 
-		print("\n\n\t\tA Game of Adventure, Boats and Weed qWackers.")
+		print("\n\n\t\tA Game of Adventure, Boats and Weed Wackers.")
 		print("Press any key to continue...")
 
 
@@ -266,20 +266,18 @@ class shopScreen(screen):
 				# Note(Jesse): If we and self.page > 0 with above it'll make it so you can buy the first item on the next page
 				if self.page > 0:
 					self.page -= 1
-			elif (val - 1) < len(state.items):
-				if state.user.inv[val-1] == 1 and not state.items[val-1].stackable:
-					self.message = ("You may only have one " + str(state.items[val-1].name))
+			elif (val - 1 + self.page*8) < len(state.items):
+				arr_index = val - 1 + self.page*8
+				if state.user.inv[arr_index] == 1 and not state.items[arr_index].stackable:
+					self.message = ("You may only have one " + str(state.items[arr_index].name))
 				else:
-					val -= 1
-					if val >= len(state.user.inv):
-						self.message = "Invalid input"
-						return
-					item = state.items[val + self.page * 8]
+					item = state.items[arr_index]
 					if state.user.money < item.cost:
 						self.message = "insufficient Money for " + item.name
 					else:
-						state.user.inv[val + self.page * 8] += 1
+						state.user.inv[arr_index] += 1
 						state.user.money -= item.cost
+						self.message = "bought one " + item.name
 
 		else:
 			self.message = "Invalid input"
