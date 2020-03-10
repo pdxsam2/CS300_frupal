@@ -13,6 +13,7 @@ from map import Map
 
 from item import add_item
 from entity import Entity, has_entity_at, get_entity_at, remove_entity_at
+from config import saveConfig
 
 import random
 import copy
@@ -113,58 +114,8 @@ class screen:
 	def setScreenManager(self, screenman):
 		self.screenman = screenman #Mr. Screenman, bring me a screen.
 
-
-#############################################################################
-#                IMPLEMENT NEW SCREENS HERE
-#############################################################################
-
-#A very basic demo class
-class testScreen(screen):
-
-	def __init__(self):
-		self.message = ""
-
-	def onStart(self, state):
-		print("Starting this thing up!")
-
-	def draw(self, state):
-		#draw a map border
-		s = ""
-		for i in range(20):
-			s += "* "
-		s += "\n"
-		for j in range(20):
-			s+= "* "
-			for k in range(18):
-				s+= "  "
-			s += "*\n"
-
-		for i in range(20):
-			s += "* "
-		print(s)
-		print(self.message + "\t[press q to quit]")
-
-	def update(self, state):
-		return
-
-	def handleInput(self, state, usrin):
-		if usrin == "w":
-			self.message = "walked north"
-		elif usrin == "s":
-			self.message = "walked south"
-		elif usrin == "a":
-			self.message = "walked east"
-		elif usrin == "d":
-			self.message = "walked west"
-		else:
-			self.message = "invalid input"
-
-	def onStop(self, state):
-		return
-
-
 ###########################################################################
-#														 Splash Screen
+#                            Splash Screen
 ###########################################################################
 #Auth Timothy Hall
 #Date 6 March 2020
@@ -204,9 +155,9 @@ class splashScreen(screen):
 	def update(self, state):
 		return
 
-#**************************************************************************
-#																	Shop Screen
-#**************************************************************************
+###########################################################################
+#                            Shop Screen
+###########################################################################
 #Updated by Timothy Hall 3/8/20
 class shopScreen(screen):
 	page = 0
@@ -286,9 +237,9 @@ class shopScreen(screen):
 		_clear()
 		return
 
-#**************************************************************************
-#																Menu Screen
-#**************************************************************************
+###########################################################################
+#                              Menu Screen
+###########################################################################
 #Updated by Timothy Hall 3/8/20
 #todo(Sam): This is the implementation for the menu and config screens
 class menu(screen):
@@ -350,9 +301,9 @@ class menu(screen):
 	def onStop(self, state):
 		return
 
-#**************************************************************************
-#															Config Screen
-#**************************************************************************
+###########################################################################
+#                            Config Screen
+###########################################################################
 #Updated by Timothy Hall 3/8/20
 class config(screen):
 	def __init__(self):
@@ -494,11 +445,11 @@ class config(screen):
 
 
 	def onStop(self, state):
-		return
+		saveConfig(state)
 
-#**************************************************************************
-#                                Play Screen
-#**************************************************************************
+###########################################################################
+#                                Play Screen 
+###########################################################################
 #Updated by Timothy Hall 3/8/20
 class playScreen(screen):
 
@@ -931,9 +882,9 @@ class playScreen(screen):
 		return
 
 
-#**************************************************************************
-#														Screen Manager
-#**************************************************************************
+###########################################################################
+#                             Screen Manager
+###########################################################################
 class screenManager:
 
 	#constructor
