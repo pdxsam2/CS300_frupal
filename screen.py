@@ -407,15 +407,13 @@ class config(screen):
 				if(selection == 'i'):
 						print("Enter a name for your new item")
 						name= input()
-						while(name.isdigit()):
-							print("Invalid input. Please enter a string for your name.")
-							name= input()
 
 						print("Enter a cost for your new item")
 						cost= input()
-						while(name.isdigit() is False):
+						while(not cost.isnumeric()):
 							print("Invalid input. Please enter an integer for your cost.")
 							cost= input()
+						cost = int(cost)
 
 						print("Is this item stackable? [y/n]")
 						e= str(input())
@@ -423,13 +421,10 @@ class config(screen):
 							e= True
 						else:
 							e= False
-						add_item(state, c, d, 0, e)
+						add_item(state, name, cost, 0, e)
 				elif(selection == 'o'):
 						print("Enter a name for your object")
 						name= input()
-						while(name.isdigit()):
-							print("Invalid input. Please enter a string for your name.")
-							name= input()
 
 						print("Enter a symbol for your object")
 						symbol= input()[0]
@@ -437,9 +432,10 @@ class config(screen):
 
 						print("Enter an energy cost for stepping on this object")
 						cost= input()
-						while(cost.isdigit() == False):
+						while(not cost.isnumeric()):
 							print("Invalid Input. Enter an integer for your cost.")
 							cost= input()
+						cost = int(cost)
 						state.tiles.add_obstacle(name,symbol,cost)
 		#user has decided to connect an item and an obstacle
 		elif (usrin == 'c'):
@@ -459,7 +455,7 @@ class config(screen):
 								print("Name: \t\t" + state.tiles.obstacles[i].name)
 								print("Cost: \t\t\t" + str(state.tiles.obstacles[i].energy))
 						else:
-								print("Item " + str(i))
+								print("      Item " + str(i))
 								print("Name: " + state.items[i].name)
 								print("Cost: " + str(state.items[i].cost))
 								print("Connection: Obstacle " + str(state.items[i].obst))
@@ -468,30 +464,28 @@ class config(screen):
 				#poll for which objects and items you would like to connect
 				print("Enter the number for which item you would like to connect")
 				item= input()
-				while(item.isdigit() == False):
-					print("Invalid Input. Please enter an integer for your item.")
-					item= input()
-
-				while(item < 0 or item > item_len):
-					print("Input out of bounds. Please enter a valid item number")
-					item= input()
-					while(item.isdigit() == False):
+				while(True):
+					if not item.isnumeric():
 						print("Invalid Input. Please enter an integer for your item.")
-						item= input()
-
+					elif item.isnumeric() and (int(item) < 0 or int(item) > item_len):
+						print("Input out of bounds. Please enter a valid obst number")
+					else:
+						break
+					item= input()
+				item = int(item)
 
 				print("Which obstacle will it be connected to?")
 				obst= input()
-				while(obst.isdigit() == False):
-					print("Invalid Input. Please enter an integer for your obst.")
+				while(True):
+					if not obst.isnumeric():
+						print("Invalid Input. Please enter an integer for your item.")
+					elif obst.isnumeric() and (int(obst) < 0 or int(obst) > obst_len):
+						print("Input out of bounds. Please enter a valid obst number")
+					else:
+						obst = int(obst)
+						break
 					obst= input()
-
-				while(obst < 0 or obst > item_len):
-					print("Input out of bounds. Please enter a valid obst number")
-					obst= input()
-					while(obst.isdigit() == False):
-						print("Invalid Input. Please enter an integer for your obst.")
-						obst= input()
+				obst = int(obst)
 				state.items[item].obst= obst
 		else:
 				print("Invalid input")
@@ -503,7 +497,7 @@ class config(screen):
 		return
 
 #**************************************************************************
-#																	Play Screen
+#                                Play Screen
 #**************************************************************************
 #Updated by Timothy Hall 3/8/20
 class playScreen(screen):
