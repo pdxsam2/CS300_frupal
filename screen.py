@@ -114,7 +114,6 @@ class screen:
 	def setScreenManager(self, screenman):
 		self.screenman = screenman #Mr. Screenman, bring me a screen.
 
-
 ###########################################################################
 #                            Splash Screen
 ###########################################################################
@@ -419,7 +418,7 @@ class config(screen):
 				while(True):
 					if not item.isnumeric():
 						print("Invalid Input. Please enter an integer for your item.")
-					elif item.isnumeric() and (int(item) < 0 or int(item) > item_len):
+					elif item.isnumeric() and (int(item) < 0 or int(item) > item_len-1):
 						print("Input out of bounds. Please enter a valid obst number")
 					else:
 						break
@@ -431,7 +430,7 @@ class config(screen):
 				while(True):
 					if not obst.isnumeric():
 						print("Invalid Input. Please enter an integer for your item.")
-					elif obst.isnumeric() and (int(obst) < 0 or int(obst) > obst_len):
+					elif obst.isnumeric() and (int(obst) < 0 or int(obst) > obst_len-1):
 						print("Input out of bounds. Please enter a valid obst number")
 					else:
 						obst = int(obst)
@@ -449,7 +448,7 @@ class config(screen):
 		saveConfig(state)
 
 ###########################################################################
-#                                Play Screen
+#                                Play Screen 
 ###########################################################################
 #Updated by Timothy Hall 3/8/20
 class playScreen(screen):
@@ -522,7 +521,7 @@ class playScreen(screen):
 			except ValueError:
 				for i in range(30):
 					print()
-				print("Input was not a integer")
+				print("Input was not an integer")
 				print("I don't think you can play the game because you can make such a stupid mistake")
 				print("The game is over!")
 				exit()
@@ -937,7 +936,7 @@ class screenManager:
 			return
 		self._top().handleInput(state, usrin)
 		_clear()
-
+	#Returns true if stack is empty
 	#Returns true if stack is empty
 	def isEmpty(self):
 		return self.stack.isEmpty()
