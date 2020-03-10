@@ -985,7 +985,7 @@ class screenManager:
 			return
 		self._top().handleInput(state, usrin)
 		_clear()
-
+	#Returns true if stack is empty
 	#Returns true if stack is empty
 	def isEmpty(self):
 		return self.stack.isEmpty()
