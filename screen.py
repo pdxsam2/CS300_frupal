@@ -561,7 +561,7 @@ class playScreen(screen):
 			choice = input()
 
 		if choice == 'Y' or choice == 'y':
-			for i in range(30):
+			for i in range(50):
 				print()
 			print("Enter a number for initial energy, enter an integer")
 			diyEnergy = input()
@@ -571,12 +571,11 @@ class playScreen(screen):
 				for i in range(30):
 					print()
 				print("Input was not an integer")
-				print("I don't think you can play the game because you can make such a stupid mistake")
-				print("The game is over!")
+				print("Please restart the program")
 				exit()
 
 		while diyEnergy <= 0:
-			for i in range(30):
+			for i in range(50):
 				print()
 			print("Show me the meaning of negative energy?")
 			print("Enter a number for initial energy, enter an integer")
@@ -587,8 +586,7 @@ class playScreen(screen):
 				for i in range(30):
 					print()
 				print("Input was not a integer")
-				print("I don't think you can play the game because you can make such a stupid mistake")
-				print("The game is over!")
+				print("Please restart the program")
 				exit()
 
 		for i in range(30):
