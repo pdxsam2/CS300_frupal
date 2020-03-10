@@ -37,3 +37,4 @@ def remove_entity_at(entities, x, y):
 		entity = entities[index]
 		if entity.x == x and entity.y == y:
 			del entities[index]
+			return
