@@ -263,37 +263,24 @@ class menu(screen):
 		return
 
 	def handleInput(self,state, usrin):
-		if(usrin == 'p'):
+		if(usrin == 'p' or usrin == 'P'):
 			self.pushScreen(state, playScreen())
-		elif(usrin == 'c'):
-			self.pushScreen(state, config())
-		elif(usrin == 'P'):
-			self.pushScreen(state, playScreen())
-		elif(usrin == 'C'):
+		elif(usrin == 'c' or usrin == 'C'):
 			self.pushScreen(state, config())
 		# Note(Yichao): Operational guidelines
-		elif (usrin == 'o'):
+		elif (usrin == 'o' or usrin == 'O'):
 			for i in range(30):
 				print(" ")
 			print("wsad: move")
-			print("e: energy bar")
-			print("p: shopping")
-			print("v: victory bottom")
+			print("e: Eat Power Bar")
+			print("p: Shop")
+			print("l: Magic Locator")
+			print("v: Victory Button")
 			print(" ")
 			print("Press any key to quit...")
 			quit = input()
 		# Note Yichao(end)
 		# Reset: remove all
-		elif (usrin == 'O'):
-			for i in range(30):
-				print(" ")
-			print("wsad: move")
-			print("e: energy bar")
-			print("p: shopping")
-			print("v: victory button")
-			print(" ")
-			print("Press any key to quit...")
-			quit = input()
 		else:
 			print("Invalid input!\n")
 		return
@@ -331,7 +318,7 @@ class config(screen):
 						print("Name: \t\t" + state.tiles.obstacles[i].name)
 						print("Cost: \t\t\t" + str(state.tiles.obstacles[i].energy))
 				else:
-						print("Item " + str(i))
+						print("      Item " + str(i))
 						print("Name: " + state.items[i].name)
 						print("Cost: " + str(state.items[i].cost))
 						print("Connection: Obstacle " + str(state.items[i].obst))
