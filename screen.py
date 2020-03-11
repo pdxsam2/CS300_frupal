@@ -103,7 +103,7 @@ class screen:
 	#Called when the screen is closed. Loose ends that need to be
 	#tied up or anything that happens when leaving the screen is handled
 	#here.
-	def onStop(self):
+	def onStop(self, state):
 		print("Stoping")
 
 	#allows screen to add a screen to the stack above it
