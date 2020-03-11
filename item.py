@@ -35,9 +35,3 @@ def get_slot(items, item_name):
 		if item.name == item_name:
 			return item.slot
 	return -1
-
-def get_item_count(items):
-	count = 0
-	for i in items:
-		count += 1
-	return count

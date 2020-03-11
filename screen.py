@@ -11,7 +11,7 @@ from user import user
 
 from map import Map
 
-from item import add_item, get_item_count
+from item import add_item
 from entity import Entity, has_entity_at, get_entity_at, remove_entity_at
 from config import saveConfig
 
@@ -372,7 +372,7 @@ class config(screen):
 							e= True
 						else:
 							e= False
-						add_item(state, name, cost, 0, get_item_count(state.items) + 1, e)
+						add_item(state, name, cost, 0, len(state.items), e)
 				elif(selection == 'o'):
 						print("Enter a name for your object")
 						name= input()
@@ -691,7 +691,7 @@ class playScreen(screen):
 		camera = state.camera
 		map = state.map
 
-		user.reveal_surroundings(state.map)
+		user.reveal_surroundings(state.items, state.map)
 		if user.x > camera.x + camera.viewport - 4 and camera.x + camera.viewport < map.width:
 			state.camera.x += 1
 		elif user.x < camera.x + 4 and camera.x > 0:
