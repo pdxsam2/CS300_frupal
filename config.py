@@ -30,10 +30,12 @@ def loadConfig(state):
 		state.tiles.add_obstacle(data[0], data[1], int(data[2]))
 	#load items
 	items = contents[2].split(";")
+	inv_slot = 0	#Note(Austin): I added a field in item to help me find the respective array index for user.inv[]
 	for i in items:
 		data = i.split(",")
 		print("Data: " + data[0] + " " + data[1] + " " + data[2] + " " + data[3])
-		add_item(state, data[0], int(data[1]), int(data[2]), True if data[3] is 1 else False)
+		add_item(state, data[0], int(data[1]), int(data[2]), inv_slot, True if data[3] is 1 else False)
+		inv_slot += 1
 	file.close()
 
 
