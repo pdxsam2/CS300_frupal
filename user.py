@@ -94,19 +94,19 @@ class user:
         jewels = find_first_entity(entities, "Magic Jewel");
         diffX = jewels.x - self.x
         diffY = jewels.y - self.y
-        if abs(diffX) > abs(diffY):
+        if diffX == 0 and diffY == 0:
+          # Note(Jesse): Ideally I imagine the user wouldn't see this message since they win when they go onto the tile, perhaps?
+          return "This device becomes heavy, and makes a peculiar sound. Upon this ground, you know magic is to be found."
+        elif abs(diffX) > abs(diffY):
           if diffX < 0:
             return "The Locator pulls itself somewhat Westward"
           else:
             return "The Locator feels a need to go Eastward"
-        elif abs(diffX) < abs(diffY):
+        elif abs(diffX) <= abs(diffY):
           if diffY < 0:
             return "The Locator tends Southbound"
           else:
             return "The Locator urges Northward"
-        else:
-          # Note(Jesse): Ideally I imagine the user wouldn't see this message since they win when they go onto the tile, perhaps?
-          return "This device becomes heavy, and makes a peculiar sound. Upon this ground, you know magic is to be found."
       else:
         return "You scratch your head."
     else:
