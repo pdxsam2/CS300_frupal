@@ -664,8 +664,8 @@ class playScreen(screen):
 				print("\033[0;34;40m~ \033[0m", end='')
 			elif i == '#':
 				print("\033[0;35;40m# \033[0m", end='')
-			elif i == '♣':
-				print("\033[0;31;40m♣ \033[0m", end='')
+			elif i == 'T':
+				print("\033[0;31;40mT \033[0m", end='')
 			elif i == '*':
 				print("\033[0;37;40m* \033[0m", end='')
 			else:
@@ -677,7 +677,7 @@ class playScreen(screen):
 			  "\033[0;36;40mf \033[0m" + " forest " +
 			  "\033[0;34;40m~ \033[0m" + " water " +
 			  "\033[0;35;40m# \033[0m" + " bush " +
-			  "\033[0;31;40m♣ \033[0m" + " tree " +
+			  "\033[0;31;40mT \033[0m" + " tree " +
 			  "\033[0;37;40m* \033[0m" + " rock " +
 			  "■ " + " hero ")
 		print()
