@@ -303,10 +303,142 @@ class menu(screen):
 		return
 
 ###########################################################################
-#                            Config Screen
+#                            Config Screens
 ###########################################################################
 #Updated by Timothy Hall 3/8/20
 class config(screen):
+	def __init__(self):
+		return
+	def onStart(self, state):
+		return
+	def draw(self,state):
+		print("Select which section you would like to configure: ")
+		print("Items and Obstacles - 1")
+		print("Map - 2")
+		print("Player Stats - 3")
+		print("Quit - q")
+		return
+	def update(self, state):
+		return
+	def handleInput(self, state, usrin):
+		if usrin == '1':
+			self.pushScreen(state, obj_config())
+		elif usrin == '2':
+			self.pushScreen(state, map_config())
+		elif usrin == '3':
+			self.pushScreen(state, stat_config())
+		else:
+			return
+	def onStop(self, state):
+		return
+
+class map_config(screen):
+	def __init__(self):
+		return
+	def onStart(self, state):
+		return
+	def draw(self,state):
+		print("Current dimensions: ")
+		print("x dimension: " + str(state.x_dim))
+		print("y dimension: " + str(state.y_dim))
+		print("Enter if you would like to edit(any key) or quit(q)")
+		return
+	def update(self, state):
+		return
+	def handleInput(self, state, usrin):
+		print("What would you like to set the dimensions to?")
+		x= input()
+		while(True):
+			if not x.isnumeric():
+				print("Invalid Input. Please enter an integer for your item.")
+				x= input()
+			else:
+				break
+
+		y= input()
+		while(True):
+			if not y.isnumeric():
+				print("Invalid Input. Please enter an integer for your item.")
+				y= input()
+			else:
+				break
+		state.x_dim= int(x)
+		state.y_dim= int(y)
+		return
+
+	def onStop(self, state):
+		return
+
+
+class stat_config(screen):
+	def __init__(self):
+		return
+	def onStart(self, state):
+		return
+	def draw(self,state):
+		print("Starting Stats:")
+		print("Gold: " + str(state.user.money))
+		print("Energy: " + str(state.user.energy))
+		print("\nWould you like to modify these values?")
+		print("Quit - q")
+		print("Yes - any key")
+		return
+	def update(self, state):
+		return
+	def handleInput(self, state, usrin):
+		flag1 = 0
+		flag2 = 0
+		print("Do you want to modify the initial energy (press Y/y or N/n)?")
+		choice = input()
+		if choice != 'Y' and choice != 'y' and choice != 'N' and choice != 'n':
+			return
+
+		if choice == 'Y' or choice == 'y':
+			flag1= 1
+			print("Enter a number for initial energy, enter an integer")
+			diyEnergy = input()
+			while not diyEnergy.isnumeric():
+				print("I don't know what you were trying to pull there but you didn't enter an integer..")
+				diyEnergy= input()
+				while int(diyEnergy) <= 0:
+					print("you... you want to start with negative energy? Try again")
+					diyEnergy = input()
+					while not diyEnergy.isnumeric():
+						print("I don't know what you were trying to pull there but you didn't enter an integer..")
+						diyEnergy= input()
+
+		print("Do you want to modify the initial money (press Y/y or N/n)?")
+		choice = input()
+		if choice != 'Y' and choice != 'y' and choice != 'N' and choice != 'n':
+			return
+
+		if choice == 'Y' or choice == 'y':
+			flag2= 1
+			print("Enter a number for initial money, enter an integer")
+			diyMoney= input()
+			while not diyMoney.isnumeric():
+				print("I hate to tell you this but we can't exaclty give you '" + str(diyMoney) + "' gold coins... try again")
+				diyMoney= input()
+				while int(diyMoney) <= 0:
+					print("You want to start with negative money? this isn't a real-life simulator...")
+					diyMoney = input()
+					while not diyMoney.isnumeric():
+						print("I hate to tell you this but we can't exaclty give you '" + str(diyMoney) + "' gold coins... try again")
+						diyMoney= input()
+		if(flag1):
+			state.user.energy = int(diyEnergy)
+		if(flag2):
+			state.user.money = int(diyMoney)
+
+		# Note Yichao(End)
+		# Reset: remove all
+		return
+
+	def onStop(self, state):
+		return
+
+
+class obj_config(screen):
 	def __init__(self):
 		return
 
@@ -459,8 +591,14 @@ class playScreen(screen):
 
 	def onStart(self, state):
 		# Todo(Jesse): Change the width and height to whatever the config says
-		dim = 25
-		state.map = Map(state.tiles, dim + 10, dim)
+		if state.x_dim < 1 or state.y_dim < 1:
+			print("You must configure map size to greater values in order to play")
+			time.sleep(2)
+			self.closeScreen(state)
+			return
+
+
+		state.map = Map(state.tiles, state.x_dim , state.y_dim)
 
 		# Note(Jesse): Adding entities to the world...
 		#              greedy tiles
@@ -494,105 +632,11 @@ class playScreen(screen):
 
 		# Note(Jesse): Camera init
 		state.camera.x = state.camera.y = 0
-		state.camera.viewport = min(dim, 17)
+		state.camera.viewport = min(state.x_dim, 17)
 
 		state.user = user()
 
 		# Note(Yichao): Allow user to change initial money and energy
-		diyEnergy = 20
-		diyMoney = 100
-
-		for i in range(30):
-			print()
-		print("Do you want to modify the initial energy (press Y/y or N/n)?")
-		choice = input()
-		while choice != 'Y' and choice != 'y' and choice != 'N' and choice != 'n':
-			for i in range(30):
-				print()
-			print("Invalid input, please re-enter")
-			choice = input()
-
-		if choice == 'Y' or choice == 'y':
-			for i in range(30):
-				print()
-			print("Enter a number for initial energy, enter an integer")
-			diyEnergy = input()
-			try:
-				diyEnergy = int(diyEnergy)
-			except ValueError:
-				for i in range(30):
-					print()
-				print("Input was not a integer")
-				print("I don't think you can play the game because you can make such a stupid mistake")
-				print("The game is over!")
-				exit()
-
-		while diyEnergy <= 0:
-			for i in range(30):
-				print()
-			print("Show me the meaning of negative energy?")
-			print("Enter a number for initial energy, enter an integer")
-			diyEnergy = input()
-			try:
-				diyEnergy = int(diyEnergy)
-			except ValueError:
-				for i in range(30):
-					print()
-				print("Input was not a integer")
-				print("I don't think you can play the game because you can make such a stupid mistake")
-				print("The game is over!")
-				exit()
-
-		for i in range(30):
-			print()
-
-		print("Do you want to modify the initial money (press Y/y or N/n)?")
-		choice = input()
-		while choice != 'Y' and choice != 'y' and choice != 'N' and choice != 'n':
-			for i in range(30):
-				print()
-			print("Invalid input, please re-enter")
-			choice = input()
-
-		if choice == 'Y' or choice == 'y':
-			for i in range(30):
-				print()
-			print("Enter a number for initial money, enter an integer")
-			diyMoney= input()
-			try:
-				diyMoney = int(diyMoney)
-			except ValueError:
-				for i in range(30):
-					print()
-				print("Input was not a integer")
-				print("I don't think you can play the game because you can make such a stupid mistake")
-				print("The game is over!")
-				exit()
-
-		while diyMoney<= 0:
-			for i in range(30):
-				print()
-			print("Are you in debt? We don't accept people in debt in this game")
-			print("Enter a number for initial money, enter an integer")
-			diyMoney = input()
-			try:
-				diyMoney = int(diyMoney)
-			except ValueError:
-				for i in range(30):
-					print()
-				print("Input was not a integer")
-				print("I don't think you can play the game because you can make such a stupid mistake")
-				print("The game is over!")
-				exit()
-
-		state.user.energy = diyEnergy
-		state.user.money = diyMoney
-
-		for i in range(30):
-			print()
-		# Note Yichao(End)
-		# Reset: remove all
-
 		print("Starting this thing up!")
 
 	def draw(self, state):

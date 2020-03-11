@@ -29,6 +29,8 @@ class GameState:
 	entity_manifest = []
 	entities = []
 	total_entity_chance = 0
+	x_dim= 25
+	y_dim= 35
 
 screenManager = screenManager()
 
@@ -50,7 +52,7 @@ def init():
 
 	loadConfig(state)
 	state.total_entity_chance = 0
-	
+
 	add_entity(state, "Magic Jewel", 0.0)
 	add_entity(state, "Greedy Tile", 0.0075)
 
