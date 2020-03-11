@@ -655,30 +655,30 @@ class playScreen(screen):
 		print(end=' ')
 		for i in s:
 			if i == '.':
-				print("\033[0;37;42m. \033[0m", end='')
+				print("\033[0;32;40m. \033[0m", end='')
 			elif i == '_':
-				print("\033[0;37;43m. \033[0m", end='')
+				print("\033[0;33;40m_ \033[0m", end='')
 			elif i == 'f':
-				print("\033[0;37;46m. \033[0m", end='')
+				print("\033[0;36;40mf \033[0m", end='')
 			elif i == '~':
-				print("\033[0;37;44m. \033[0m", end='')
+				print("\033[0;34;40m~ \033[0m", end='')
 			elif i == '#':
-				print("\033[0;37;45m. \033[0m", end='')
+				print("\033[0;35;40m# \033[0m", end='')
 			elif i == '♣':
-				print("\033[0;37;41m. \033[0m", end='')
+				print("\033[0;31;40m♣ \033[0m", end='')
 			elif i == '*':
-				print("\033[0;37;47m. \033[0m", end='')
+				print("\033[0;37;40m* \033[0m", end='')
 			else:
 				print(i, end=' ')
 		print()
 
-		print("\033[0;37;42m. \033[0m" + " grass " +
-			  "\033[0;37;43m. \033[0m" + " bog " +
-			  "\033[0;37;46m. \033[0m" + " forest " +
-			  "\033[0;37;44m. \033[0m" + " water " +
-			  "\033[0;37;45m. \033[0m" + " bush " +
-			  "\033[0;37;41m. \033[0m" + " tree " +
-			  "\033[0;37;47m. \033[0m" + " rock " +
+		print("\033[0;32;40m. \033[0m" + " grass " +
+			  "\033[0;33;40m_ \033[0m" + " bog " +
+			  "\033[0;36;40mf \033[0m" + " forest " +
+			  "\033[0;34;40m~ \033[0m" + " water " +
+			  "\033[0;35;40m# \033[0m" + " bush " +
+			  "\033[0;31;40m♣ \033[0m" + " tree " +
+			  "\033[0;37;40m* \033[0m" + " rock " +
 			  "■ " + " hero ")
 		print()
 		# Note(Yichao): Colorful print(End)
