@@ -103,7 +103,7 @@ class screen:
 	#Called when the screen is closed. Loose ends that need to be
 	#tied up or anything that happens when leaving the screen is handled
 	#here.
-	def onStop(self):
+	def onStop(self, state):
 		print("Stoping")
 
 	#allows screen to add a screen to the stack above it
@@ -263,37 +263,24 @@ class menu(screen):
 		return
 
 	def handleInput(self,state, usrin):
-		if(usrin == 'p'):
+		if(usrin == 'p' or usrin == 'P'):
 			self.pushScreen(state, playScreen())
-		elif(usrin == 'c'):
-			self.pushScreen(state, config())
-		elif(usrin == 'P'):
-			self.pushScreen(state, playScreen())
-		elif(usrin == 'C'):
+		elif(usrin == 'c' or usrin == 'C'):
 			self.pushScreen(state, config())
 		# Note(Yichao): Operational guidelines
-		elif (usrin == 'o'):
+		elif (usrin == 'o' or usrin == 'O'):
 			for i in range(30):
 				print(" ")
 			print("wsad: move")
-			print("e: energy bar")
-			print("p: shopping")
-			print("v: victory bottom")
+			print("e: Eat Power Bar")
+			print("p: Shop")
+			print("l: Magic Locator")
+			print("v: Victory Button")
 			print(" ")
 			print("Press any key to quit...")
 			quit = input()
 		# Note Yichao(end)
 		# Reset: remove all
-		elif (usrin == 'O'):
-			for i in range(30):
-				print(" ")
-			print("wsad: move")
-			print("e: energy bar")
-			print("p: shopping")
-			print("v: victory button")
-			print(" ")
-			print("Press any key to quit...")
-			quit = input()
 		else:
 			print("Invalid input!\n")
 		return
@@ -331,7 +318,7 @@ class config(screen):
 						print("Name: \t\t" + state.tiles.obstacles[i].name)
 						print("Cost: \t\t\t" + str(state.tiles.obstacles[i].energy))
 				else:
-						print("Item " + str(i))
+						print("      Item " + str(i))
 						print("Name: " + state.items[i].name)
 						print("Cost: " + str(state.items[i].cost))
 						print("Connection: Obstacle " + str(state.items[i].obst))
@@ -655,30 +642,30 @@ class playScreen(screen):
 		print(end=' ')
 		for i in s:
 			if i == '.':
-				print("\033[0;37;42m. \033[0m", end='')
+				print("\033[0;32;40m. \033[0m", end='')
 			elif i == '_':
-				print("\033[0;37;43m. \033[0m", end='')
+				print("\033[0;33;40m_ \033[0m", end='')
 			elif i == 'f':
-				print("\033[0;37;46m. \033[0m", end='')
+				print("\033[0;36;40mf \033[0m", end='')
 			elif i == '~':
-				print("\033[0;37;44m. \033[0m", end='')
+				print("\033[0;34;40m~ \033[0m", end='')
 			elif i == '#':
-				print("\033[0;37;45m. \033[0m", end='')
-			elif i == '♣':
-				print("\033[0;37;41m. \033[0m", end='')
+				print("\033[0;35;40m# \033[0m", end='')
+			elif i == 'T':
+				print("\033[0;31;40mT \033[0m", end='')
 			elif i == '*':
-				print("\033[0;37;47m. \033[0m", end='')
+				print("\033[0;37;40m* \033[0m", end='')
 			else:
 				print(i, end=' ')
 		print()
 
-		print("\033[0;37;42m. \033[0m" + " grass " +
-			  "\033[0;37;43m. \033[0m" + " bog " +
-			  "\033[0;37;46m. \033[0m" + " forest " +
-			  "\033[0;37;44m. \033[0m" + " water " +
-			  "\033[0;37;45m. \033[0m" + " bush " +
-			  "\033[0;37;41m. \033[0m" + " tree " +
-			  "\033[0;37;47m. \033[0m" + " rock " +
+		print("\033[0;32;40m. \033[0m" + " grass " +
+			  "\033[0;33;40m_ \033[0m" + " bog " +
+			  "\033[0;36;40mf \033[0m" + " forest " +
+			  "\033[0;34;40m~ \033[0m" + " water " +
+			  "\033[0;35;40m# \033[0m" + " bush " +
+			  "\033[0;31;40mT \033[0m" + " tree " +
+			  "\033[0;37;40m* \033[0m" + " rock " +
 			  "■ " + " hero ")
 		print()
 		# Note(Yichao): Colorful print(End)

@@ -38,3 +38,8 @@ def remove_entity_at(entities, x, y):
 		if entity.x == x and entity.y == y:
 			del entities[index]
 			return
+
+def find_first_entity(entities, name):
+	for entity in entities:
+		if entity.name == name:
+			return entity

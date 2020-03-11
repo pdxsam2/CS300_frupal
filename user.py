@@ -6,7 +6,7 @@
 #Implementation Changes: Austin Brown
 #Date 2/2/20
 from item import Item, get_slot
-from entity import Entity, has_entity_at, get_entity_at, remove_entity_at
+from entity import Entity, has_entity_at, get_entity_at, remove_entity_at, find_first_entity
 
 import math
 
@@ -77,8 +77,9 @@ class user:
       newY = self.y
       direction = "west"
     elif usrin == "e":
-      if self.inv[0] > 0:
-        self.inv[0] -= 1
+      power_bar_index = get_slot(items, "Power Bar")
+      if self.inv[power_bar_index] > 0:
+        self.inv[power_bar_index] -= 1
         self.energy += 10
         return "You consumed a Power Bar. +10 Energy!"
       else:
@@ -88,6 +89,26 @@ class user:
       self.energy = 4294967295
       self.money = 4294967295
       return "Nothing can stop you now!"
+    elif usrin == "l":
+      if self.inv[get_slot(items, "Magic Locator")] > 0:
+        jewels = find_first_entity(entities, "Magic Jewel");
+        diffX = jewels.x - self.x
+        diffY = jewels.y - self.y
+        if diffX == 0 and diffY == 0:
+          # Note(Jesse): Ideally I imagine the user wouldn't see this message since they win when they go onto the tile, perhaps?
+          return "This device becomes heavy, and makes a peculiar sound. Upon this ground, you know magic is to be found."
+        elif abs(diffX) > abs(diffY):
+          if diffX < 0:
+            return "The Locator pulls itself somewhat Westward"
+          else:
+            return "The Locator feels a need to go Eastward"
+        elif abs(diffX) <= abs(diffY):
+          if diffY < 0:
+            return "The Locator tends Southbound"
+          else:
+            return "The Locator urges Northward"
+      else:
+        return "You scratch your head."
     else:
       return "Invalid Input!"
       
