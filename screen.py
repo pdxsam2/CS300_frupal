@@ -103,7 +103,7 @@ class screen:
 	#Called when the screen is closed. Loose ends that need to be
 	#tied up or anything that happens when leaving the screen is handled
 	#here.
-	def onStop(self):
+	def onStop(self, state):
 		print("Stoping")
 
 	#allows screen to add a screen to the stack above it
@@ -113,7 +113,6 @@ class screen:
 	#called in screenman when added to the stack. Do Not implement in subclasses
 	def setScreenManager(self, screenman):
 		self.screenman = screenman #Mr. Screenman, bring me a screen.
-
 
 ###########################################################################
 #                            Splash Screen
@@ -264,37 +263,24 @@ class menu(screen):
 		return
 
 	def handleInput(self,state, usrin):
-		if(usrin == 'p'):
+		if(usrin == 'p' or usrin == 'P'):
 			self.pushScreen(state, playScreen())
-		elif(usrin == 'c'):
-			self.pushScreen(state, config())
-		elif(usrin == 'P'):
-			self.pushScreen(state, playScreen())
-		elif(usrin == 'C'):
+		elif(usrin == 'c' or usrin == 'C'):
 			self.pushScreen(state, config())
 		# Note(Yichao): Operational guidelines
-		elif (usrin == 'o'):
+		elif (usrin == 'o' or usrin == 'O'):
 			for i in range(30):
 				print(" ")
 			print("wsad: move")
-			print("e: energy bar")
-			print("p: shopping")
-			print("v: victory bottom")
+			print("e: Eat Power Bar")
+			print("p: Shop")
+			print("l: Magic Locator")
+			print("v: Victory Button")
 			print(" ")
 			print("Press any key to quit...")
 			quit = input()
 		# Note Yichao(end)
 		# Reset: remove all
-		elif (usrin == 'O'):
-			for i in range(30):
-				print(" ")
-			print("wsad: move")
-			print("e: energy bar")
-			print("p: shopping")
-			print("v: victory button")
-			print(" ")
-			print("Press any key to quit...")
-			quit = input()
 		else:
 			print("Invalid input!\n")
 		return
@@ -464,7 +450,7 @@ class obj_config(screen):
 						print("Name: \t\t" + state.tiles.obstacles[i].name)
 						print("Cost: \t\t\t" + str(state.tiles.obstacles[i].energy))
 				else:
-						print("Item " + str(i))
+						print("      Item " + str(i))
 						print("Name: " + state.items[i].name)
 						print("Cost: " + str(state.items[i].cost))
 						print("Connection: Obstacle " + str(state.items[i].obst))
@@ -505,7 +491,7 @@ class obj_config(screen):
 							e= True
 						else:
 							e= False
-						add_item(state, name, cost, 0, e)
+						add_item(state, name, cost, 0, len(state.items), e)
 				elif(selection == 'o'):
 						print("Enter a name for your object")
 						name= input()
@@ -551,7 +537,7 @@ class obj_config(screen):
 				while(True):
 					if not item.isnumeric():
 						print("Invalid Input. Please enter an integer for your item.")
-					elif item.isnumeric() and (int(item) < 0 or int(item) > item_len):
+					elif item.isnumeric() and (int(item) < 0 or int(item) > item_len-1):
 						print("Input out of bounds. Please enter a valid obst number")
 					else:
 						break
@@ -563,7 +549,7 @@ class obj_config(screen):
 				while(True):
 					if not obst.isnumeric():
 						print("Invalid Input. Please enter an integer for your item.")
-					elif obst.isnumeric() and (int(obst) < 0 or int(obst) > obst_len):
+					elif obst.isnumeric() and (int(obst) < 0 or int(obst) > obst_len-1):
 						print("Input out of bounds. Please enter a valid obst number")
 					else:
 						obst = int(obst)
@@ -702,30 +688,30 @@ class playScreen(screen):
 		print(end=' ')
 		for i in s:
 			if i == '.':
-				print("\033[0;37;42m. \033[0m", end='')
+				print("\033[0;32;40m. \033[0m", end='')
 			elif i == '_':
-				print("\033[0;37;43m. \033[0m", end='')
+				print("\033[0;33;40m_ \033[0m", end='')
 			elif i == 'f':
-				print("\033[0;37;46m. \033[0m", end='')
+				print("\033[0;36;40mf \033[0m", end='')
 			elif i == '~':
-				print("\033[0;37;44m. \033[0m", end='')
+				print("\033[0;34;40m~ \033[0m", end='')
 			elif i == '#':
-				print("\033[0;37;45m. \033[0m", end='')
-			elif i == '♣':
-				print("\033[0;37;41m. \033[0m", end='')
+				print("\033[0;35;40m# \033[0m", end='')
+			elif i == 'T':
+				print("\033[0;31;40mT \033[0m", end='')
 			elif i == '*':
-				print("\033[0;37;47m. \033[0m", end='')
+				print("\033[0;37;40m* \033[0m", end='')
 			else:
 				print(i, end=' ')
 		print()
 
-		print("\033[0;37;42m. \033[0m" + " grass " +
-			  "\033[0;37;43m. \033[0m" + " bog " +
-			  "\033[0;37;46m. \033[0m" + " forest " +
-			  "\033[0;37;44m. \033[0m" + " water " +
-			  "\033[0;37;45m. \033[0m" + " bush " +
-			  "\033[0;37;41m. \033[0m" + " tree " +
-			  "\033[0;37;47m. \033[0m" + " rock " +
+		print("\033[0;32;40m. \033[0m" + " grass " +
+			  "\033[0;33;40m_ \033[0m" + " bog " +
+			  "\033[0;36;40mf \033[0m" + " forest " +
+			  "\033[0;34;40m~ \033[0m" + " water " +
+			  "\033[0;35;40m# \033[0m" + " bush " +
+			  "\033[0;31;40mT \033[0m" + " tree " +
+			  "\033[0;37;40m* \033[0m" + " rock " +
 			  "■ " + " hero ")
 		print()
 		# Note(Yichao): Colorful print(End)
@@ -738,7 +724,7 @@ class playScreen(screen):
 		camera = state.camera
 		map = state.map
 
-		user.reveal_surroundings(state.map)
+		user.reveal_surroundings(state.items, state.map)
 		if user.x > camera.x + camera.viewport - 4 and camera.x + camera.viewport < map.width:
 			state.camera.x += 1
 		elif user.x < camera.x + 4 and camera.x > 0:
@@ -749,181 +735,12 @@ class playScreen(screen):
 			state.camera.y -= 1
 
 	def handleInput(self, state, usrin):
-		map = state.map
-
-		# Rewrites(Austin)
-		# Todo(Jesse): This could all probably be condensed inside of a function in user
-		if usrin == "w":
-			newX = state.user.x
-			newY = state.user.y + 1
-			if newY > map.height - 1:
-				self.message = "You cannot leave the island."
-				return
-			terrain_id = map.get_terrain(newX, newY)
-			obstacle_id = map.get_obstacle(newX, newY)
-			# water
-			if terrain_id == 4 and state.user.inv[5] < 1:
-				self.message = "You cannot cross water without a boat." + state.user.exert(1)
-				return
-			# there's an obstacle
-			if map.has_obstacle(newX, newY):
-				# deal with the obstacle
-				if state.user.hadTool(map, newX, newY):
-					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with a tool." + state.user.exert(1)
-				else:
-					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
-				# remove the obstacle
-				map.remove_obstacle(newX, newY)
-				return
-			# movement is now boolean
-			if state.user.move_north(state.tiles.terrain[terrain_id]):
-				if has_entity_at(state.entities, state.user.x, state.user.y):
-					entity = get_entity_at(state.entities, newX, newY)
-					if entity.id == 2: # Note(Jesse): Greedy Tile
-						state.user.money = math.floor(state.user.money*0.5)
-						self.message = "walked north onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
-						remove_entity_at(state.entities, newX, newY)
-					elif entity.id == 1: # Note(Jesse): Magic Jewel
-						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
-						self.message = "walked north onto The Magic Jewels!"
-						state.user.magic_jewels += 1
-						remove_entity_at(state.entities, newX, newY)
-				else:
-					self.message = "walked north onto " + state.tiles.terrain[terrain_id].name
-			else:
-				self.message = "You do not have enough energy to move north"
-		elif usrin == "s":
-			newX = state.user.x
-			newY = state.user.y - 1
-			if newY < 0:
-				self.message = "You cannot leave the island"
-				return
-			terrain_id = map.get_terrain(newX, newY)
-			obstacle_id = map.get_obstacle(newX, newY)
-			# water
-			if terrain_id == 4 and state.user.inv[5] < 1:
-				self.message = "You cannot cross water without a boat." + state.user.exert(1)
-				return
-			# there's an obstacle
-			if map.has_obstacle(newX, newY):
-				# deal with the obstacle
-				if state.user.hadTool(map, newX, newY):
-					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with a tool." + state.user.exert(1)
-				else:
-					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
-				# remove the obstacle
-				map.remove_obstacle(newX, newY)
-				return
-			if state.user.move_south(state.tiles.terrain[terrain_id]):
-				if has_entity_at(state.entities, state.user.x, state.user.y):
-					entity = get_entity_at(state.entities, newX, newY)
-					if entity.id == 2: # Note(Jesse): Greedy Tile
-						state.user.money = math.floor(state.user.money*0.5)
-						self.message = "walked south onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
-						remove_entity_at(state.entities, newX, newY)
-					elif entity.id == 1: # Note(Jesse): Magic Jewel
-						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
-						self.message = "walked south onto The Magic Jewels!"
-						state.user.magic_jewels += 1
-						remove_entity_at(state.entities, newX, newY)
-				else:
-					self.message = "walked south onto " + state.tiles.terrain[terrain_id].name
-			else:
-				self.message = "You do not have enough energy to move south"
-		elif usrin == "a":
-			newX = state.user.x - 1
-			newY = state.user.y
-			if newX < 0:
-				self.message = "You cannot leave the island"
-				return
-			terrain_id = map.get_terrain(newX, newY)
-			obstacle_id = map.get_obstacle(newX, newY)
-			# water
-			if terrain_id == 4 and state.user.inv[5] < 1:
-				self.message = "You cannot cross water without a boat." + state.user.exert(1)
-				return
-			# there's an obstacle
-			if map.has_obstacle(newX, newY):
-				# deal with the obstacle
-				if state.user.hadTool(map, newX, newY):
-					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with a tool." + state.user.exert(1)
-				else:
-					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
-				# remove the obstacle
-				map.remove_obstacle(newX, newY)
-				return
-			if state.user.move_west(state.tiles.terrain[terrain_id]):
-				if has_entity_at(state.entities, state.user.x, state.user.y):
-					entity = get_entity_at(state.entities, newX, newY)
-					if entity.id == 2: # Note(Jesse): Greedy Tile
-						state.user.money = math.floor(state.user.money*0.5)
-						self.message = "walked west onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
-						remove_entity_at(state.entities, newX, newY)
-					elif entity.id == 1: # Note(Jesse): Magic Jewel
-						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
-						self.message = "walked west onto The Magic Jewels!"
-						state.user.magic_jewels += 1
-						remove_entity_at(state.entities, newX, newY)
-				else:
-					self.message = "walked west onto " + state.tiles.terrain[terrain_id].name
-			else:
-				self.message = "You do not have enough energy to move west"
-		elif usrin == "d":
-			newX = state.user.x + 1
-			newY = state.user.y
-			if newX > map.width - 1:
-				self.message = "You cannot leave the island"
-				return
-			terrain_id = map.get_terrain(newX, newY)
-			obstacle_id = map.get_obstacle(newX, newY)
-			# water
-			if terrain_id == 4 and state.user.inv[5] < 1:
-				self.message = "You cannot cross water without a boat" + state.user.exert(1)
-				return
-			# there's an obstacle
-			if map.has_obstacle(newX, newY):
-				# deal with the obstacle
-				if state.user.hadTool(map, newX, newY):
-					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with a tool." + state.user.exert(1)
-				else:
-					self.message = "You removed the " + state.tiles.obstacles[obstacle_id].name + " with brute force." + state.user.exert(state.tiles.obstacles[obstacle_id].energy)
-				# remove the obstacle
-				map.remove_obstacle(newX, newY)
-				return
-			if state.user.move_east(state.tiles.terrain[terrain_id]):
-				if has_entity_at(state.entities, state.user.x, state.user.y):
-					entity = get_entity_at(state.entities, newX, newY)
-					if entity.id == 2: # Note(Jesse): Greedy Tile
-						state.user.money = math.floor(state.user.money*0.5)
-						self.message = "walked east onto " + state.tiles.terrain[terrain_id].name + ", a greedy tile... you lost half your money"
-						remove_entity_at(state.entities, newX, newY)
-					elif entity.id == 1: # Note(Jesse): Magic Jewel
-						# Todo(Jesse): You win? You got one of many and need to collect more? Up to you guys
-						self.message = "walked east onto The Magic Jewels!"
-						state.user.magic_jewels += 1
-						remove_entity_at(state.entities, newX, newY)
-				else:
-					self.message = "walked east onto " + state.tiles.terrain[terrain_id].name
-			else:
-				self.message = "You do not have enough energy to move east"
-		elif usrin == "e":
-			# Note(Jesse): We're assuming 0 is the power bar here
-			if state.user.inv[0] > 0:
-				state.user.inv[0] -= 1
-				state.user.energy += 10
-				self.message = "Consumed Power Bar"
-			else:
-				self.message = "You do not have any Power Bars left"
-		elif usrin == "p":
+		if usrin == "p":
 			self.pushScreen(state, shopScreen())
-		elif usrin == "v":
-			# Note(Jesse): Victory button
-			state.map.reveal_map()
-			# Note(Jesse): Today I learn that python can hold practically any integer number, that's neat
-			state.user.energy = 4294967295
-			state.user.money =  4294967295
+			return
 		else:
-			self.message = "invalid input"
+			self.message = state.user.action(state.map, state.items, state.tiles, state.entities, usrin)
+			return
 
 	def onStop(self, state):
 		return
@@ -981,7 +798,7 @@ class screenManager:
 			return
 		self._top().handleInput(state, usrin)
 		_clear()
-
+	#Returns true if stack is empty
 	#Returns true if stack is empty
 	def isEmpty(self):
 		return self.stack.isEmpty()

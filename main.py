@@ -16,6 +16,12 @@ if "win" in system().lower(): #works for Win7, 8, 10 ...
     kernel=windll.kernel32
     kernel.SetConsoleMode(kernel.GetStdHandle(-11),7)
 
+from platform import system
+if "win" in system().lower(): #works for Win7, 8, 10 ...
+    from ctypes import windll
+    kernel=windll.kernel32
+    kernel.SetConsoleMode(kernel.GetStdHandle(-11),7)
+
 class Camera:
 	x = 0
 	y = 0
