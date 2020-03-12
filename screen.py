@@ -169,35 +169,42 @@ class shopScreen(screen):
 		return
 
 	def draw(self, state):
-		s = "****************************************\n"
-		s +="               Inventory                \n"
-		s +="****************************************\n\n"
-		s += "Coins: " + str(state.user.money) + "\n\n"
+		s = "┌──────────────────────────────────────┐\n"
+		s +="│              Inventory               │\n"
+		s +="├──────────────────────────────────────┤\n"
+		s +="│Coins: " + str(state.user.money)
+
+		for i in range(38 - 7 - len(str(state.user.money))):
+			s += ' '
+		s +="│\n"
+		s +="├──────────────────────────────────────┤\n"
 
 		for index in range(0, 8):
 			arr_index = index + self.page*8
 			if len(state.items) <= arr_index:
-				s += '\n'
+				s += "│                                      │\n"
 			else:
+				s += '│'
 				item = state.items[arr_index]
 				temp = "[" + str(index + 1) + "] " + item.name + '(' + str(state.user.inv[arr_index]) + "):"
-				whitespace = 38 - len(str(temp))
+				whitespace = 38 - len(str(temp)) - len(str(item.cost))
 				for i in range(whitespace):
 					temp += ' '
-				s += temp + str(item.cost) + '\n'
+				s += temp + str(item.cost) + "│\n"
 				#s += '[' + str(index + 1) + "] " + item.name + '(' + str(state.user.inv[arr_index]) + "):\t\t" + str(item.cost) + '\n'
-
+		s += "├──────────────────────────────────────┤\n"
 		if self.page > 0:
-			s += "[9] Prev Page\n"
+			s += "│[9] Prev Page                         │\n"
 		else:
-			s += "\n"
+			s += "│                                      │\n"
 
 		if len(state.items) - self.page*8 > 8:
-			s += "[0] Next Page\n"
+			s += "│[0] Next Page                         │\n"
 		else:
-			s += '\n'
-
-		s += "[page: " + str(self.page) + ']\n'
+			s += '│                                      │\n'
+		s += "├──────────────────────────────────────┤\n"
+		s += "│page: " + str(self.page) + "                               │\n"
+		s += "└──────────────────────────────────────┘\n"
 
 		print(s)
 
@@ -662,12 +669,12 @@ class playScreen(screen):
 		#draw a map border
 		s += "┌"
 		for i in range(camera.viewport):
-			s += "──"
-		s += "─┐\n"
+			s += "─"
+		s += "┐\n"
 		# Note(Jesse): To make bottom left 1,1 and top right to be x, x... I'm just drawing the map inverted, and just displaying to the user that
 		#              their coords are just +1 of what they actually are (see above where we print player information)
 		for j in range(camera.viewport - 1, -1, -1):
-			s += "│ "
+			s += "│"
 			for k in range(camera.viewport):
 				x = k + camera.x
 				y = j + camera.y
@@ -680,13 +687,13 @@ class playScreen(screen):
 					s += tiles.obstacles[map.get_obstacle(x, y)].ascii
 				else:
 					s += tiles.terrain[map.get_terrain(x, y)].ascii
-				s += ' '
+				# s += ' '
 			s += "│\n"
 
 		s += '└'
 		for i in range(camera.viewport):
-			s += "──"
-		s += '─┘'
+			s += "─"
+		s += '┘'
 		# Note(Yichao): print information
 		print(t)
 		# Note(Yichao)(End)
@@ -695,24 +702,34 @@ class playScreen(screen):
 		# Note(Yichao): Colorful print
 		# IMPORTANT: only availbale for command line
 		# To invoke this, change the line: usrin = get_char() to usrin = input() in handleInput(self, state): in screen.py
-		print(end=' ')
 		for i in s:
 			if i == '.':
-				print("\033[0;32;40m. \033[0m", end='')
+				print("\033[0;32;40m.\033[0m", end='   ')
 			elif i == '_':
-				print("\033[0;33;40m_ \033[0m", end='')
+				print("\033[0;33;40m_\033[0m", end='   ')
 			elif i == 'f':
-				print("\033[0;36;40mf \033[0m", end='')
+				print("\033[0;36;40mf\033[0m", end='   ')
 			elif i == '~':
-				print("\033[0;34;40m~ \033[0m", end='')
+				print("\033[0;34;40m~\033[0m", end='   ')
 			elif i == '#':
-				print("\033[0;35;40m# \033[0m", end='')
+				print("\033[0;35;40m#\033[0m", end='   ')
 			elif i == 'T':
-				print("\033[0;31;40mT \033[0m", end='')
+				print("\033[0;31;40mT\033[0m", end='   ')
 			elif i == '*':
-				print("\033[0;37;40m* \033[0m", end='')
+				print("\033[0;37;40m*\033[0m", end='   ')
+			elif i == '─':
+				print("────", end='')
+			elif i == '┌':
+				print("┌───", end='')
+			elif i == '└':
+				print("└───", end='')
+			elif i == '│':
+				print("│   ", end='')
 			else:
-				print(i, end=' ')
+				if i != '\n':
+					print(i, end='   ')
+				else:
+					print(i, end='')
 		print()
 
 		print("\033[0;32;40m. \033[0m" + " grass " +
