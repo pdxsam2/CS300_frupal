@@ -332,14 +332,15 @@ class map_config(screen):
 		return
 	def draw(self,state):
 		print("Current dimensions: ")
-		print("x dimension: " + str(state.x_dim))
-		print("y dimension: " + str(state.y_dim))
+		print("Width:  " + str(state.x_dim))
+		print("Height: " + str(state.y_dim))
 		print("Enter if you would like to edit(any key) or quit(q)")
 		return
 	def update(self, state):
 		return
 	def handleInput(self, state, usrin):
 		print("What would you like to set the dimensions to?")
+		print("Width:")
 		x= input()
 		while(True):
 			if not x.isnumeric():
@@ -348,6 +349,7 @@ class map_config(screen):
 			else:
 				break
 
+		print("Height:")
 		y= input()
 		while(True):
 			if not y.isnumeric():
@@ -476,7 +478,7 @@ class obj_config(screen):
 				print("Would you like to add an obstacle or an item?")
 				print("Item - i")
 				print("Obstacle - o")
-				selection= str(input())[0]
+				selection= str(input())[0] # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
 
 				if(selection == 'i'):
 						print("Enter a name for your new item")
@@ -501,7 +503,7 @@ class obj_config(screen):
 						name= input()
 
 						print("Enter a symbol for your object")
-						symbol= input()[0]
+						symbol= input()[0] # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
 						#s= str(input())[0]
 
 						print("Enter an energy cost for stepping on this object")
@@ -613,18 +615,17 @@ class playScreen(screen):
 					else:
 						entropy -= entity.chance
 				if entity_id > 0:
-					print("[DEBUG]: creating greedy tile entity at:" + str(x + 1) + "," + str(y + 1))
+					# print("[DEBUG]: creating greedy tile entity at:" + str(x + 1) + "," + str(y + 1))
 					entity = copy.deepcopy(state.entity_manifest[entity_id - 1])
 					entity.x = x
 					entity.y = y
 					state.entities.append(entity)
 
-		# Todo/Research(Jesse): Do we want to throw out multiple?
 		entity = copy.deepcopy(state.entity_manifest[0]) # Note(Jesse): Magic Jewel
 		entity.x = random.randint(0, state.map.width - 1);
 		entity.y = random.randint(0, state.map.height - 1);
 		remove_entity_at(state.entities, entity.x, entity.y)
-		print("[DEBUG]: spawning magic jewels at " + str(entity.x + 1) + " " + str(entity.y + 1))
+		# print("[DEBUG]: spawning magic jewels at " + str(entity.x + 1) + " " + str(entity.y + 1))
 		state.entities.append(entity)
 
 		# Note(Jesse): Camera init
@@ -632,8 +633,6 @@ class playScreen(screen):
 		state.camera.viewport = min(state.x_dim, 17)
 
 		state.user = user()
-
-		# Note(Yichao): Allow user to change initial money and energy
 		print("Starting this thing up!")
 
 	def draw(self, state):
