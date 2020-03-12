@@ -43,3 +43,9 @@ def find_first_entity(entities, name):
 	for entity in entities:
 		if entity.name == name:
 			return entity
+
+def entity_exists(entities, name):
+	for entity in entities:
+		if entity.name == name:
+			return True
+	return False

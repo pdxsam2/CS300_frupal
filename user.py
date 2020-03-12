@@ -6,7 +6,7 @@
 #Implementation Changes: Austin Brown
 #Date 2/2/20
 from item import Item, get_slot
-from entity import Entity, has_entity_at, get_entity_at, remove_entity_at, find_first_entity
+from entity import Entity, has_entity_at, get_entity_at, remove_entity_at, find_first_entity, entity_exists
 
 import math
 
@@ -90,7 +90,7 @@ class user:
       self.money = 4294967295
       return "Nothing can stop you now!"
     elif usrin == "l":
-      if self.inv[get_slot(items, "Magic Locator")] > 0:
+      if entity_exists(entities, "Magic Jewel") and self.inv[get_slot(items, "Magic Locator")] > 0:
         jewels = find_first_entity(entities, "Magic Jewel");
         diffX = jewels.x - self.x
         diffY = jewels.y - self.y
