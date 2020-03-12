@@ -656,9 +656,6 @@ class playScreen(screen):
 		t += " Pos:\n"
 		t += "   X: " + str(state.user.x + 1) + '\n'
 		t += "   Y: " + str(state.user.y + 1) + '\n'
-		t += " camera:\n"
-		t += "   X: " + str(state.camera.x + 1) + '\n'
-		t += "   Y: " + str(state.camera.y + 1) + '\n'
 		# Note Yichao(End)
 		# Reset:
 		# s = ""
