@@ -442,7 +442,7 @@ class obj_config(screen):
 				#These 3 cases handle if there are not the same amount of items and obstacles
 				if(i < obst_len and i < item_len):
 						print("      Item " + str(i) + "\t\tObstacle " + str(i))
-						print("Name: " + state.items[i].name + "\t" + state.tiles.obstacles[i].name)
+						print("Name: " + state.items[i].name + "  \t" + state.tiles.obstacles[i].name + "(" + state.tiles.obstacles[i].ascii +")")
 						print("Cost: " + str(state.items[i].cost) + "\t\t" + str(state.tiles.obstacles[i].energy))
 						print("Connection: Obstacle " + str(state.items[i].obst))
 				elif(i < obst_len):
@@ -579,9 +579,17 @@ class playScreen(screen):
 		# Todo(Jesse): Change the width and height to whatever the config says
 		if state.x_dim < 1 or state.y_dim < 1:
 			print("You must configure map size to greater values in order to play")
-			time.sleep(2)
-			self.closeScreen(state)
+			time.sleep(1)
+			self.screenman.closeScreen(state)
 			return
+		elif not state.intro_flag:
+			_clear()
+			intro= open("intro.txt")
+			intro_list= intro.readlines()
+			for i in range(len(intro_list)):
+				print(intro_list[i])
+				time.sleep(2)
+			state.intro_flag= 1
 
 
 		state.map = Map(state.tiles, state.x_dim , state.y_dim)

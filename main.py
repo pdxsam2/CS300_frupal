@@ -37,6 +37,7 @@ class GameState:
 	total_entity_chance = 0
 	x_dim= 25
 	y_dim= 35
+	intro_flag= 0
 
 screenManager = screenManager()
 
