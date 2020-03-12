@@ -36,6 +36,15 @@ def loadConfig(state):
 		print("Data: " + data[0] + " " + data[1] + " " + data[2] + " " + data[3])
 		add_item(state, data[0], int(data[1]), int(data[2]), inv_slot, True if data[3] is 1 else False)
 		inv_slot += 1
+	
+	#load settings
+	data = contents[3].split(",")
+	state.x_dim = int(data[0])
+	state.y_dim = int(data[1])
+	state.user.energy = int(data[2])
+	state.user.money = int(data[3])
+	state.intro_flag = int(data[4])
+
 	file.close()
 
 
@@ -47,18 +56,23 @@ def saveConfig(state):
 		line += t.name + "," + t.ascii + "," + str(t.energy) + ";"
 	line = line[:-1]	#removes last ';' to prevent parsing errors
 	file.write(line + '\n')
-	
 	#write obstical data
 	line = ""
 	for o in state.tiles.obstacles:
 		line += o.name + "," + o.ascii + "," + str(o.energy) + ";"
 	line = line[:-1]
 	file.write(line + "\n")
-	
 	#write item data
 	line = ""
 	for i in state.items:
 		line += i.name + "," + str(i.cost) + "," + str(i.obst) + "," + str(1 if i.stackable else 0) + ";"
 	line = line[:-1]
 	file.write(line + "\n")
+	#write settings
+	line = ""
+	line += str(state.x_dim) + "," + str(state.y_dim) + ","
+	line += str(state.user.energy) + "," + str(state.user.money)
+	line += str(state.intro_flag)
+	file.write(line);
+
 	file.close()
