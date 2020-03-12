@@ -302,6 +302,8 @@ class config(screen):
 		print("Items and Obstacles - 1")
 		print("Map - 2")
 		print("Player Stats - 3")
+		check = "x" if state.intro_flag == 1 else " "
+		print("Skip Intro - 4 [" + check + "]")
 		print("Quit - q")
 		return
 
@@ -315,11 +317,13 @@ class config(screen):
 			self.pushScreen(state, map_config())
 		elif usrin == '3':
 			self.pushScreen(state, stat_config())
+		elif usrin == '4':
+			state.intro_flag = 0 if state.intro_flag else 1
 		else:
 			return
 	
 	def onStop(self, state):
-		return
+		saveConfig(state)
 
 class map_config(screen):
 	def __init__(self):
@@ -356,7 +360,7 @@ class map_config(screen):
 		return
 
 	def onStop(self, state):
-		return
+		saveConfig(state)
 
 
 class stat_config(screen):
@@ -418,13 +422,10 @@ class stat_config(screen):
 			state.user.energy = int(diyEnergy)
 		if(flag2):
 			state.user.money = int(diyMoney)
-
-		# Note Yichao(End)
-		# Reset: remove all
 		return
 
 	def onStop(self, state):
-		return
+		saveConfig(state)
 
 
 class obj_config(screen):
