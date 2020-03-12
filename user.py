@@ -121,8 +121,12 @@ class user:
     # water
     boat_slot = get_slot(items, "Boat")
     if int(boat_slot) > 0:
+      to_return = "You cannot cross water without a boat."
       if terrain_id == 4 and self.inv[boat_slot] < 1:
-        return "You cannot cross water without a boat." + self.exert(1)
+        if self.energy > 0:
+          return to_return + self.exert(1)
+        else:
+          return to_return
     # test code
     else:
       return "It's broken! panic! boat_slot is: " + str(boat_slot)
