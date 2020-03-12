@@ -71,7 +71,7 @@ def saveConfig(state):
 	#write settings
 	line = ""
 	line += str(state.x_dim) + "," + str(state.y_dim) + ","
-	line += str(state.user.energy) + "," + str(state.user.money)
+	line += str(state.user.energy) + "," + str(state.user.money) + ","
 	line += str(state.intro_flag)
 	file.write(line);
 
