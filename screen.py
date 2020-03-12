@@ -635,11 +635,15 @@ class playScreen(screen):
 		# print("[DEBUG]: spawning magic jewels at " + str(entity.x + 1) + " " + str(entity.y + 1))
 		state.entities.append(entity)
 
-		# Note(Jesse): Camera init
-		state.camera.x = state.camera.y = 0
-		state.camera.viewport = min(state.x_dim, 17)
-
 		state.user = user()
+		state.user.x = random.randint(0, state.x_dim - 1)
+		state.user.y = random.randint(0, state.y_dim - 1)
+
+		# Note(Jesse): Camera init
+		state.camera.viewport = min(state.x_dim, 17)
+		state.camera.x = max(0, min(state.user.x - state.camera.viewport + 4, state.x_dim - state.camera.viewport - 1))
+		state.camera.y = max(0, min(state.user.y - state.camera.viewport + 4, state.y_dim - state.camera.viewport - 1))
+
 		print("Starting this thing up!")
 
 	def draw(self, state):
@@ -652,6 +656,9 @@ class playScreen(screen):
 		t += " Pos:\n"
 		t += "   X: " + str(state.user.x + 1) + '\n'
 		t += "   Y: " + str(state.user.y + 1) + '\n'
+		t += " camera:\n"
+		t += "   X: " + str(state.camera.x + 1) + '\n'
+		t += "   Y: " + str(state.camera.y + 1) + '\n'
 		# Note Yichao(End)
 		# Reset:
 		# s = ""
