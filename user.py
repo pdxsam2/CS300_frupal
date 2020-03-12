@@ -130,7 +130,7 @@ class user:
     #obstacles
     if map.has_obstacle(newX, newY):
       item_name = self.dealWith(map.get_obstacle(newX, newY), items)
-      if item_name is not "":
+      if item_name != "":
         to_return = "You try to remove the " + tiles.obstacles[obstacle_id].name + " with your " + item_name + ","
         cost = 1
       else:
