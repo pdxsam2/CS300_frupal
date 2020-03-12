@@ -34,7 +34,7 @@ def loadConfig(state):
 	for i in items:
 		data = i.split(",")
 		# Debug: print("Data: " + data[0] + " " + data[1] + " " + data[2] + " " + data[3])
-		add_item(state, data[0], int(data[1]), int(data[2]), inv_slot, True if data[3] == 1 else False)
+		add_item(state, data[0], int(data[1]), int(data[2]), inv_slot, True if data[3] == "1" else False)
 		inv_slot += 1
 	
 	#load settings
