@@ -33,16 +33,16 @@ def loadConfig(state):
 	inv_slot = 0	#Note(Austin): I added a field in item to help me find the respective array index for user.inv[]
 	for i in items:
 		data = i.split(",")
-		print("Data: " + data[0] + " " + data[1] + " " + data[2] + " " + data[3])
-		add_item(state, data[0], int(data[1]), int(data[2]), inv_slot, True if data[3] is 1 else False)
+		# Debug: print("Data: " + data[0] + " " + data[1] + " " + data[2] + " " + data[3])
+		add_item(state, data[0], int(data[1]), int(data[2]), inv_slot, True if data[3] == 1 else False)
 		inv_slot += 1
 	
 	#load settings
 	data = contents[3].split(",")
 	state.x_dim = int(data[0])
 	state.y_dim = int(data[1])
-	state.user.energy = int(data[2])
-	state.user.money = int(data[3])
+	state.config_energy = int(data[2])
+	state.config_money = int(data[3])
 	state.intro_flag = int(data[4])
 
 	file.close()
@@ -71,7 +71,7 @@ def saveConfig(state):
 	#write settings
 	line = ""
 	line += str(state.x_dim) + "," + str(state.y_dim) + ","
-	line += str(state.user.energy) + "," + str(state.user.money) + ","
+	line += str(state.config_energy) + "," + str(state.config_money) + ","
 	line += str(state.intro_flag)
 	file.write(line);
 

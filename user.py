@@ -130,7 +130,7 @@ class user:
     #obstacles
     if map.has_obstacle(newX, newY):
       item_name = self.dealWith(map.get_obstacle(newX, newY), items)
-      if item_name is not "":
+      if item_name != "":
         to_return = "You try to remove the " + tiles.obstacles[obstacle_id].name + " with your " + item_name + ","
         cost = 1
       else:
@@ -140,8 +140,8 @@ class user:
         return to_return + " but do not have the energy."
       else:
         map.remove_obstacle(newX, newY)
-        self.money += 2
-        return to_return + " and succeed! +2 gold!" + self.exert(cost)
+        self.money += 3
+        return to_return + " and succeed! +3 gold!" + self.exert(cost)
 
     #movement
     if self.move(newX - self.x, newY - self.y, tiles.terrain[terrain_id].energy):

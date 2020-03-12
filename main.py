@@ -29,6 +29,8 @@ class Camera:
 
 class GameState:
 	user = user()
+	config_energy = 0
+	config_money = 0
 	tiles = Tiles()
 	camera = Camera()
 	items = []
