@@ -4,4 +4,4 @@
 invalid,?,0;grass,.,1;bog,_,2;forest,f,2;water,~,0
 null,?,0;bush,#,2;tree,T,3;rock,*,2
 Power Bar,10,0,1;Binoculars,30,0,0;Magic Locator,100,0,0;Weed Whacker,10,1,0;Jack Hammer,20,2,0;Chain Saw,10,3,0;Boat,50,0,0
-35,25,20,100
+35,25,20,100,0
