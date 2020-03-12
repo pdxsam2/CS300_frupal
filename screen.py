@@ -485,8 +485,12 @@ class obj_config(screen):
 				print("Would you like to add an obstacle or an item?")
 				print("Item - i")
 				print("Obstacle - o")
-				selection= str(input())[0] # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
+				selection= str(input()) # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
+				while(len(selection) == 0):
+						print("Invalid Input. Enter selection again.")
+						selection= input()
 
+				selection= selection[0]
 				if(selection == 'i'):
 						print("Enter a name for your new item")
 						name= input()
@@ -510,9 +514,13 @@ class obj_config(screen):
 						name= input()
 
 						print("Enter a symbol for your object")
-						symbol= input()[0] # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
+						symbol= input() # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
 						#s= str(input())[0]
+						while(len(symbol) == 0):
+							print("Invalid Input. Enter symbol again.")
+							symbol= input()
 
+						symbol= symbol[0]
 						print("Enter an energy cost for stepping on this object")
 						cost= input()
 						while(not cost.isnumeric()):
