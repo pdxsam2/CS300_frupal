@@ -379,8 +379,8 @@ class stat_config(screen):
 		return
 	def draw(self,state):
 		print("Starting Stats:")
-		print("Gold: " + str(state.user.money))
-		print("Energy: " + str(state.user.energy))
+		print("Gold: " + str(state.config_money))
+		print("Energy: " + str(state.config_energy))
 		print("\nWould you like to modify these values?")
 		print("Quit - q")
 		print("Yes - any key")
@@ -428,9 +428,9 @@ class stat_config(screen):
 						print("I hate to tell you this but we can't exaclty give you '" + str(diyMoney) + "' gold coins... try again")
 						diyMoney= input()
 		if(flag1):
-			state.user.energy = int(diyEnergy)
+			state.config_energy = int(diyEnergy)
 		if(flag2):
-			state.user.money = int(diyMoney)
+			state.config_money = int(diyMoney)
 		return
 
 	def onStop(self, state):
@@ -638,6 +638,8 @@ class playScreen(screen):
 		state.user = user()
 		state.user.x = random.randint(0, state.x_dim - 1)
 		state.user.y = random.randint(0, state.y_dim - 1)
+		state.user.energy = state.config_energy
+		state.user.money = state.config_money
 
 		# Note(Jesse): Camera init
 		state.camera.viewport = min(state.x_dim, 17)

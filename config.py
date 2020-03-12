@@ -41,8 +41,8 @@ def loadConfig(state):
 	data = contents[3].split(",")
 	state.x_dim = int(data[0])
 	state.y_dim = int(data[1])
-	state.user.energy = int(data[2])
-	state.user.money = int(data[3])
+	state.config_energy = int(data[2])
+	state.config_money = int(data[3])
 	state.intro_flag = int(data[4])
 
 	file.close()
@@ -71,7 +71,7 @@ def saveConfig(state):
 	#write settings
 	line = ""
 	line += str(state.x_dim) + "," + str(state.y_dim) + ","
-	line += str(state.user.energy) + "," + str(state.user.money) + ","
+	line += str(state.config_energy) + "," + str(state.config_money) + ","
 	line += str(state.intro_flag)
 	file.write(line);
 
