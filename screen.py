@@ -250,8 +250,7 @@ class shopScreen(screen):
 #Updated by Timothy Hall 3/8/20
 #todo(Sam): This is the implementation for the menu and config screens
 class menu(screen):
-	def __init__(self):
-		return
+
 	def onStart(self, state):
 		for i in range(100):
 				print("\n")
@@ -589,11 +588,13 @@ class obj_config(screen):
 ###########################################################################
 #                                Play Screen
 ###########################################################################
-#Updated by Timothy Hall 3/8/20
+#Updated by Timothy Hall 3/17/20
 class playScreen(screen):
 
 	def __init__(self):
 		self.message = ""
+		self.victory = False
+		self.continuePlaying = False;
 
 	def onStart(self, state):
 		# Todo(Jesse): Change the width and height to whatever the config says
@@ -610,7 +611,6 @@ class playScreen(screen):
 				print(intro_list[i])
 				time.sleep(2)
 			state.intro_flag= 1
-
 
 		state.map = Map(state.tiles, state.x_dim , state.y_dim)
 
@@ -657,6 +657,11 @@ class playScreen(screen):
 		print("Starting this thing up!")
 
 	def draw(self, state):
+		if self.victory is True and self.continuePlaying is False:
+			print("You Found the Crystal!")
+			print("")
+			print("Press q to quit or c to continue playing...")
+			return
 		# Note Yichao: seperate into two group to print, useful for print color
 		s = ""
 		t = ""
@@ -764,6 +769,9 @@ class playScreen(screen):
 		user = state.user
 		camera = state.camera
 		map = state.map
+		
+		if user.magic_jewels > 0 and self.victory is False:
+			self.victory = True
 
 		user.reveal_surroundings(state.items, state.map)
 		if user.x > camera.x + camera.viewport - 4 and camera.x + camera.viewport < map.width:
@@ -776,6 +784,11 @@ class playScreen(screen):
 			state.camera.y -= 1
 
 	def handleInput(self, state, usrin):
+		if self.victory is True and self.continuePlaying is False:
+			if usrin == "c":
+				self.continuePlaying = True
+				return
+			return
 		if usrin == "p":
 			self.pushScreen(state, shopScreen())
 			return
@@ -785,7 +798,6 @@ class playScreen(screen):
 
 	def onStop(self, state):
 		return
-
 
 ###########################################################################
 #                             Screen Manager

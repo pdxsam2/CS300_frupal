@@ -85,6 +85,7 @@ class user:
       else:
         return "You do not have any Power Bars left."
     elif usrin == "v":
+      self.magic_jewels += 1
       map.reveal_map()
       self.energy = 4294967295
       self.money = 4294967295
