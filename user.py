@@ -56,7 +56,7 @@ class user:
     for row in range(self.y - radius, self.y + radius + 1):
       for col in range(self.x - radius, self.x + radius + 1): # Note(Jesse): Iterating through a radius appron around the player
         if row >= 0 and row < map.height and col >= 0 and col < map.width:
-          map.set_visible(col, row)
+          map.tile_set_visible(col, row)
 
   # Rework: Austin 3/10/20
   def action(self, map, items, tiles, entities, usrin):
@@ -117,8 +117,8 @@ class user:
     if newX > map.width - 1 or newX < 0 or newY > map.height - 1 or newY < 0:
       return "You cannot leave the island."
 
-    terrain_id = map.get_terrain(newX, newY)
-    obstacle_id = map.get_obstacle(newX, newY)
+    terrain_id = map.get_terrain_id(newX, newY)
+    obstacle_id = map.get_obstacle_id(newX, newY)
     # water
     boat_slot = get_slot(items, "Boat")
     if int(boat_slot) > 0:
@@ -133,8 +133,8 @@ class user:
       return "It's broken! panic! boat_slot is: " + str(boat_slot)
 
     #obstacles
-    if map.has_obstacle(newX, newY):
-      item_name = self.dealWith(map.get_obstacle(newX, newY), items)
+    if map.coord_has_obstacle(newX, newY):
+      item_name = self.dealWith(map.get_obstacle_id(newX, newY), items)
       if item_name != "":
         to_return = "You try to remove the " + tiles.obstacles[obstacle_id].name + " with your " + item_name + ","
         cost = 1
@@ -144,7 +144,7 @@ class user:
       if (cost > self.energy):
         return to_return + " but do not have the energy."
       else:
-        map.remove_obstacle(newX, newY)
+        map.coord_remove_obstacle(newX, newY)
         self.money += 3
         return to_return + " and succeed! +3 gold!" + self.exert(cost)
 

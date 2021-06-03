@@ -699,13 +699,13 @@ class playScreen(screen):
 				y = j + camera.y
 				if y == state.user.y and x == state.user.x:
 					s += '■'
-				elif not map.is_visible(x, y):
+				elif not map.tile_is_visible(x, y):
 					s += ' '
-				elif map.has_obstacle(x, y) > 0:
+				elif map.coord_has_obstacle(x, y) > 0:
 					# Note(Jesse): Obstacle is there
-					s += tiles.obstacles[map.get_obstacle(x, y)].ascii
+					s += tiles.obstacles[map.get_obstacle_id(x, y)].ascii
 				else:
-					s += tiles.terrain[map.get_terrain(x, y)].ascii
+					s += tiles.terrain[map.get_terrain_id(x, y)].ascii
 				# s += ' '
 			s += "│\n"
 
