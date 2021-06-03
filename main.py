@@ -2,7 +2,7 @@
 #Date 1/16/20
 #File main.py
 #Desc Main entry point for the game
-
+#test change and some more of those
 from screen import screenManager, splashScreen
 from tile import Tiles
 from user import user
@@ -21,7 +21,7 @@ if "win" in system().lower(): #works for Win7, 8, 10 ...
     from ctypes import windll
     kernel=windll.kernel32
     kernel.SetConsoleMode(kernel.GetStdHandle(-11),7)
-
+  
 class Camera:
 	x = 0
 	y = 0
