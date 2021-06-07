@@ -22,7 +22,7 @@ def makeItem(name, cost, connection, order, stackable=False):
 
 # Note(Jesse): Just a helper function to add the item items array and add an integer to the user's inventory array
 def addItem(state, name, cost, connection, order, stackable):
-	item = make_item(name, cost, connection, order, stackable)
+	item = makeItem(name, cost, connection, order, stackable)
 	state.items.append(item)
 	state.user.inv.append(0)
 

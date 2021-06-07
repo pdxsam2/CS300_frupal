@@ -60,10 +60,10 @@ def init():
 	state = GameState()
 
 	loadConfig(state)
-	state.total_entity_chance = 0
+	state.totalEntityChance = 0
 
-	add_entity(state, "Magic Jewel", 0.0)
-	add_entity(state, "Greedy Tile", 0.0075)
+	addEntity(state, "Magic Jewel", 0.0)
+	addEntity(state, "Greedy Tile", 0.0075)
 
 	#screenManager.setScreen(state, menu())
 	screenManager.setScreen(state, splashScreen())

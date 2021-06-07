@@ -11,7 +11,7 @@ from user import user
 
 from map import Map
 
-from item import add_item
+from item import addItem
 from entity import Entity, hasEntityAt, getEntityAt, removeEntityAt
 from config import saveConfig
 
@@ -639,7 +639,7 @@ class playScreen(screen):
 		entity = copy.deepcopy(state.entity_manifest[0]) # Note(Jesse): Magic Jewel
 		entity.x = random.randint(0, state.map.width - 1);
 		entity.y = random.randint(0, state.map.height - 1);
-		remove_entity_at(state.entities, entity.x, entity.y)
+		removeEntityAt(state.entities, entity.x, entity.y)
 		# print("[DEBUG]: spawning magic jewels at " + str(entity.x + 1) + " " + str(entity.y + 1))
 		state.entities.append(entity)
 
@@ -699,13 +699,13 @@ class playScreen(screen):
 				y = j + camera.y
 				if y == state.user.y and x == state.user.x:
 					s += '■'
-				elif not map.tile_is_visible(x, y):
+				elif not map.tileIsVisible(x, y):
 					s += ' '
-				elif map.coord_has_obstacle(x, y) > 0:
+				elif map.coordHasObstacle(x, y) > 0:
 					# Note(Jesse): Obstacle is there
-					s += tiles.obstacles[map.get_obstacle_id(x, y)].ascii
+					s += tiles.obstacles[map.getObstacleId(x, y)].ascii
 				else:
-					s += tiles.terrain[map.get_terrain_id(x, y)].ascii
+					s += tiles.terrain[map.getTerrainId(x, y)].ascii
 				# s += ' '
 			s += "│\n"
 
@@ -773,7 +773,7 @@ class playScreen(screen):
 		if user.magic_jewels > 0 and self.victory is False:
 			self.victory = True
 
-		user.reveal_surroundings(state.items, state.map)
+		user.revealSurroundings(state.items, state.map)
 		if user.x > camera.x + camera.viewport - 4 and camera.x + camera.viewport < map.width:
 			state.camera.x += 1
 		elif user.x < camera.x + 4 and camera.x > 0:

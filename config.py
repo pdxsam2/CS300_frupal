@@ -21,20 +21,20 @@ def loadConfig(state):
 	for t in terrain:
 		data = t.split(",")
 		#print("Data: " + data[0] + " " + data[1] + " " + data[2])
-		state.tiles.add_terrain(data[0], data[1], int(data[2]))
+		state.tiles.addTerrain(data[0], data[1], int(data[2]))
 	#load obsticals
 	obsticles = contents[1].split(";")
 	for o in obsticles:
 		data = o.split(",")
 		#print("Data: " + data[0] + " " + data[1] + " " + data[2])
-		state.tiles.add_obstacle(data[0], data[1], int(data[2]))
+		state.tiles.addObstacle(data[0], data[1], int(data[2]))
 	#load items
 	items = contents[2].split(";")
 	inv_slot = 0	#Note(Austin): I added a field in item to help me find the respective array index for user.inv[]
 	for i in items:
 		data = i.split(",")
 		# Debug: print("Data: " + data[0] + " " + data[1] + " " + data[2] + " " + data[3])
-		add_item(state, data[0], int(data[1]), int(data[2]), inv_slot, True if data[3] == "1" else False)
+		addItem(state, data[0], int(data[1]), int(data[2]), inv_slot, True if data[3] == "1" else False)
 		inv_slot += 1
 	
 	#load settings
