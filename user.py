@@ -5,8 +5,8 @@
 
 #Implementation Changes: Austin Brown
 #Date 2/2/20
-from item import Item, get_slot
-from entity import Entity, has_entity_at, get_entity_at, remove_entity_at, find_first_entity, entity_exists
+from item import Item, getSlot
+from entity import Entity, hasEntityAt, getEntityAt, removeEntityAt, findFirstEntity, entityExists
 
 import math
 
@@ -48,7 +48,7 @@ class user:
           item_name = item.name
     return item_name
 
-  def reveal_surroundings(self, items, map):
+  def revealSurroundings(self, items, map):
     radius = 1
     if self.inv[get_slot(items, "Binoculars")] > 0: # Note(Jesse): If has Binoculars
       radius = 2
@@ -147,7 +147,7 @@ class user:
         map.coord_remove_obstacle(newX, newY)
         self.money += 3
         return to_return + " and succeed! +3 gold!" + self.exert(cost)
-
+    
     #movement
     if self.move(newX - self.x, newY - self.y, tiles.terrain[terrain_id].energy):
       if has_entity_at(entities, newX, newY):

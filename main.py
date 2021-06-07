@@ -6,8 +6,8 @@
 from screen import screenManager, splashScreen
 from tile import Tiles
 from user import user
-from item import add_item
-from entity import add_entity
+from item import addItem
+from entity import addEntity
 from config import loadConfig
 
 from platform import system

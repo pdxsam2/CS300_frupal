@@ -12,7 +12,7 @@ from user import user
 from map import Map
 
 from item import add_item
-from entity import Entity, has_entity_at, get_entity_at, remove_entity_at
+from entity import Entity, hasEntityAt, getEntityAt, removeEntityAt
 from config import saveConfig
 
 import random

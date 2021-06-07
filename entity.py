@@ -12,39 +12,39 @@ class Entity:
 		self.name = name
 		self.chance = chance
 
-def add_entity(state, name, chance):
+def addEntity(state, name, chance):
 	assert(chance <= 1.0 and chance >= 0.0)
 	state.total_entity_chance += chance
 	assert(state.total_entity_chance <= 1)
 	entity = Entity(len(state.entity_manifest), name, chance)
 	state.entity_manifest.append(entity)
 
-def has_entity_at(entities, x, y):
+def hasEntityAt(entities, x, y):
 	for entity in entities:
 		if entity.x == x and entity.y == y:
 			return True
 	return False
 
-def get_entity_at(entities, x, y):
+def getEntityAt(entities, x, y):
 	for entity in entities:
 		if entity.x == x and entity.y == y:
 			return entity
 	return [] # Todo(Jesse): Uh not sure standard python-esque reporting here if there isn't an entity/ Maybe just a boolean wrapper and have the calling end deal with it
 	
 # Note(Jesse): If no entity found on tile it doesn't do anything
-def remove_entity_at(entities, x, y):
+def removeEntityAt(entities, x, y):
 	for index in range(len(entities)):
 		entity = entities[index]
 		if entity.x == x and entity.y == y:
 			del entities[index]
 			return
 
-def find_first_entity(entities, name):
+def findFirstEntity(entities, name):
 	for entity in entities:
 		if entity.name == name:
 			return entity
 
-def entity_exists(entities, name):
+def entityExists(entities, name):
 	for entity in entities:
 		if entity.name == name:
 			return True

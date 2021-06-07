@@ -5,7 +5,7 @@
 
 #TODO serialize the gamemap size
 
-from item import add_item
+from item import addItem
 from tile import Tiles
 
 

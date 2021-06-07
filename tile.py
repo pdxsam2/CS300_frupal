@@ -25,12 +25,12 @@ class Tiles:
 	terrain = []
 	obstacles = []
 
-	def add_terrain(self, name, ascii, energy):
+	def addTerrain(self, name, ascii, energy):
 		id = len(self.terrain) + 1
 		terrain = Terrain(id, name, ascii, energy)
 		self.terrain.append(terrain)
 
-	def add_obstacle(self, name, ascii, energy):
+	def addObstacle(self, name, ascii, energy):
 		id = len(self.obstacles) + 1
 		obstacle = Obstacle(id, name, ascii, energy)
 		self.obstacles.append(obstacle)
