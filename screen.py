@@ -7,13 +7,13 @@ from stack import stack
 
 from tile import Tiles, Terrain, Obstacle
 
-from user import user
+from user import User
 
 from map import Map
 
 from item import add_item
 from entity import Entity, has_entity_at, get_entity_at, remove_entity_at
-from config import saveConfig
+from config import save_config
 
 import random
 import copy
@@ -60,7 +60,7 @@ class Get_Char_Windows:
 
 get_char = Get_Char()
 
-#Method to clear the screen for screenManager class
+#Method to clear the screen for Screen_Manager class
 def _clear():
 	for i in range(40):
 		print("\n")
@@ -69,20 +69,20 @@ def _clear():
 #                               Screen
 ##########################################################################
 #base class for all screens/menus
-class screen:
+class Screen:
 
 	def __init__(self):
 		self.screenman = None
 
 	#called when the screen is launched. Anything being loaded
 	#or initalized should happen here.
-	def onStart(self):
+	def on_start(self):
 		print("Starting")
 
 	#Method to draw screen to console. This is called every
 	#iterarion of the game loop, so the screen should only
 	#be written once per call. Clearing the previous frame
-	#happens after handleInput() is called, so it is not
+	#happens after handle_input() is called, so it is not
 	#necessary to do it here.
 	def draw(self):
 		print("Drawing")
@@ -93,25 +93,25 @@ class screen:
 	def update(self):
 		print("Updating")
 
-	#Handles user input. Input is  prompted for in screenManager
+	#Handles user input. Input is  prompted for in Screen_Manager
 	#so it is not  necessary to do it here. This method indirectly
 	#controls the while loop
 	#[usrin]= the user input
-	def handleInput(self, usrin):
+	def handle_input(self, usrin):
 		print("Handling input")
 
 	#Called when the screen is closed. Loose ends that need to be
 	#tied up or anything that happens when leaving the screen is handled
 	#here.
-	def onStop(self, state):
+	def on_stop(self, state):
 		print("Stoping")
 
 	#allows screen to add a screen to the stack above it
-	def pushScreen(self, state, screen):
-		self.screenman.setScreen(state, screen)
+	def push_screen(self, state, screen):
+		self.screenman.set_screen(state, screen)
 
 	#called in screenman when added to the stack. Do Not implement in subclasses
-	def setScreenManager(self, screenman):
+	def set_screen_manager(self, screenman):
 		self.screenman = screenman #Mr. Screenman, bring me a screen.
 
 ###########################################################################
@@ -119,8 +119,9 @@ class screen:
 ###########################################################################
 #Auth Timothy Hall
 #Date 6 March 2020
-class splashScreen(screen):
-	def onStart(self, state):
+#Updated by Jesse Coyle 6/7/2021
+class Splash_Screen(Screen):
+	def on_start(self, state):
 		return None
 
 	def draw(self, state):
@@ -146,9 +147,9 @@ class splashScreen(screen):
 		print("Press any key to continue...")
 
 
-	def handleInput(self, state, usrin):
-		self.pushScreen(state, menu())
-		self.screenman.closeScreen(state, 0)	#note(Tim): This screen needs to be removed from the
+	def handle_input(self, state, usrin):
+		self.push_screen(state, Menu())
+		self.screenman.close_screen(state, 0)	#note(Tim): This screen needs to be removed from the
 																					#Stack otherwise user will return to it when quiting
 																					#the game
 
@@ -159,13 +160,14 @@ class splashScreen(screen):
 #                            Shop Screen
 ###########################################################################
 #Updated by Timothy Hall 3/8/20
-class shopScreen(screen):
+#Updated by Jesse Coyle 6/7/2021
+class Shop_Screen(Screen):
 	page = 0
 
 	def __init__(self):
 		self.message = "Welcome to the shop!"
 
-	def onStart(self, state):
+	def on_start(self, state):
 		return
 
 	def draw(self, state):
@@ -213,7 +215,7 @@ class shopScreen(screen):
 	def update(self, state):
 		return
 
-	def handleInput(self, state, usrin):
+	def handle_input(self, state, usrin):
 
 		if usrin >= '0' and usrin <= '9':
 			val = int(usrin)
@@ -240,7 +242,7 @@ class shopScreen(screen):
 		else:
 			self.message = "Invalid input"
 
-	def onStop(self, state):
+	def on_stop(self, state):
 		_clear()
 		return
 
@@ -248,10 +250,11 @@ class shopScreen(screen):
 #                              Menu Screen
 ###########################################################################
 #Updated by Timothy Hall 3/8/20
+#Updated by Jesse Coyle 6/7/2021
 #todo(Sam): This is the implementation for the menu and config screens
-class menu(screen):
+class Menu(Screen):
 
-	def onStart(self, state):
+	def on_start(self, state):
 		for i in range(100):
 				print("\n")
 		return
@@ -268,11 +271,11 @@ class menu(screen):
 	def update(self, state):
 		return
 
-	def handleInput(self,state, usrin):
+	def handle_input(self,state, usrin):
 		if(usrin == 'p' or usrin == 'P'):
-			self.pushScreen(state, playScreen())
+			self.push_screen(state, Play_Screen())
 		elif(usrin == 'c' or usrin == 'C'):
-			self.pushScreen(state, config())
+			self.push_screen(state, Config())
 		# Note(Yichao): Operational guidelines
 		elif (usrin == 'o' or usrin == 'O'):
 			for i in range(30):
@@ -291,16 +294,17 @@ class menu(screen):
 			print("Invalid input!\n")
 		return
 
-	def onStop(self, state):
+	def on_stop(self, state):
 		return
 
 ###########################################################################
 #                            Config Screens
 ###########################################################################
 #Updated by Timothy Hall 3/8/20
-class config(screen):
+#Updated by Jesse Coyle 6/7/2021
+class Config(Screen):
 
-	def onStart(self, state):
+	def on_start(self, state):
 		return
 
 	def draw(self,state):
@@ -316,25 +320,25 @@ class config(screen):
 	def update(self, state):
 		return
 
-	def handleInput(self, state, usrin):
+	def handle_input(self, state, usrin):
 		if usrin == '1':
-			self.pushScreen(state, obj_config())
+			self.push_screen(state, Obj_Config())
 		elif usrin == '2':
-			self.pushScreen(state, map_config())
+			self.push_screen(state, Map_Config())
 		elif usrin == '3':
-			self.pushScreen(state, stat_config())
+			self.push_screen(state, Stat_Config())
 		elif usrin == '4':
 			state.intro_flag = 0 if state.intro_flag else 1
 		else:
 			return
 	
-	def onStop(self, state):
-		saveConfig(state)
+	def on_stop(self, state):
+		save_config(state)
 
-class map_config(screen):
+class Map_Config(Screen):
 	def __init__(self):
 		return
-	def onStart(self, state):
+	def on_start(self, state):
 		return
 	def draw(self,state):
 		print("Current dimensions: ")
@@ -344,37 +348,37 @@ class map_config(screen):
 		return
 	def update(self, state):
 		return
-	def handleInput(self, state, usrin):
+	def handle_input(self, state, usrin):
 		print("What would you like to set the dimensions to?")
 		print("Width:")
-		x= input()
+		x = input()
 		while(True):
 			if not x.isnumeric():
 				print("Invalid Input. Please enter an integer for your item.")
-				x= input()
+				x = input()
 			else:
 				break
 
 		print("Height:")
-		y= input()
+		y = input()
 		while(True):
 			if not y.isnumeric():
 				print("Invalid Input. Please enter an integer for your item.")
-				y= input()
+				y = input()
 			else:
 				break
-		state.x_dim= int(x)
-		state.y_dim= int(y)
+		state.x_dim = int(x)
+		state.y_dim = int(y)
 		return
 
-	def onStop(self, state):
-		saveConfig(state)
+	def on_stop(self, state):
+		save_config(state)
 
 
-class stat_config(screen):
+class Stat_Config(Screen):
 	def __init__(self):
 		return
-	def onStart(self, state):
+	def on_start(self, state):
 		return
 	def draw(self,state):
 		print("Starting Stats:")
@@ -386,7 +390,7 @@ class stat_config(screen):
 		return
 	def update(self, state):
 		return
-	def handleInput(self, state, usrin):
+	def handle_input(self, state, usrin):
 		flag1 = 0
 		flag2 = 0
 		print("Do you want to modify the initial energy (press Y/y or N/n)?")
@@ -397,16 +401,16 @@ class stat_config(screen):
 		if choice == 'Y' or choice == 'y':
 			flag1= 1
 			print("Enter a number for initial energy, enter an integer")
-			diyEnergy = input()
-			while not diyEnergy.isnumeric():
+			diy_energy = input()
+			while not diy_energy.isnumeric():
 				print("I don't know what you were trying to pull there but you didn't enter an integer..")
-				diyEnergy= input()
-				while int(diyEnergy) <= 0:
+				diy_energy= input()
+				while int(diy_energy) <= 0:
 					print("you... you want to start with negative energy? Try again")
-					diyEnergy = input()
-					while not diyEnergy.isnumeric():
+					diy_energy = input()
+					while not diy_energy.isnumeric():
 						print("I don't know what you were trying to pull there but you didn't enter an integer..")
-						diyEnergy= input()
+						diy_energy= input()
 
 		print("Do you want to modify the initial money (press Y/y or N/n)?")
 		choice = input()
@@ -416,31 +420,31 @@ class stat_config(screen):
 		if choice == 'Y' or choice == 'y':
 			flag2= 1
 			print("Enter a number for initial money, enter an integer")
-			diyMoney= input()
-			while not diyMoney.isnumeric():
-				print("I hate to tell you this but we can't exaclty give you '" + str(diyMoney) + "' gold coins... try again")
-				diyMoney= input()
-				while int(diyMoney) <= 0:
+			diy_money= input()
+			while not diy_money.isnumeric():
+				print("I hate to tell you this but we can't exaclty give you '" + str(diy_money) + "' gold coins... try again")
+				diy_money= input()
+				while int(diy_money) <= 0:
 					print("You want to start with negative money? this isn't a real-life simulator...")
-					diyMoney = input()
-					while not diyMoney.isnumeric():
-						print("I hate to tell you this but we can't exaclty give you '" + str(diyMoney) + "' gold coins... try again")
-						diyMoney= input()
+					diy_money = input()
+					while not diy_money.isnumeric():
+						print("I hate to tell you this but we can't exaclty give you '" + str(diy_money) + "' gold coins... try again")
+						diy_money= input()
 		if(flag1):
-			state.config_energy = int(diyEnergy)
+			state.config_energy = int(diy_energy)
 		if(flag2):
-			state.config_money = int(diyMoney)
+			state.config_money = int(diy_money)
 		return
 
-	def onStop(self, state):
-		saveConfig(state)
+	def on_stop(self, state):
+		save_config(state)
 
 
-class obj_config(screen):
+class Obj_Config(Screen):
 	def __init__(self):
 		return
 
-	def onStart(self, state):
+	def on_start(self, state):
 		return
 
 	def draw(self, state):
@@ -477,62 +481,62 @@ class obj_config(screen):
 	def update(self, state):
 		return
 
-	def handleInput(self,state, usrin):
+	def handle_input(self, state, usrin):
 		_clear()
 		#userhas decided to add a new item or obstacle
 		if (usrin == 'a'):
 				print("Would you like to add an obstacle or an item?")
 				print("Item - i")
 				print("Obstacle - o")
-				selection= str(input()) # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
+				selection = str(input()) # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
 				while(len(selection) == 0):
 						print("Invalid Input. Enter selection again.")
 						selection= input()
 
-				selection= selection[0]
+				selection = selection[0]
 				if(selection == 'i'):
 						print("Enter a name for your new item")
-						name= input()
+						name = input()
 
 						print("Enter a cost for your new item")
-						cost= input()
+						cost = input()
 						while(not cost.isnumeric()):
 							print("Invalid input. Please enter an integer for your cost.")
-							cost= input()
+							cost = input()
 						cost = int(cost)
 
 						print("Is this item stackable? [y/n]")
-						e= str(input())
+						e = str(input())
 						if e == 'y' or e == 'Y':
-							e= True
+							e = True
 						else:
-							e= False
+							e = False
 						add_item(state, name, cost, 0, len(state.items), e)
 				elif(selection == 'o'):
 						print("Enter a name for your object")
-						name= input()
+						name = input()
 
 						print("Enter a symbol for your object")
-						symbol= input() # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
+						symbol = input() # Note(Jesse): This is going to crash if the user simply presses return without any other data in the input buffer
 						#s= str(input())[0]
 						while(len(symbol) == 0):
 							print("Invalid Input. Enter symbol again.")
-							symbol= input()
+							symbol = input()
 
-						symbol= symbol[0]
+						symbol = symbol[0]
 						print("Enter an energy cost for stepping on this object")
-						cost= input()
+						cost = input()
 						while(not cost.isnumeric()):
 							print("Invalid Input. Enter an integer for your cost.")
-							cost= input()
+							cost = input()
 						cost = int(cost)
 						state.tiles.add_obstacle(name,symbol,cost)
 		#user has decided to connect an item and an obstacle
 		elif (usrin == 'c'):
 				#display all items and obstacles
-				item_len= len(state.items)
-				obst_len= len(state.tiles.obstacles)
-				max_len= max(item_len,obst_len)
+				item_len = len(state.items)
+				obst_len = len(state.tiles.obstacles)
+				max_len = max(item_len,obst_len)
 
 				for i in range(max_len):
 						if(i < obst_len and i < item_len):
@@ -553,7 +557,7 @@ class obj_config(screen):
 
 				#poll for which objects and items you would like to connect
 				print("Enter the number for which item you would like to connect")
-				item= input()
+				item = input()
 				while(True):
 					if not item.isnumeric():
 						print("Invalid Input. Please enter an integer for your item.")
@@ -561,11 +565,11 @@ class obj_config(screen):
 						print("Input out of bounds. Please enter a valid obst number")
 					else:
 						break
-					item= input()
+					item = input()
 				item = int(item)
 
 				print("Which obstacle will it be connected to?")
-				obst= input()
+				obst = input()
 				while(True):
 					if not obst.isnumeric():
 						print("Invalid Input. Please enter an integer for your item.")
@@ -574,34 +578,34 @@ class obj_config(screen):
 					else:
 						obst = int(obst)
 						break
-					obst= input()
+					obst = input()
 				obst = int(obst)
-				state.items[item].obst= obst
+				state.items[item].obst = obst
 		else:
 				print("Invalid input")
 
 		return
 
-	def onStop(self, state):
-		saveConfig(state)
+	def on_stop(self, state):
+		save_config(state)
 
 ###########################################################################
 #                                Play Screen
 ###########################################################################
 #Updated by Timothy Hall 3/17/20
-class playScreen(screen):
+class Play_Screen(Screen):
 
 	def __init__(self):
 		self.message = ""
 		self.victory = False
-		self.continuePlaying = False;
+		self.continue_playing = False;
 
-	def onStart(self, state):
+	def on_start(self, state):
 		# Todo(Jesse): Change the width and height to whatever the config says
 		if state.x_dim < 1 or state.y_dim < 1:
 			print("You must configure map size to greater values in order to play")
 			time.sleep(1)
-			self.screenman.closeScreen(state)
+			self.screenman.close_screen(state)
 			return
 		elif not state.intro_flag:
 			_clear()
@@ -610,7 +614,7 @@ class playScreen(screen):
 			for i in range(len(intro_list)):
 				print(intro_list[i])
 				time.sleep(2)
-			state.intro_flag= 1
+			state.intro_flag = 1
 
 		state.map = Map(state.tiles, state.x_dim , state.y_dim)
 
@@ -619,7 +623,6 @@ class playScreen(screen):
 		for y in range(state.map.height):
 			for x in range(state.map.width):
 				entropy = random.random()
-				# print("entropy is:" + str(entropy) + "at: " + str(x) + "," + str(y))
 				if entropy == 0.0:
 					continue
 				entity_id = 0
@@ -643,7 +646,7 @@ class playScreen(screen):
 		# print("[DEBUG]: spawning magic jewels at " + str(entity.x + 1) + " " + str(entity.y + 1))
 		state.entities.append(entity)
 
-		state.user = user()
+		state.user = User()
 		state.user.x = random.randint(0, state.x_dim - 1)
 		state.user.y = random.randint(0, state.y_dim - 1)
 		state.user.energy = state.config_energy
@@ -657,7 +660,7 @@ class playScreen(screen):
 		print("Starting this thing up!")
 
 	def draw(self, state):
-		if self.victory is True and self.continuePlaying is False:
+		if self.victory is True and self.continue_playing is False:
 			print("You Found the Crystal!")
 			print("")
 			print("Press q to quit or c to continue playing...")
@@ -720,7 +723,7 @@ class playScreen(screen):
 
 		# Note(Yichao): Colorful print
 		# IMPORTANT: only availbale for command line
-		# To invoke this, change the line: usrin = get_char() to usrin = input() in handleInput(self, state): in screen.py
+		# To invoke this, change the line: usrin = get_char() to usrin = input() in handle_input(self, state): in screen.py
 		for i in s:
 			if i == '.':
 				print("\033[0;32;40m.\033[0m", end='   ')
@@ -783,26 +786,26 @@ class playScreen(screen):
 		elif user.y < camera.y + 4 and camera.y > 0:
 			state.camera.y -= 1
 
-	def handleInput(self, state, usrin):
-		if self.victory is True and self.continuePlaying is False:
+	def handle_input(self, state, usrin):
+		if self.victory is True and self.continue_playing is False:
 			if usrin == "c":
-				self.continuePlaying = True
+				self.continue_playing = True
 				return
 			return
 		if usrin == "p":
-			self.pushScreen(state, shopScreen())
+			self.push_screen(state, Shop_Screen())
 			return
 		else:
 			self.message = state.user.action(state.map, state.items, state.tiles, state.entities, usrin)
 			return
 
-	def onStop(self, state):
+	def on_stop(self, state):
 		return
 
 ###########################################################################
 #                             Screen Manager
 ###########################################################################
-class screenManager:
+class Screen_Manager:
 
 	#constructor
 	def __init__(self):
@@ -812,24 +815,24 @@ class screenManager:
 	def _top(self):
 		return self.stack.peek()
 
-	#Wrapper function for stack.push(). calls onStart() for the screen being
+	#Wrapper function for stack.push(). calls on_start() for the screen being
 	#added to the stack.
-	def setScreen(self, state, screen):
+	def set_screen(self, state, screen):
 		self.stack.push(screen)
-		self._top().setScreenManager(self)
-		self._top().onStart(state)
+		self._top().set_screen_manager(self)
+		self._top().on_start(state)
 
-	#Wrapper function for stack.pop(). Calls onStop() on screen prior to
+	#Wrapper function for stack.pop(). Calls on_stop() on screen prior to
 	#removing it from the stack.
-	def closeScreen(self, state, index=-1):
+	def close_screen(self, state, index=-1):
 		if index == -1:
-			self._top().onStop(state)
+			self._top().on_stop(state)
 			self.stack.pop()
 		else:
 			self.stack.remove(index)
 
 	#draws the screen for the screen at the top of the stack.
-	def draw(self, state):
+	def draw(self, state): 
 		self._top().draw(state)
 
 	#updates top screen in the stack
@@ -839,19 +842,19 @@ class screenManager:
 	#Default prompt for input. passes user input to the screen
 	#at the top of the stack. if user enters 'q' to quit the screen, it
 	#is handled here.
-	def handleInput(self, state):
+	def handle_input(self, state):
 		usrin = get_char()
 		if usrin == "q":
 			_clear()
-			self.closeScreen(state)
+			self.close_screen(state)
 			return
 		elif usrin == "Q":
 			_clear()
-			self.closeScreen(state)
+			self.close_screen(state)
 			return
-		self._top().handleInput(state, usrin)
+		self._top().handle_input(state, usrin)
 		_clear()
 	#Returns true if stack is empty
 	#Returns true if stack is empty
-	def isEmpty(self):
-		return self.stack.isEmpty()
+	def is_empty(self):
+		return self.stack.is_empty()

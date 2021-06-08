@@ -30,5 +30,5 @@ class stack:
 		return len(self.items)
 
 	#returns true if stack is empty
-	def isEmpty(self):
+	def is_empty(self):
 		return self.size() == 0

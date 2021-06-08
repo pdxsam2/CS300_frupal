@@ -9,11 +9,11 @@ from item import add_item
 from tile import Tiles
 
 
-def loadConfig(state):
+def load_config(state):
 	file = open("config.txt", 'r')
 	contents = file.readlines()
 	#contents[0] will be terrain
-	#contents[1] will be obsticals
+	#contents[1] will be obstacles
 	#contents[2] will be items
 	#contents[3] will be game settings and such
 	#Load terrain
@@ -22,9 +22,9 @@ def loadConfig(state):
 		data = t.split(",")
 		#print("Data: " + data[0] + " " + data[1] + " " + data[2])
 		state.tiles.add_terrain(data[0], data[1], int(data[2]))
-	#load obsticals
-	obsticles = contents[1].split(";")
-	for o in obsticles:
+	#load obstacles
+	obstacles = contents[1].split(";")
+	for o in obstacles:
 		data = o.split(",")
 		#print("Data: " + data[0] + " " + data[1] + " " + data[2])
 		state.tiles.add_obstacle(data[0], data[1], int(data[2]))
@@ -48,7 +48,7 @@ def loadConfig(state):
 	file.close()
 
 
-def saveConfig(state):
+def save_config(state):
 	file = open("config.txt","w+")
 	line=""
 	#write tile data

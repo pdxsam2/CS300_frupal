@@ -28,7 +28,7 @@ def add_item(state, name, cost, connection, order, stackable):
 
 # Note(Sam): preliminary attempt to figure out how to connect obstacles and objects
 def connect_item(state, item, obstacle):
-	state.items[item].obst= obstacle
+	state.items[item].obst = obstacle
 
 def get_slot(items, item_name):
 	for item in items:

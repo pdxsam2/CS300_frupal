@@ -10,7 +10,7 @@ from entity import Entity, has_entity_at, get_entity_at, remove_entity_at, find_
 
 import math
 
-class user:
+class User:
   #Status   Note(Sam): these numbers were arbitrarily chosen and should be adjusted relative to how the game feels to play
   energy= 20
   money= 100
@@ -40,7 +40,7 @@ class user:
 
 
   # Note(Austin): This checks if the user has the correct item for the given obstacle
-  def dealWith(self, obstacle, items):
+  def deal_with(self, obstacle, items):
     item_name  = ""
     for item in items:
       if item.obst == obstacle:
@@ -61,20 +61,20 @@ class user:
   # Rework: Austin 3/10/20
   def action(self, map, items, tiles, entities, usrin):
     if usrin == "w":
-      newX = self.x
-      newY = self.y + 1
+      new_x = self.x
+      new_y = self.y + 1
       direction = "north"
     elif usrin == "s":
-      newX = self.x
-      newY = self.y - 1
+      new_x = self.x
+      new_y = self.y - 1
       direction = "south"
     elif usrin == "d":
-      newX = self.x + 1
-      newY = self.y
+      new_x = self.x + 1
+      new_y = self.y
       direction = "east"
     elif usrin == "a":
-      newX = self.x - 1
-      newY = self.y
+      new_x = self.x - 1
+      new_y = self.y
       direction = "west"
     elif usrin == "e":
       power_bar_index = get_slot(items, "Power Bar")
@@ -93,18 +93,18 @@ class user:
     elif usrin == "l":
       if entity_exists(entities, "Magic Jewel") and self.inv[get_slot(items, "Magic Locator")] > 0:
         jewels = find_first_entity(entities, "Magic Jewel");
-        diffX = jewels.x - self.x
-        diffY = jewels.y - self.y
-        if diffX == 0 and diffY == 0:
+        diff_x = jewels.x - self.x
+        diff_y = jewels.y - self.y
+        if diff_x == 0 and diff_y == 0:
           # Note(Jesse): Ideally I imagine the user wouldn't see this message since they win when they go onto the tile, perhaps?
           return "This device becomes heavy, and makes a peculiar sound. Upon this ground, you know magic is to be found."
-        elif abs(diffX) > abs(diffY):
-          if diffX < 0:
+        elif abs(diff_x) > abs(diff_y):
+          if diff_x < 0:
             return "The Locator pulls itself somewhat Westward"
           else:
             return "The Locator feels a need to go Eastward"
-        elif abs(diffX) <= abs(diffY):
-          if diffY < 0:
+        elif abs(diff_x) <= abs(diff_y):
+          if diff_y < 0:
             return "The Locator tends Southbound"
           else:
             return "The Locator urges Northward"
@@ -114,11 +114,11 @@ class user:
       return "Invalid Input!"
       
     # bounds check
-    if newX > map.width - 1 or newX < 0 or newY > map.height - 1 or newY < 0:
+    if new_x > map.width - 1 or new_x < 0 or new_y > map.height - 1 or new_y < 0:
       return "You cannot leave the island."
 
-    terrain_id = map.get_terrain(newX, newY)
-    obstacle_id = map.get_obstacle(newX, newY)
+    terrain_id = map.get_terrain(new_x, new_y)
+    obstacle_id = map.get_obstacle(new_x, new_y)
     # water
     boat_slot = get_slot(items, "Boat")
     if int(boat_slot) > 0:
@@ -133,8 +133,8 @@ class user:
       return "It's broken! panic! boat_slot is: " + str(boat_slot)
 
     #obstacles
-    if map.has_obstacle(newX, newY):
-      item_name = self.dealWith(map.get_obstacle(newX, newY), items)
+    if map.has_obstacle(new_x, new_y):
+      item_name = self.deal_with(map.get_obstacle(new_x, new_y), items)
       if item_name != "":
         to_return = "You try to remove the " + tiles.obstacles[obstacle_id].name + " with your " + item_name + ","
         cost = 1
@@ -144,21 +144,21 @@ class user:
       if (cost > self.energy):
         return to_return + " but do not have the energy."
       else:
-        map.remove_obstacle(newX, newY)
+        map.remove_obstacle(new_x, new_y)
         self.money += 3
         return to_return + " and succeed! +3 gold!" + self.exert(cost)
 
     #movement
-    if self.move(newX - self.x, newY - self.y, tiles.terrain[terrain_id].energy):
-      if has_entity_at(entities, newX, newY):
-        entity = get_entity_at(entities, newX, newY)
+    if self.move(new_x - self.x, new_y - self.y, tiles.terrain[terrain_id].energy):
+      if has_entity_at(entities, new_x, new_y):
+        entity = get_entity_at(entities, new_x, new_y)
         if entity.id == 2:  # Note(Jesse): Greedy Tile
           self.money = math.floor(self.money*0.5)
           to_return = ", where a greedy tile stole half your money!"
         elif entity.id == 1: # Note(Jesse): Magic Jewel
           self.magic_jewels += 1
           to_return = ", where you found The Magic Jewels!"
-        remove_entity_at(entities, newX, newY)
+        remove_entity_at(entities, new_x, new_y)
         return "You moved " + direction + " onto a " + tiles.terrain[terrain_id].name + to_return + self.exert(tiles.terrain[terrain_id].energy)
       return "You moved " + direction + " onto a " + tiles.terrain[terrain_id].name + '.' + self.exert(tiles.terrain[terrain_id].energy)
     return "You do not have enough energy to move " + direction + " onto a " + tiles.terrain[terrain_id].name + '.'
